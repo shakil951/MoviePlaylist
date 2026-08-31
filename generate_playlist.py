@@ -7,54 +7,49 @@ GROUP_TITLE = "Movies"
 
 
 def generate_playlist():
-    lines = Path(INPUT_FILE).read_text(
-        encoding="utf-8"
-    ).splitlines()
+    lines = [
+        line.strip()
+        for line in Path(INPUT_FILE).read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
 
     entries = []
 
-    i = 0
+    # প্রতি movie = 3 lines
+    # 1. Name
+    # 2. Logo
+    # 3. Video URL
 
-    while i < len(lines):
-        line = lines[i].strip()
+    for i in range(0, len(lines), 3):
 
-        # Skip empty lines
-        if not line:
-            i += 1
+        if i + 2 >= len(lines):
+            print(f"Skipping incomplete entry starting at line {i + 1}")
             continue
 
-        name = line
+        name = lines[i]
+        logo = lines[i + 1]
+        url = lines[i + 2]
 
-        # Find the next non-empty line as URL
-        i += 1
-
-        while i < len(lines) and not lines[i].strip():
-            i += 1
-
-        if i >= len(lines):
-            break
-
-        url = lines[i].strip()
-
-        # Ignore invalid entries
         if not url.startswith(("http://", "https://")):
-            i += 1
+            print(f"Invalid video URL: {url}")
             continue
 
-        entries.append((name, url))
-
-        i += 1
+        entries.append((name, logo, url))
 
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+
         f.write("#EXTM3U\n\n")
 
-        for name, url in entries:
+        for name, logo, url in entries:
+
             f.write(
-                f'#EXTINF:-1 group-title="{GROUP_TITLE}",{name}\n'
+                f'#EXTINF:-1 tvg-logo="{logo}" '
+                f'group-title="{GROUP_TITLE}",{name}\n'
             )
+
             f.write(f"{url}\n\n")
 
-    print(f"Created {OUTPUT_FILE}")
+    print(f"Playlist generated successfully!")
     print(f"Total entries: {len(entries)}")
 
 
