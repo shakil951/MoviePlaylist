@@ -3,7 +3,7 @@ from pathlib import Path
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
 
-GROUP_TITLE = "Movies"
+GROUP_TITLE = "VOD"
 
 
 def generate_playlist():
