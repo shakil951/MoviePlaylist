@@ -1,12 +1,12 @@
-import re
 from datetime import datetime
 from pathlib import Path
+import re
 import zoneinfo
 
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
 TARGET_GROUP = "VOD"
-DEVELOPER_NAME = "SM Network"
+DEVELOPER_NAME = "FARABI"
 
 
 def get_current_time():
@@ -25,18 +25,19 @@ def generate_playlist():
         return
 
     raw_content = txt_path.read_text(encoding="utf-8").strip()
-    blocks = [b.strip() for b in raw_content.split("\n\n") if b.strip()]
 
+    # একাধিক নিউলাইন বা ফাঁকা লাইন দিয়ে প্রতিটি মুভি ব্লককে আলাদা করা
+    raw_blocks = re.split(r"\n\s*\n", raw_content)
     formatted_entries = []
 
-    for block in blocks:
+    for block in raw_blocks:
         lines = [line.strip() for line in block.splitlines() if line.strip()]
         if not lines:
             continue
 
-        # ক্ষেত্র ১: যদি এন্ট্রিটি ইতিমধ্যে #EXTINF দিয়ে শুরু হয় (রেডিমেড M3U ফরম্যাট)
+        # ক্ষেত্র ১: যদি এন্ট্রিটি #EXTINF দিয়ে শুরু হয় (রেডিমেড M3U ফরম্যাট)
         if lines[0].startswith("#EXTINF:"):
-            # group-title পরিবর্তন করে VOD করা
+            # group-title পরিবর্তন করে TARGET_GROUP ("VOD") সেট করা
             if "group-title=" in lines[0]:
                 extinf = re.sub(
                     r'group-title="[^"]*"',
@@ -48,11 +49,11 @@ def generate_playlist():
                     "#EXTINF:-1", f'#EXTINF:-1 group-title="{TARGET_GROUP}"'
                 )
 
-            # বাকি লাইনগুলো (যেমন #EXTVLCOPT এবং Video URL) যুক্ত করা
+            # বাকি লাইনগুলো (যেমন #EXTVLCOPT এবং Video URL) অপরিবর্তিত রাখা
             rest_lines = "\n".join(lines[1:])
             formatted_entries.append(f"{extinf}\n{rest_lines}")
 
-        # ক্ষেত্র ২: যদি এন্ট্রিটি সাধারণ ৩-লাইনের ফরম্যাট হয় (নাম, লোগো, URL)
+        # ক্ষেত্র ২: যদি সাধারণ টেক্সট ফরম্যাট হয় (লাইন ১: নাম, লাইন ২: লোগো, লাইন ৩: URL, লাইন ৪: রেফারার [ঐচ্ছিক])
         elif len(lines) >= 3:
             name = lines[0]
             logo = lines[1]
@@ -67,20 +68,21 @@ def generate_playlist():
 
     current_time_str = get_current_time()
 
+    # ফাইনাল playlist.m3u ফাইল তৈরি
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         f.write("# ==========================================\n")
-        f.write("# Playlist Name : Selected VOD Movies\n")
+        f.write("# Playlist Name : Premium VOD Movies\n")
         f.write(f"# Developer     : {DEVELOPER_NAME}\n")
         f.write(f"# Last Updated  : {current_time_str}\n")
-        f.write(f"# Total Items   : {len(formatted_entries)}\n")
+        f.write(f"# Total Movies  : {len(formatted_entries)}\n")
         f.write("# ==========================================\n\n")
 
         for entry in formatted_entries:
             f.write(f"{entry}\n\n")
 
     print(
-        f"Success! {len(formatted_entries)} items processed and saved to '{OUTPUT_FILE}'."
+        f"Success! {len(formatted_entries)} items saved to '{OUTPUT_FILE}' at {current_time_str}."
     )
 
 
