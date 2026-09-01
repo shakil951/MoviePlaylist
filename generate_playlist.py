@@ -24,36 +24,46 @@ def generate_playlist():
         print(f"Error: {INPUT_FILE} not found!")
         return
 
-    content = txt_path.read_text(encoding="utf-8")
-    lines = content.splitlines()
+    raw_content = txt_path.read_text(encoding="utf-8").strip()
+    blocks = [b.strip() for b in raw_content.split("\n\n") if b.strip()]
 
-    processed_lines = []
-    item_count = 0
+    formatted_entries = []
 
-    for line in lines:
-        stripped = line.strip()
-
-        # #EXTM3U হেডার থাকলে বাদ দেওয়া (যেহেতু উপরে নতুন হেডার তৈরি হবে)
-        if stripped.startswith("#EXTM3U"):
+    for block in blocks:
+        lines = [line.strip() for line in block.splitlines() if line.strip()]
+        if not lines:
             continue
 
-        # শুধু #EXTINF লাইনের group-title পরিবর্তন করা
-        if stripped.startswith("#EXTINF:"):
-            item_count += 1
-            if "group-title=" in stripped:
-                new_line = re.sub(
+        # ক্ষেত্র ১: যদি এন্ট্রিটি ইতিমধ্যে #EXTINF দিয়ে শুরু হয় (রেডিমেড M3U ফরম্যাট)
+        if lines[0].startswith("#EXTINF:"):
+            # group-title পরিবর্তন করে VOD করা
+            if "group-title=" in lines[0]:
+                extinf = re.sub(
                     r'group-title="[^"]*"',
                     f'group-title="{TARGET_GROUP}"',
-                    stripped,
+                    lines[0],
                 )
             else:
-                new_line = stripped.replace(
+                extinf = lines[0].replace(
                     "#EXTINF:-1", f'#EXTINF:-1 group-title="{TARGET_GROUP}"'
                 )
-            processed_lines.append(new_line)
-        else:
-            # বাকি সব লাইন (যেমন #EXTVLCOPT, URL, ফাঁকা লাইন) হুবহু যেমন আছে তেমন থাকবে
-            processed_lines.append(stripped)
+
+            # বাকি লাইনগুলো (যেমন #EXTVLCOPT এবং Video URL) যুক্ত করা
+            rest_lines = "\n".join(lines[1:])
+            formatted_entries.append(f"{extinf}\n{rest_lines}")
+
+        # ক্ষেত্র ২: যদি এন্ট্রিটি সাধারণ ৩-লাইনের ফরম্যাট হয় (নাম, লোগো, URL)
+        elif len(lines) >= 3:
+            name = lines[0]
+            logo = lines[1]
+            url = lines[2]
+            referrer = lines[3] if len(lines) >= 4 else None
+
+            entry_str = f'#EXTINF:-1 tvg-logo="{logo}" group-title="{TARGET_GROUP}", {name}\n'
+            if referrer:
+                entry_str += f"#EXTVLCOPT:http-referrer={referrer}\n"
+            entry_str += url
+            formatted_entries.append(entry_str)
 
     current_time_str = get_current_time()
 
@@ -63,15 +73,14 @@ def generate_playlist():
         f.write("# Playlist Name : Selected VOD Movies\n")
         f.write(f"# Developer     : {DEVELOPER_NAME}\n")
         f.write(f"# Last Updated  : {current_time_str}\n")
-        f.write(f"# Total Items   : {item_count}\n")
+        f.write(f"# Total Items   : {len(formatted_entries)}\n")
         f.write("# ==========================================\n\n")
 
-        # প্রসেস করা লাইনগুলো ফাইলে লেখা
-        for line in processed_lines:
-            f.write(f"{line}\n")
+        for entry in formatted_entries:
+            f.write(f"{entry}\n\n")
 
     print(
-        f"Success! {item_count} items processed and saved to '{OUTPUT_FILE}'."
+        f"Success! {len(formatted_entries)} items processed and saved to '{OUTPUT_FILE}'."
     )
 
 
