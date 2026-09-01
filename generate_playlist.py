@@ -2,17 +2,13 @@ import re
 import urllib.request
 from datetime import datetime
 from pathlib import Path
-import zoneinfo  # বাংলাদেশ টাইমজোনের জন্য
+import zoneinfo
 
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
 M3U_URL = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/main/latest_movies.m3u"
 GROUP_TITLE = "VOD"
-DEVELOPER_NAME = "FARABI AHMED / SM Network"  # আপনার নাম বা ব্র্যান্ড নাম দিন
-DEFAULT_REFERRER = "https://fibwatch.art/"
-DEFAULT_USER_AGENT = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-)
+DEVELOPER_NAME = "SM Network"
 
 
 def get_current_time():
@@ -25,105 +21,114 @@ def get_current_time():
 
 
 def generate_playlist():
-    entries = []
+    raw_blocks = []
     seen_urls = set()
 
-    # ১. movies.txt ফাইল থেকে কাস্টম এন্ট্রি রিড করা
+    # ১. movies.txt পার্স করা
     txt_path = Path(INPUT_FILE)
     if txt_path.exists():
-        print(f"Reading custom movies from {INPUT_FILE}...")
         lines = [
             line.strip()
             for line in txt_path.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
-
         for i in range(0, len(lines), 3):
             if i + 2 >= len(lines):
                 continue
-
-            name = lines[i]
-            logo = lines[i + 1]
-            url = lines[i + 2]
-
+            name, logo, url = lines[i], lines[i + 1], lines[i + 2]
             if url.startswith(("http://", "https://")) and url not in seen_urls:
-                referrer = (
-                    DEFAULT_REFERRER
-                    if ("b-cdn.net" in url or "fibwatch" in url)
-                    else ""
-                )
-                entries.append((name, logo, url, referrer))
                 seen_urls.add(url)
+                # b-cdn হলে রেফারার পাইপ যুক্ত করা
+                if "b-cdn.net" in url or "fibwatch" in url:
+                    stream_url = f"{url}|Referer=https://fibwatch.art/&User-Agent=Mozilla/5.0"
+                    opt_line = "#EXTVLCOPT:http-referrer=https://fibwatch.art/"
+                else:
+                    stream_url = url
+                    opt_line = ""
 
-    custom_count = len(entries)
+                extinf = f'#EXTINF:-1 tvg-logo="{logo}" group-title="{GROUP_TITLE}", {name}'
+                raw_blocks.append((extinf, opt_line, stream_url))
 
-    # ২. GitHub থেকে M3U প্লেলিস্ট আনা এবং হেডার সংরক্ষণ করা
-    print("Fetching online movies from GitHub...")
-    req = urllib.request.Request(
-        M3U_URL, headers={"User-Agent": DEFAULT_USER_AGENT}
-    )
-
+    # ২. অনলাইন M3U ফেচ করা এবং হুবহু স্ট্রাকচার রেখে group-title পরিবর্তন করা
     try:
+        req = urllib.request.Request(
+            M3U_URL, headers={"User-Agent": "Mozilla/5.0"}
+        )
         with urllib.request.urlopen(req, timeout=15) as response:
             content = response.read().decode("utf-8")
 
         lines = content.splitlines()
-        current_name = None
-        current_logo = ""
-        current_referrer = DEFAULT_REFERRER
+        current_extinf = None
+        current_opt = ""
 
         for line in lines:
             line = line.strip()
-            if not line:
+            if not line or line.startswith("#EXTM3U"):
                 continue
 
             if line.startswith("#EXTINF:"):
-                logo_match = re.search(r'tvg-logo="([^"]*)"', line)
-                current_logo = logo_match.group(1) if logo_match else ""
-                current_name = line.split(",")[-1].strip()
-                current_referrer = DEFAULT_REFERRER
-
-            elif line.startswith("#EXTVLCOPT:http-referrer="):
-                current_referrer = line.split("=", 1)[1].strip()
-
-            elif line.startswith(("http://", "https://")) and current_name:
-                if line not in seen_urls:
-                    entries.append(
-                        (current_name, current_logo, line, current_referrer)
+                # মূল লাইনের group-title="XYZ" অংশকে পরিবর্তন করে group-title="VOD" করা
+                if "group-title=" in line:
+                    fixed_extinf = re.sub(
+                        r'group-title="[^"]*"',
+                        f'group-title="{GROUP_TITLE}"',
+                        line,
                     )
-                    seen_urls.add(line)
-                current_name = None
-                current_logo = ""
+                else:
+                    fixed_extinf = line.replace(
+                        "#EXTINF:-1",
+                        f'#EXTINF:-1 group-title="{GROUP_TITLE}"',
+                    )
+                current_extinf = fixed_extinf
+                current_opt = ""
+
+            elif line.startswith("#EXTVLCOPT:"):
+                current_opt = line
+
+            elif line.startswith(("http://", "https://")) and current_extinf:
+                base_url = line.split("|")[0]
+                if base_url not in seen_urls:
+                    seen_urls.add(base_url)
+
+                    # টিভি অ্যাপ ও স্ট্যান্ডার্ড প্লেয়ার উভয়ের জন্য ডাবল-হ্যান্ডলিং
+                    if "b-cdn.net" in line and "|" not in line:
+                        final_url = f"{line}|Referer=https://fibwatch.art/&User-Agent=Mozilla/5.0"
+                    else:
+                        final_url = line
+
+                    if not current_opt and (
+                        "b-cdn.net" in line or "fibwatch" in line
+                    ):
+                        current_opt = (
+                            "#EXTVLCOPT:http-referrer=https://fibwatch.art/"
+                        )
+
+                    raw_blocks.append((current_extinf, current_opt, final_url))
+                current_extinf = None
+                current_opt = ""
 
     except Exception as e:
-        print(f"Warning: Could not fetch from GitHub ({e})")
+        print(f"Fetch Error: {e}")
 
-    # ৩. হেডার ও টাইমস্ট্যাম্পসহ playlist.m3u ফাইল তৈরি করা
+    # ৩. ফাইনাল playlist.m3u তৈরি
     current_time_str = get_current_time()
-
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        # প্রফেশনাল হেডার ব্লক
         f.write("#EXTM3U\n")
         f.write(f"# ==========================================\n")
         f.write(f"# Playlist Name : Premium VOD Movies\n")
         f.write(f"# Developer     : {DEVELOPER_NAME}\n")
         f.write(f"# Last Updated  : {current_time_str}\n")
-        f.write(f"# Total Movies  : {len(entries)}\n")
+        f.write(f"# Total Items   : {len(raw_blocks)}\n")
         f.write(f"# ==========================================\n\n")
 
-        for name, logo, url, referrer in entries:
-            f.write(
-                f'#EXTINF:-1 tvg-logo="{logo}" group-title="{GROUP_TITLE}",{name}\n'
-            )
-            if referrer:
-                f.write(f"#EXTVLCOPT:http-referrer={referrer}\n")
-                f.write(f"#EXTVLCOPT:http-user-agent={DEFAULT_USER_AGENT}\n")
+        for extinf, opt, url in raw_blocks:
+            f.write(f"{extinf}\n")
+            if opt:
+                f.write(f"{opt}\n")
             f.write(f"{url}\n\n")
 
-    print(f"\nSuccess! '{OUTPUT_FILE}' has been generated.")
-    print(f"Updated At: {current_time_str}")
     print(
-        f"Total entries: {len(entries)} (Custom: {custom_count}, GitHub: {len(entries) - custom_count})"
+        f"Playlist generated successfully with {len(raw_blocks)} items at {current_time_str}!"
     )
 
 
