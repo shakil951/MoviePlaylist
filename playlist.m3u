@@ -2,8 +2,8 @@
 # ==========================================
 # Playlist Name : Selected VOD Movies
 # Developer     : SM Network
-# Last Updated  : 01-Sep-2026 12:28:14 PM (+06)
-# Total Items   : 4
+# Last Updated  : 01-Sep-2026 12:33:47 PM (+06)
+# Total Items   : 6
 # ==========================================
 
 #EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Bachelor Point EP 105
@@ -18,4 +18,12 @@ https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Dubbed%20Mov
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg" group-title="VOD", Mousetrap (2026) S01 Dual 720p E01
 #EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
 https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).S01.Dual.720p.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Monster.Island.jpg" group-title="VOD", Monster Island (2024) Dual 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Monster.Island.(2024).Dual.1080P.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/My-Bias-My-Boss-2026-S01.jpg" group-title="VOD", My Bias My Boss S01E08 Dual 1080p
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]My.Bias.My.Boss.S01E08.Dual.1080p.mkv
 
