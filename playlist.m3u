@@ -2,15 +2,17 @@
 # ==========================================
 # Playlist Name : Premium VOD Movies
 # Developer     : FARABI
-# Last Updated  : 01-Sep-2026 12:47:08 PM (+06)
-# Total Movies  : 6
+# Last Updated  : 01-Sep-2026 01:32:50 PM (+06)
+# Total Movies  : 7
 # ==========================================
 
-#EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Bachelor Point EP 105
-https://media.kbhub.online/OTT%20KB/Bachelor%20Point/105/S05E105.m3u8
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv
 
-#EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Bachelor Point EP 106
-https://media.kbhub.online/OTT%20KB/Bachelor%20Point/106/S05E106.m3u8
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/The.University.of.Chankharpul.jpg" group-title="VOD", The University of Chankharpul (2026) Bengali Chorki WEB-DL 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.University.of.Chankharpul.2026.1080p.mkv
 
 #EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Spider Man Brand New Day
 https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Dubbed%20Movies/Spider%20Man/Spider.m3u8
@@ -18,6 +20,10 @@ https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Dubbed%20Mov
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg" group-title="VOD", Mousetrap (2026) S01 Dual 720p E01
 #EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
 https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).S01.Dual.720p.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Toxic.jpg" group-title="VOD", Toxic (2026) Hindi V2 HDTC 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.1080P.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Monster.Island.jpg" group-title="VOD", Monster Island (2024) Dual 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
