@@ -14,3 +14,11 @@ Mousetrap (2026) S01 Dual 720p E01
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg
 https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).S01.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Monster.Island.jpg" group-title="Latest Movie", Monster Island (2024) Dual 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Monster.Island.(2024).Dual.1080P.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/My-Bias-My-Boss-2026-S01.jpg" group-title="Latest Movie", My Bias My Boss S01E08 Dual 1080p
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]My.Bias.My.Boss.S01E08.Dual.1080p.mkv
