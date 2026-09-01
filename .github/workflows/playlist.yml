@@ -1,43 +1,32 @@
-name: Generate Playlist
+name: Auto Update Playlist
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "movies.txt"
-
-  workflow_dispatch:
-
-permissions:
-  contents: write
+  schedule:
+    # প্রতিদিন বাংলাদেশ সময় রাত ১২টায় (UTC সন্ধ্যা ৬টায়) রান হবে
+    - cron: '0 18 * * *'
+  workflow_dispatch: # চাইলে আপনি নিজেও Actions ট্যাব থেকে যখন খুশি Run করতে পারবেন
 
 jobs:
-  generate-playlist:
+  update-playlist:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # বটকে ফাইলে লেখার পারমিশন দেওয়া
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
-      - name: Generate playlist
+      - name: Run Generator Script
         run: python generate_playlist.py
 
-      - name: Commit updated playlist
+      - name: Commit and Push Changes
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add playlist.m3u
-
-          if git diff --cached --quiet; then
-            echo "No playlist changes."
-          else
-            git commit -m "Auto update playlist"
-            git push
-          fi
+          git diff --staged --quiet || (git commit -m "Auto update playlist" && git push)
