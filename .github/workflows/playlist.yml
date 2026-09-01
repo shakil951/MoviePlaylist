@@ -1,16 +1,17 @@
-name: Auto Update Playlist
+name: Update Playlist on Edit
 
 on:
-  schedule:
-    # প্রতিদিন বাংলাদেশ সময় রাত ১২টায় (UTC সন্ধ্যা ৬টায়) রান হবে
-    - cron: '0 18 * * *'
-  workflow_dispatch: # চাইলে আপনি নিজেও Actions ট্যাব থেকে যখন খুশি Run করতে পারবেন
+  push:
+    paths:
+      - 'movies.txt'              # শুধুমাত্র movies.txt এডিট হলেই রান হবে
+      - 'generate_playlist.py'
+  workflow_dispatch:              # প্রয়োজন হলে ম্যানুয়ালি Run করার বাটন
 
 jobs:
   update-playlist:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # বটকে ফাইলে লেখার পারমিশন দেওয়া
+      contents: write
 
     steps:
       - name: Checkout Repository
@@ -21,7 +22,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Run Generator Script
+      - name: Run Script
         run: python generate_playlist.py
 
       - name: Commit and Push Changes
