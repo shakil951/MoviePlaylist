@@ -2,13 +2,25 @@
 # ==========================================
 # Playlist Name : Premium VOD Movies
 # Developer     : FARABI
-# Last Updated  : 01-Sep-2026 01:32:50 PM (+06)
-# Total Movies  : 7
+# Last Updated  : 01-Sep-2026 04:40:19 PM (+06)
+# Total Movies  : 10
 # ==========================================
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
 #EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
 https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://frtybn.b-cdn.net/upload/photos/2023/04/PFCGA2wwWAkJ18oszT1y_06_6e6946a72274555c3bff8dff7968e1d5_image.jpg" group-title="VOD", Syndicate (2022) Complete Bengali Chorki WEB-DL 1080p
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://frtybn.b-cdn.net/upload/videos/2023/04/[Fibwatch.Com]Syndicate.(2022).S01.Complete.Bengali.1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://frtybn.b-cdn.net/upload/photos/2023/08/l5yNYgftp9hleiSun48c_24_ecde969cecf840062c72121ad53d4078_image.jpg" group-title="VOD", Surongo (2023) Bengali Chorki WEB-DL 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://frtybn.b-cdn.net/upload/videos/2023/08/[Fibwatch.Com]Surongo.(2023).1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://frtybn.b-cdn.net/upload/photos/2026/05/Dhurandhar.The.Revenge.(2026).Bangla.Dubbed.jpg" group-title="VOD", Dhurandhar 2 The Revenge (2026) Bengali Dubbed WEB-DL 1080p
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://frtybn.b-cdn.net/s3/upload/videos/2026/05/[Fibwatch.Com]Dhurandhar.2.The.Revenge.(2026).Bengali.Dubbed.1080p.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/The.University.of.Chankharpul.jpg" group-title="VOD", The University of Chankharpul (2026) Bengali Chorki WEB-DL 1080P
 #EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
