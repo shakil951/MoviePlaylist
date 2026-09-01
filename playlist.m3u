@@ -1,22 +1,24 @@
 #EXTM3U
 # ==========================================
 # Playlist Name : Selected VOD Movies
-# Developer     : FARABI AHMED SHAKIL
-# Last Updated  : 01-Sep-2026 12:19:22 PM (+06)
-# Total Movies  : 4
+# Developer     : SM Network
+# Last Updated  : 01-Sep-2026 12:26:41 PM (+06)
+# Total Items   : 0
 # ==========================================
 
-#EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Bachelor Point EP 105
+Bachelor Point EP 105
+https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
 https://media.kbhub.online/OTT%20KB/Bachelor%20Point/105/S05E105.m3u8
 
-#EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Bachelor Point EP 106
+Bachelor Point EP 106
+https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
 https://media.kbhub.online/OTT%20KB/Bachelor%20Point/106/S05E106.m3u8
 
-#EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Spider Man Brand New Day
+Spider Man Brand New Day
+https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
 https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Dubbed%20Movies/Spider%20Man/Spider.m3u8
 
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg" group-title="VOD", Mousetrap (2026) S01 Dual 720p E01
-#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
-https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).S01.Dual.720p.mkv|Referer=http-referrer=https://fibwatch.art/&User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
-
+Mousetrap (2026) S01 Dual 720p E01
+https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg
+https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).S01.Dual.720p.mkv
+http-referrer=https://fibwatch.art/
