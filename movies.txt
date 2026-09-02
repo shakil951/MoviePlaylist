@@ -1,3 +1,8 @@
+## =====================================
+## SELF ADD
+## FARABI AHMED SHAKIL
+## =====================================
+
 Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg
 https://frtybn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv
@@ -74,6 +79,11 @@ https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Dubbed%20Mov
 https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]My.Bias.My.Boss.S01E08.Dual.1080p.mkv
 #EXTINF:-1 group-title="OTT Movies Series" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Maa IntiBangaram [Hindi] 480p
 https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Maa%20IntiBangaram%20Hindi%20480P.mkv
+
+## =====================================
+## BENGALI DUBBED MOVIES (MONIRUL SOURCE)
+## FARABI AHMED SHAKIL
+## =====================================
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://ltyuh.b-cdn.net/upload/photos/2025/07/Kung.Fu.Football.Bengali.jpg" group-title="Bengali Dubbed", Kung Fu Football (2001) Bengali 720p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
