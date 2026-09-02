@@ -1,15 +1,15 @@
 #EXTM3U
 # ==========================================
-# Playlist Name : Premium VOD Movies
-# Developer     : FARABI
-# Last Updated  : 02-Sep-2026 12:07:45 PM (+06)
+# Playlist Name    : Premium VOD Movies
+# Developer        : FARABI
+# Last Updated     : 02-Sep-2026 12:12:09 PM (+06)
 # Active Subdomain : krtyh
-# Total Movies  : 1117
+# Total Movies     : 1117
 # ==========================================
 
-#EXTINF:-1 tvg-logo="## SELF ADD" group-title="VOD", ## =====================================
-#EXTVLCOPT:http-referrer=## =====================================
-## FARABI AHMED SHAKIL
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv
 
 #EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 105
 https://media.kbhub.online/OTT%20KB/Bachelor%20Point/105/S05E105.m3u8
@@ -60,10 +60,6 @@ https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]My.Bias.My.Boss.S
 
 #EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Maa IntiBangaram [Hindi] 480p
 https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Maa%20IntiBangaram%20Hindi%20480P.mkv
-## =====================================
-## BENGALI DUBBED MOVIES (MONIRUL SOURCE)
-## FARABI AHMED SHAKIL
-## =====================================
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://ltyuh.b-cdn.net/upload/photos/2025/07/Kung.Fu.Football.Bengali.jpg" group-title="VOD", Kung Fu Football (2001) Bengali 720p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
