@@ -2,11 +2,41 @@ from datetime import datetime
 from pathlib import Path
 import re
 import zoneinfo
+import requests
 
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
 TARGET_GROUP = "VOD"
 DEVELOPER_NAME = "FARABI"
+BASE_CHECK_URL = "https://fibwatch.art/"
+
+
+def get_active_subdomain():
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36"
+        )
+    }
+    try:
+        response = requests.get(BASE_CHECK_URL, headers=headers, timeout=10)
+        # HTML থেকে b-cdn.net এর বর্তমান অ্যাক্টিভ সাবডোমেইন খুঁজে বের করা
+        match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
+        if match:
+            subdomain = match.group(1)
+            print(f"[*] Live CDN Subdomain Found: {subdomain}")
+            return subdomain
+    except Exception as e:
+        print(f"[!] Subdomain fetch failed: {e}")
+
+    # লাইভ সাবডোমেইন না পাওয়া গেলে স্ক্রিপ্ট থামিয়ে দেবে যাতে ভুল প্লেলিস্ট জেনারেট না হয়
+    raise SystemExit("[-] Live subdomain could not be detected. Aborting build.")
+
+
+def update_cdn_domain(text_block, active_subdomain):
+    # যেকোনো পুরানো/ভিন্ন b-cdn সাবডোমেইনকে বর্তমান লাইভ সাবডোমেইন দিয়ে প্রতিস্থাপন করা
+    return re.sub(r"[a-z0-9]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block)
 
 
 def get_current_time():
@@ -24,9 +54,10 @@ def generate_playlist():
         print(f"Error: {INPUT_FILE} not found!")
         return
 
-    raw_content = txt_path.read_text(encoding="utf-8").strip()
+    # ১. সাইট থেকে বর্তমান অ্যাক্টিভ সাবডোমেইন রিড করা
+    active_subdomain = get_active_subdomain()
 
-    # একাধিক নিউলাইন বা ফাঁকা লাইন দিয়ে প্রতিটি মুভি ব্লককে আলাদা করা
+    raw_content = txt_path.read_text(encoding="utf-8").strip()
     raw_blocks = re.split(r"\n\s*\n", raw_content)
     formatted_entries = []
 
@@ -35,9 +66,8 @@ def generate_playlist():
         if not lines:
             continue
 
-        # ক্ষেত্র ১: যদি এন্ট্রিটি #EXTINF দিয়ে শুরু হয় (রেডিমেড M3U ফরম্যাট)
+        # ক্ষেত্র ১: যদি এন্ট্রিটি #EXTINF দিয়ে শুরু হয় (রেডিমেড M3U ফরম্যাট)
         if lines[0].startswith("#EXTINF:"):
-            # group-title পরিবর্তন করে TARGET_GROUP ("VOD") সেট করা
             if "group-title=" in lines[0]:
                 extinf = re.sub(
                     r'group-title="[^"]*"',
@@ -49,15 +79,17 @@ def generate_playlist():
                     "#EXTINF:-1", f'#EXTINF:-1 group-title="{TARGET_GROUP}"'
                 )
 
-            # বাকি লাইনগুলো (যেমন #EXTVLCOPT এবং Video URL) অপরিবর্তিত রাখা
             rest_lines = "\n".join(lines[1:])
+            # সাবডোমেইন লাইভ মান দিয়ে আপডেট করা
+            rest_lines = update_cdn_domain(rest_lines, active_subdomain)
             formatted_entries.append(f"{extinf}\n{rest_lines}")
 
-        # ক্ষেত্র ২: যদি সাধারণ টেক্সট ফরম্যাট হয় (লাইন ১: নাম, লাইন ২: লোগো, লাইন ৩: URL, লাইন ৪: রেফারার [ঐচ্ছিক])
+        # ক্ষেত্র ২: সাধারণ টেক্সট ফরম্যাট (লাইন ১: নাম, লাইন ২: লোগো, লাইন ৩: URL, লাইন ৪: রেফারার [ঐচ্ছিক])
         elif len(lines) >= 3:
             name = lines[0]
             logo = lines[1]
-            url = lines[2]
+            # URL এর সাবডোমেইন আপডেট করা
+            url = update_cdn_domain(lines[2], active_subdomain)
             referrer = lines[3] if len(lines) >= 4 else None
 
             entry_str = f'#EXTINF:-1 tvg-logo="{logo}" group-title="{TARGET_GROUP}", {name}\n'
@@ -75,6 +107,7 @@ def generate_playlist():
         f.write("# Playlist Name : Premium VOD Movies\n")
         f.write(f"# Developer     : {DEVELOPER_NAME}\n")
         f.write(f"# Last Updated  : {current_time_str}\n")
+        f.write(f"# Active Subdomain : {active_subdomain}\n")
         f.write(f"# Total Movies  : {len(formatted_entries)}\n")
         f.write("# ==========================================\n\n")
 
@@ -82,7 +115,7 @@ def generate_playlist():
             f.write(f"{entry}\n\n")
 
     print(
-        f"Success! {len(formatted_entries)} items saved to '{OUTPUT_FILE}' at {current_time_str}."
+        f"Success! {len(formatted_entries)} items saved to '{OUTPUT_FILE}' using subdomain '{active_subdomain}' at {current_time_str}."
     )
 
 
