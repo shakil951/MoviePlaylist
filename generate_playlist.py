@@ -30,12 +30,12 @@ def get_active_subdomain():
     except Exception as e:
         print(f"[!] Subdomain fetch failed: {e}")
 
-    # লাইভ সাবডোমেইন না পাওয়া গেলে স্ক্রিপ্ট থামিয়ে দেবে যাতে ভুল প্লেলিস্ট জেনারেট না হয়
+    # লাইভ সাবডোমেইন না পাওয়া গেলে স্ক্রিপ্ট থামিয়ে দেবে যাতে ভুল প্লেলিস্ট জেনারেট না হয়
     raise SystemExit("[-] Live subdomain could not be detected. Aborting build.")
 
 
 def update_cdn_domain(text_block, active_subdomain):
-    # যেকোনো পুরানো/ভিন্ন b-cdn সাবডোমেইনকে বর্তমান লাইভ সাবডোমেইন দিয়ে প্রতিস্থাপন করা
+    # যেকোনো পুরানো/ভিন্ন b-cdn সাবডোমেইনকে বর্তমান লাইভ সাবডোমেইন দিয়ে প্রতিস্থাপন করা
     return re.sub(r"[a-z0-9]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block)
 
 
@@ -58,7 +58,14 @@ def generate_playlist():
     active_subdomain = get_active_subdomain()
 
     raw_content = txt_path.read_text(encoding="utf-8").strip()
-    raw_blocks = re.split(r"\n\s*\n", raw_content)
+
+    # ২. স্মার্ট ব্লকিং: যদি রেডিমেড M3U হয় তবে ফাঁকা লাইন ছাড়াই প্রতিটি #EXTINF কে আলাদা করবে
+    if "#EXTINF:" in raw_content:
+        raw_blocks = re.split(r"(?=#EXTINF:)", raw_content)
+    else:
+        # সাধারণ টেক্সটের ক্ষেত্রে আগের মতো ফাঁকা লাইনের নিয়ম বহাল থাকবে
+        raw_blocks = re.split(r"\n\s*\n", raw_content)
+
     formatted_entries = []
 
     for block in raw_blocks:
@@ -80,7 +87,7 @@ def generate_playlist():
                 )
 
             rest_lines = "\n".join(lines[1:])
-            # সাবডোমেইন লাইভ মান দিয়ে আপডেট করা
+            # সাবডোমেইন লাইভ মান দিয়ে আপডেট করা
             rest_lines = update_cdn_domain(rest_lines, active_subdomain)
             formatted_entries.append(f"{extinf}\n{rest_lines}")
 
