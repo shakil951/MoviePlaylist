@@ -2,12 +2,34 @@
 # ==========================================
 # Playlist Name : Premium VOD Movies
 # Developer     : FARABI
-# Last Updated  : 02-Sep-2026 11:16:20 AM (+06)
-# Total Movies  : 10
+# Last Updated  : 02-Sep-2026 11:33:46 AM (+06)
+# Active Subdomain : krtyh
+# Total Movies  : 15
 # ==========================================
 
-#EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 105
-https://media.kbhub.online/OTT%20KB/Bachelor%20Point/105/S05E105.m3u8
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://frtybn.b-cdn.net/upload/photos/2023/04/PFCGA2wwWAkJ18oszT1y_06_6e6946a72274555c3bff8dff7968e1d5_image.jpg" group-title="VOD", Syndicate (2022) Complete Bengali Chorki WEB-DL 1080p
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/upload/videos/2023/04/[Fibwatch.Com]Syndicate.(2022).S01.Complete.Bengali.1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://frtybn.b-cdn.net/upload/photos/2023/08/l5yNYgftp9hleiSun48c_24_ecde969cecf840062c72121ad53d4078_image.jpg" group-title="VOD", Surongo (2023) Bengali Chorki WEB-DL 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/upload/videos/2023/08/[Fibwatch.Com]Surongo.(2023).1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://frtybn.b-cdn.net/upload/photos/2026/05/Dhurandhar.The.Revenge.(2026).Bangla.Dubbed.jpg" group-title="VOD", Dhurandhar 2 The Revenge (2026) Bengali Dubbed WEB-DL 1080p
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/05/[Fibwatch.Com]Dhurandhar.2.The.Revenge.(2026).Bengali.Dubbed.1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/The.University.of.Chankharpul.jpg" group-title="VOD", The University of Chankharpul (2026) Bengali Chorki WEB-DL 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.University.of.Chankharpul.2026.1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg" group-title="VOD", Spider Man Brand New Day
+#EXTVLCOPT:http-referrer=#EXTINF:-1 group-title="Bachelor Point" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 105
+https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Dubbed%20Movies/Spider%20Man/Spider.m3u8
 
 #EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 106
 https://media.kbhub.online/OTT%20KB/Bachelor%20Point/106/S05E106.m3u8
@@ -18,13 +40,18 @@ https://media.kbhub.online/OTT%20KB/Bachelor%20Point/107/S05E107.m3u8
 #EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 108
 https://media.kbhub.online/OTT%20KB/Bachelor%20Point/108/S05E108.m3u8
 
-#EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 109
-https://media.kbhub.online/OTT%20KB/Bachelor%20Point/109/S05E109.m3u8
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg" group-title="VOD", Mousetrap (2026) S01 Dual 720p E01
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).S01.Dual.720p.mkv
 
-#EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 110
-https://media.kbhub.online/OTT%20KB/Bachelor%20Point/110/S05E110.m3u8
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Toxic.jpg" group-title="VOD", Toxic (2026) Hindi V2 HDTC 1080P
+#EXTVLCOPT:http-referrer=http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.1080P.mkv
 
-#EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 111
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Monster.Island.jpg" group-title="VOD", Monster Island (2024) Dual 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Monster.Island.(2024).Dual.1080P.mkv
+#EXTINF:-1 group-title="Bachelor Point" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 111
 https://media.kbhub.online/OTT%20KB/Bachelor%20Point/111/S05E111.m3u8
 
 #EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Bachelor EP 112
@@ -33,6 +60,9 @@ https://media.kbhub.online/OTT%20KB/Bachelor%20Point/112/S05E112.m3u8
 #EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Spider Man Brand New Day
 https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Dubbed%20Movies/Spider%20Man/Spider.m3u8
 
-#EXTINF:-1 group-title="VOD" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Maa IntiBangaram [Hindi] 480p
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/My-Bias-My-Boss-2026-S01.jpg" group-title="VOD", My Bias My Boss S01E08 Dual 1080p
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]My.Bias.My.Boss.S01E08.Dual.1080p.mkv
+#EXTINF:-1 group-title="OTT Movies Series" tvg-logo="https://imglink.cc/cdn/-n_ZO1Y3ib.jpg", Maa IntiBangaram [Hindi] 480p
 https://pub-af15042317bd401aa6315e0df0b1a277.r2.dev/OTT%20KB/Movies/Maa%20IntiBangaram%20Hindi%20480P.mkv
 
