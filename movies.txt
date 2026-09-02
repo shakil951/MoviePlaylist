@@ -76,55 +76,65 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://krtyh.b-cdn.net/upl
 https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Idhayam.Murali.(2026).Bengali.Dubbed.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-BigBuckBunny
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
+## ========================================================
+## 🧪 FARABI TV PLAYER TEST STREAM BENCHMARK
+## ========================================================
+
+## --- 1. MP4 Direct Video Test ---
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg" group-title="Test-Direct", BigBuckBunny (MP4 720p)
 http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 
-TearsOfSteel
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Tears_of_Steel_poster.jpg/800px-Tears_of_Steel_poster.jpg" group-title="Test-Direct", TearsOfSteel (MP4 1080p)
 http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4
 
-ElephantsDream
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Elephants_Dream_poster.jpg/800px-Elephants_Dream_poster.jpg" group-title="Test-Direct", ElephantsDream (MP4 720p)
 http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4
 
-m3u8 Test
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
-https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
-
-MKV Test
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
-https://raw.githubusercontent.com/Matroska-Org/matroska-test-files/master/test_files/test1.mkv
-
-#EXTINF:-1 tvg-logo="https://mux.com/favicon.png" group-title="VOD", Mux Direct Stream
-https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqTtjhjhvwaQA1g
-
-#EXTINF:-1 tvg-logo="https://somafm.com/img3/groovesalad-400.jpg" group-title="Radio", SomaFM Direct Audio
-https://ice2.somafm.com/groovesalad-128-mp3
-
-Sample Track (MP3)
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
-https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Erika_Lenhart.mp3
-
-MPD TEST
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
-https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd
-
-Resulation Check
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
-https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
-
-#EXTINF:-1 group-title="Bypass Test", Pipe Syntax Bypass
-https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv|Referer=https://fibwatch.art/&User-Agent=Mozilla/5.0
-
-#EXTINF:-1 group-title="Bypass Test", Browser User-Agent Bypass
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
-
-Codec Test
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
+#EXTINF:-1 tvg-logo="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg" group-title="Test-Direct", Codec Test (ForBiggerBlazes)
 http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4
 
-TS Test
-https://imglink.cc/cdn/-n_ZO1Y3ib.jpg
+
+## --- 2. MKV Container Test ---
+#EXTINF:-1 tvg-logo="https://matroska.org/images/matroska_logo.png" group-title="Test-MKV", MKV Multi-Track Test
+https://raw.githubusercontent.com/Matroska-Org/matroska-test-files/master/test_files/test1.mkv
+
+
+## --- 3. HLS (.m3u8) Adaptive & Resolution Check ---
+#EXTINF:-1 tvg-logo="https://mux.com/favicon.png" group-title="Test-HLS", M3U8 Adaptive Test
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+#EXTINF:-1 tvg-logo="https://mux.com/favicon.png" group-title="Test-HLS", Resolution Check (Multi-Bitrate)
+https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+
+## --- 4. MPEG-DASH (.mpd) Test ---
+#EXTINF:-1 tvg-logo="https://dashif.org/images/dashif-logo.png" group-title="Test-DASH", MPD DASH Test (BBB 30fps)
+https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd
+
+
+## --- 5. Extensionless Stream Test (MIME-Type) ---
+#EXTINF:-1 tvg-logo="https://mux.com/favicon.png" group-title="Test-Extensionless", Mux Direct Stream (No Extension)
+https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqTtjhjhvwaQA1g
+
+
+## --- 6. Direct Audio & Radio Test ---
+#EXTINF:-1 tvg-logo="https://cdn-icons-png.flaticon.com/512/3075/3075908.png" group-title="Test-Audio", Sample Track (MP3)
+https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Erika_Lenhart.mp3
+
+#EXTINF:-1 tvg-logo="https://somafm.com/img3/groovesalad-400.jpg" group-title="Test-Audio", SomaFM Direct Audio (Icecast)
+https://ice2.somafm.com/groovesalad-128-mp3
+
+
+## --- 7. TS / Live Broadcast Feed ---
+#EXTINF:-1 tvg-logo="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/WeAreGoingOnBullrun.jpg" group-title="Test-TS", TS Feed Test (Bullrun)
+http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4
+
+
+## --- 8. Header & Bypass Verification ---
+#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://fibwatch.art/favicon.ico" group-title="Test-Bypass", Pipe Syntax Bypass
+https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv|Referer=https://fibwatch.art/&User-Agent=Mozilla/5.0
+
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg" group-title="Test-Bypass", Browser User-Agent Bypass
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
+http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4
