@@ -1,17 +1,19 @@
 name: Auto Update Playlist
 
 on:
+  push:
+    paths:
+      - 'movies.txt'          # শুধু movies.txt ফাইলে পরিবর্তন হলে সাথে সাথে রান হবে
   schedule:
-    - cron: '0 */2 * * *' # প্রতি ৩ ঘণ্টা পরপর ব্যাকগ্রাউন্ডে স্বয়ংক্রিয়ভাবে চলবে
-  workflow_dispatch:      # গিটহাব ড্যাশবোর্ড থেকে ম্যানুয়ালি রান করার জন্য
+    - cron: '0 */2 * * *'     # সিডিএন সাবডোমেইন পরিবর্তনের জন্য প্রতি ২ ঘণ্টা পরপর চলবে
+  workflow_dispatch:          # ম্যানুয়ালি রান করার অপশন
 
 permissions:
-  contents: write         # প্লেলিস্ট ফাইল কমিট ও পুশ করার পারমিশন
+  contents: write
 
 jobs:
   update-m3u:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -34,5 +36,4 @@ jobs:
           git config --global user.name "Farabi TV Bot"
           git config --global user.email "bot@farabi.tv"
           git add playlist.m3u
-          # শুধুমাত্র পরিবর্তন থাকলেই কমিট করবে, অন্যথায় স্কিপ করবে
-          git diff --staged --quiet || (git commit -m "Auto: Update live CDN subdomain & playlist" && git push)
+          git diff --staged --quiet || (git commit -m "Auto: Update playlist on movies.txt change" && git push)
