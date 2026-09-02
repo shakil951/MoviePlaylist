@@ -137,4 +137,3 @@ https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S0
 #EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg" group-title="Test-Bypass", Browser User-Agent Bypass
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4
