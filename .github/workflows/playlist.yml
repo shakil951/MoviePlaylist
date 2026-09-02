@@ -1,33 +1,38 @@
-name: Update Playlist on Edit
+name: Auto Update Playlist
 
 on:
-  push:
-    paths:
-      - 'movies.txt'              # শুধুমাত্র movies.txt এডিট হলেই রান হবে
-      - 'generate_playlist.py'
-  workflow_dispatch:              # প্রয়োজন হলে ম্যানুয়ালি Run করার বাটন
+  schedule:
+    - cron: '0 */3 * * *' # প্রতি ৩ ঘণ্টা পরপর ব্যাকগ্রাউন্ডে স্বয়ংক্রিয়ভাবে চলবে
+  workflow_dispatch:      # গিটহাব ড্যাশবোর্ড থেকে ম্যানুয়ালি রান করার জন্য
+
+permissions:
+  contents: write         # প্লেলিস্ট ফাইল কমিট ও পুশ করার পারমিশন
 
 jobs:
-  update-playlist:
+  update-m3u:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.11'
 
-      - name: Run Script
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run Playlist Generator
         run: python generate_playlist.py
 
       - name: Commit and Push Changes
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name "Farabi TV Bot"
+          git config --global user.email "bot@farabi.tv"
           git add playlist.m3u
-          git diff --staged --quiet || (git commit -m "Auto update playlist" && git push)
+          # শুধুমাত্র পরিবর্তন থাকলেই কমিট করবে, অন্যথায় স্কিপ করবে
+          git diff --staged --quiet || (git commit -m "Auto: Update live CDN subdomain & playlist" && git push)
