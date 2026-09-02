@@ -21,7 +21,6 @@ def get_active_subdomain():
     }
     try:
         response = requests.get(BASE_CHECK_URL, headers=headers, timeout=10)
-        # HTML থেকে b-cdn.net এর বর্তমান লাইভ সাবডোমেইন খুঁজে বের করা
         match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
         if match:
             subdomain = match.group(1)
@@ -30,12 +29,10 @@ def get_active_subdomain():
     except Exception as e:
         print(f"[!] Subdomain fetch failed: {e}")
 
-    # লাইভ সাবডোমেইন না পাওয়া গেলে স্ক্রিপ্ট থামিয়ে দেবে যাতে ভুল প্লেলিস্ট জেনারেট না হয়
     raise SystemExit("[-] Live subdomain could not be detected. Aborting build.")
 
 
 def update_cdn_domain(text_block, active_subdomain):
-    # যেকোনো পুরানো/ভিন্ন b-cdn সাবডোমেইনকে বর্তমান লাইভ সাবডোমেইন দিয়ে প্রতিস্থাপন করা
     return re.sub(r"[a-z0-9]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block)
 
 
@@ -54,55 +51,71 @@ def generate_playlist():
         print(f"Error: {INPUT_FILE} not found!")
         return
 
-    # ১. সাইট থেকে বর্তমান অ্যাক্টিভ সাবডোমেইন রিড করা
     active_subdomain = get_active_subdomain()
+    raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
 
-    raw_content = txt_path.read_text(encoding="utf-8").strip()
-
-    # ২. স্মার্ট ব্লকিং: রেডিমেড M3U হলে সরাসরি #EXTINF ধরে ব্লক আলাদা করবে (ফাঁকা লাইন না থাকলেও চলবে)
-    if "#EXTINF:" in raw_content:
-        raw_blocks = re.split(r"(?=#EXTINF:)", raw_content)
-    else:
-        # সাধারণ ৩-লাইনের টেক্সটের ক্ষেত্রে ফাঁকা লাইন দিয়ে ব্লক আলাদা করবে
-        raw_blocks = re.split(r"\n\s*\n", raw_content)
+    # কমেন্ট ফিল্টারিং
+    lines = []
+    for line in raw_lines:
+        s = line.strip()
+        if not s:
+            continue
+        if s.startswith("##") or (s.startswith("#") and not s.startswith("#EXT")):
+            continue
+        lines.append(s)
 
     formatted_entries = []
+    i = 0
+    total = len(lines)
 
-    for block in raw_blocks:
-        # কমেন্ট বা নোট (যেমন ## দিয়ে শুরু লাইন) বাদ দিয়ে ক্লিন লাইন সংগ্রহ করা
-        lines = [
-            line.strip()
-            for line in block.splitlines()
-            if line.strip() and not line.strip().startswith("##")
-        ]
-        if not lines:
-            continue
+    while i < total:
+        current = lines[i]
 
-        # ক্ষেত্র ১: যদি এন্ট্রিটি #EXTINF দিয়ে শুরু হয় (রেডিমেড M3U ফরম্যাট)
-        if lines[0].startswith("#EXTINF:"):
-            if "group-title=" in lines[0]:
+        # ১. যদি রেডিমেড #EXTINF হয়
+        if current.startswith("#EXTINF:"):
+            if "group-title=" in current:
                 extinf = re.sub(
                     r'group-title="[^"]*"',
                     f'group-title="{TARGET_GROUP}"',
-                    lines[0],
+                    current,
                 )
             else:
-                extinf = lines[0].replace(
+                extinf = current.replace(
                     "#EXTINF:-1", f'#EXTINF:-1 group-title="{TARGET_GROUP}"'
                 )
 
-            rest_lines = "\n".join(lines[1:])
-            # সাবডোমেইন লাইভ মান দিয়ে আপডেট করা
-            rest_lines = update_cdn_domain(rest_lines, active_subdomain)
-            formatted_entries.append(f"{extinf}\n{rest_lines}")
+            entry_parts = [extinf]
+            i += 1
+            while i < total:
+                line = lines[i]
+                # পরের যেকোনো নতুন এন্ট্রি বা টেক্সট ব্লক পেলে থামবে
+                if line.startswith("#EXTINF:"):
+                    break
+                # সাধারণ টেক্সটের সূচনা (পরের ২ লাইন যদি লিঙ্ক হয়) চিহ্নিত হলে থামবে
+                if i + 2 < total and (lines[i+1].startswith("http://") or lines[i+1].startswith("https://")) and (lines[i+2].startswith("http://") or lines[i+2].startswith("https://")):
+                    break
 
-        # ক্ষেত্র ২: সাধারণ টেক্সট ফরম্যাট (লাইন ১: নাম, লাইন ২: লোগো, লাইন ৩: URL, লাইন ৪: রেফারার [ঐচ্ছিক])
-        elif len(lines) >= 3:
-            name = lines[0]
-            logo = lines[1]
-            # URL এর সাবডোমেইন আপডেট করা
-            url = update_cdn_domain(lines[2], active_subdomain)
-            referrer = lines[3] if len(lines) >= 4 else None
+                # ডাবল রেফারার ফিক্স
+                if line.startswith("#EXTVLCOPT:http-referrer="):
+                    val = line.replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
+                    entry_parts.append(f"#EXTVLCOPT:http-referrer={val}")
+                else:
+                    entry_parts.append(update_cdn_domain(line, active_subdomain))
+                i += 1
+
+            formatted_entries.append("\n".join(entry_parts))
+
+        # ২. সাধারণ ৪/৩ লাইনের র' টেক্সট ব্লক (নাম -> ইমেজ -> ভিডিও URL -> রেফারার)
+        elif i + 2 < total and (lines[i+1].startswith("http://") or lines[i+1].startswith("https://")) and (lines[i+2].startswith("http://") or lines[i+2].startswith("https://")):
+            name = lines[i]
+            logo = lines[i+1]
+            url = update_cdn_domain(lines[i+2], active_subdomain)
+            i += 3
+
+            referrer = None
+            if i < total and "http-referrer=" in lines[i]:
+                referrer = lines[i].replace("http-referrer=", "").replace("#EXTVLCOPT:", "").strip()
+                i += 1
 
             entry_str = f'#EXTINF:-1 tvg-logo="{logo}" group-title="{TARGET_GROUP}", {name}\n'
             if referrer:
@@ -110,9 +123,11 @@ def generate_playlist():
             entry_str += url
             formatted_entries.append(entry_str)
 
+        else:
+            i += 1
+
     current_time_str = get_current_time()
 
-    # ফাইনাল playlist.m3u ফাইল তৈরি
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         f.write("# ==========================================\n")
@@ -126,9 +141,7 @@ def generate_playlist():
         for entry in formatted_entries:
             f.write(f"{entry}\n\n")
 
-    print(
-        f"Success! {len(formatted_entries)} items saved to '{OUTPUT_FILE}' using subdomain '{active_subdomain}' at {current_time_str}."
-    )
+    print(f"Success! {len(formatted_entries)} items cleanly formatted.")
 
 
 if __name__ == "__main__":
