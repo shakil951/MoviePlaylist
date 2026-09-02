@@ -2,9 +2,9 @@
 # ==========================================
 # Playlist Name    : Premium VOD Movies
 # Developer        : FARABI
-# Last Updated     : 02-Sep-2026 02:02:04 PM (+06)
+# Last Updated     : 02-Sep-2026 03:30:39 PM (+06)
 # Active Subdomain : krtyh
-# Total Movies     : 31
+# Total Movies     : 17
 # ==========================================
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
@@ -68,47 +68,4 @@ https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]My.Bias.My.Boss.S
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://krtyh.b-cdn.net/upload/photos/2026/08/Idhayam.Murali.(2026).Bangla.Dubbed.jpg" group-title="VOD", Idhayam Murali (2026) Bengali Dubbed WEB-DL 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Idhayam.Murali.(2026).Bengali.Dubbed.1080p.mkv
-
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg" group-title="VOD", BigBuckBunny (MP4 720p)
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
-
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Tears_of_Steel_poster.jpg/800px-Tears_of_Steel_poster.jpg" group-title="VOD", TearsOfSteel (MP4 1080p)
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4
-
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Elephants_Dream_poster.jpg/800px-Elephants_Dream_poster.jpg" group-title="VOD", ElephantsDream (MP4 720p)
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4
-
-#EXTINF:-1 tvg-logo="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/ForBiggerBlazes.jpg" group-title="VOD", Codec Test (ForBiggerBlazes)
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4
-
-#EXTINF:-1 tvg-logo="https://matroska.org/images/matroska_logo.png" group-title="VOD", MKV Multi-Track Test
-https://raw.githubusercontent.com/Matroska-Org/matroska-test-files/master/test_files/test1.mkv
-
-#EXTINF:-1 tvg-logo="https://mux.com/favicon.png" group-title="VOD", M3U8 Adaptive Test
-https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
-
-#EXTINF:-1 tvg-logo="https://mux.com/favicon.png" group-title="VOD", Resolution Check (Multi-Bitrate)
-https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
-
-#EXTINF:-1 tvg-logo="https://dashif.org/images/dashif-logo.png" group-title="VOD", MPD DASH Test (BBB 30fps)
-https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd
-
-#EXTINF:-1 tvg-logo="https://mux.com/favicon.png" group-title="VOD", Mux Direct Stream (No Extension)
-https://stream.mux.com/VZtzUzGRv02OhRnZCxcNg49OilvolTqTtjhjhvwaQA1g
-
-#EXTINF:-1 tvg-logo="https://cdn-icons-png.flaticon.com/512/3075/3075908.png" group-title="VOD", Sample Track (MP3)
-https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Erika_Lenhart.mp3
-
-#EXTINF:-1 tvg-logo="https://somafm.com/img3/groovesalad-400.jpg" group-title="VOD", SomaFM Direct Audio (Icecast)
-https://ice2.somafm.com/groovesalad-128-mp3
-
-#EXTINF:-1 tvg-logo="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/WeAreGoingOnBullrun.jpg" group-title="VOD", TS Feed Test (Bullrun)
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://fibwatch.art/favicon.ico" group-title="VOD", Pipe Syntax Bypass
-https://krtyh.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv|Referer=https://fibwatch.art/&User-Agent=Mozilla/5.0
-
-#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg" group-title="VOD", Browser User-Agent Bypass
-#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
-http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4
 
