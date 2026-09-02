@@ -21,7 +21,7 @@ def get_active_subdomain():
     }
     try:
         response = requests.get(BASE_CHECK_URL, headers=headers, timeout=10)
-        # HTML থেকে b-cdn.net এর বর্তমান অ্যাক্টিভ সাবডোমেইন খুঁজে বের করা
+        # HTML থেকে b-cdn.net এর বর্তমান লাইভ সাবডোমেইন খুঁজে বের করা
         match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
         if match:
             subdomain = match.group(1)
@@ -59,17 +59,22 @@ def generate_playlist():
 
     raw_content = txt_path.read_text(encoding="utf-8").strip()
 
-    # ২. স্মার্ট ব্লকিং: যদি রেডিমেড M3U হয় তবে ফাঁকা লাইন ছাড়াই প্রতিটি #EXTINF কে আলাদা করবে
+    # ২. স্মার্ট ব্লকিং: রেডিমেড M3U হলে সরাসরি #EXTINF ধরে ব্লক আলাদা করবে (ফাঁকা লাইন না থাকলেও চলবে)
     if "#EXTINF:" in raw_content:
         raw_blocks = re.split(r"(?=#EXTINF:)", raw_content)
     else:
-        # সাধারণ টেক্সটের ক্ষেত্রে আগের মতো ফাঁকা লাইনের নিয়ম বহাল থাকবে
+        # সাধারণ ৩-লাইনের টেক্সটের ক্ষেত্রে ফাঁকা লাইন দিয়ে ব্লক আলাদা করবে
         raw_blocks = re.split(r"\n\s*\n", raw_content)
 
     formatted_entries = []
 
     for block in raw_blocks:
-        lines = [line.strip() for line in block.splitlines() if line.strip()]
+        # কমেন্ট বা নোট (যেমন ## দিয়ে শুরু লাইন) বাদ দিয়ে ক্লিন লাইন সংগ্রহ করা
+        lines = [
+            line.strip()
+            for line in block.splitlines()
+            if line.strip() and not line.strip().startswith("##")
+        ]
         if not lines:
             continue
 
@@ -87,7 +92,7 @@ def generate_playlist():
                 )
 
             rest_lines = "\n".join(lines[1:])
-            # সাবডোমেইন লাইভ মান দিয়ে আপডেট করা
+            # সাবডোমেইন লাইভ মান দিয়ে আপডেট করা
             rest_lines = update_cdn_domain(rest_lines, active_subdomain)
             formatted_entries.append(f"{extinf}\n{rest_lines}")
 
@@ -111,11 +116,11 @@ def generate_playlist():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
         f.write("# ==========================================\n")
-        f.write("# Playlist Name : Premium VOD Movies\n")
-        f.write(f"# Developer     : {DEVELOPER_NAME}\n")
-        f.write(f"# Last Updated  : {current_time_str}\n")
+        f.write("# Playlist Name    : Premium VOD Movies\n")
+        f.write(f"# Developer        : {DEVELOPER_NAME}\n")
+        f.write(f"# Last Updated     : {current_time_str}\n")
         f.write(f"# Active Subdomain : {active_subdomain}\n")
-        f.write(f"# Total Movies  : {len(formatted_entries)}\n")
+        f.write(f"# Total Movies     : {len(formatted_entries)}\n")
         f.write("# ==========================================\n\n")
 
         for entry in formatted_entries:
