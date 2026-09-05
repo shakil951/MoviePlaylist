@@ -35,9 +35,14 @@ jobs:
       - name: Run Playlist Generator
         run: python generate_playlist.py
 
-      - name: Commit and Push Changes
+     - name: Commit & Push Changes
         run: |
-          git config --global user.name "Farabi TV Bot"
-          git config --global user.email "bot@farabi.tv"
-          git add playlist.m3u
-          git diff --staged --quiet || (git commit -m "Auto: Update playlist [skip ci]" && git push)
+          git config --local user.name "Farabi TV Bot"
+          git config --local user.email "actions@github.com"
+          git add movies.txt playlist.m3u
+          if git diff --staged --quiet; then
+            echo "No changes found."
+          else
+            git commit -m "Auto: Update playlist & purge dead links [skip ci]"
+            git push
+          fi
