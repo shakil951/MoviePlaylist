@@ -3,7 +3,7 @@ name: Auto Update Playlist
 on:
   push:
     branches:
-      - main       # যদি আপনার ব্রাঞ্চ master হয়, তবে main এর জায়গায় master লিখুন
+      - main
       - master
     paths:
       - 'movies.txt'
@@ -35,7 +35,7 @@ jobs:
       - name: Run Playlist Generator
         run: python generate_playlist.py
 
-     - name: Commit & Push Changes
+      - name: Commit & Push Changes
         run: |
           git config --local user.name "Farabi TV Bot"
           git config --local user.email "actions@github.com"
