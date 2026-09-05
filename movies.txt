@@ -1256,11 +1256,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Sultan.Salahuddin.Ayyubi.S01E23.720P.mkv
 http-referrer=https://fibwatch.art/
 
-Dadagiri Unlimited S11E17 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/07/Dadagiri.Unlimited.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Dadagiri.Unlimited.S11E17.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 Mrs Sen (2013) Bengali 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Mrs.Sen.(2013).Bengali.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mrs.Sen.(2013).Bengali.720p.mkv
