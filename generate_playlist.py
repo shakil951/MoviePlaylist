@@ -48,21 +48,19 @@ def get_current_time():
   return now.strftime("%d-%b-%Y %I:%M:%S %p (%Z)")
 
 
-def check_and_format_entry(raw_item, active_subdomain):
-  """লিংক ভ্যালিডেট করে এবং group-title="VOD" নিশ্চিত করে"""
+def check_single_movie(raw_item, active_subdomain):
+  """লিংক সক্রিয় কি না টেস্ট করে অবজেক্ট রিটার্ন করে"""
   name = raw_item["name"]
   logo = raw_item["logo"]
   url = update_cdn_domain(raw_item["url"], active_subdomain)
   referrer = raw_item.get("referrer")
 
-  # হেডারে রেফারার সেট করা
   req_headers = DEFAULT_HEADERS.copy()
   if referrer:
     req_headers["Referer"] = referrer
   elif "r2.dev" in url:
     req_headers.pop("Referer", None)
 
-  # ফাইল ডাউনলোড না করে দ্রুত কানেকশন চেক
   req_headers["Range"] = "bytes=0-1024"
 
   try:
@@ -71,18 +69,18 @@ def check_and_format_entry(raw_item, active_subdomain):
     )
     if res.status_code in [200, 206, 302]:
       print(f"[ACTIVE] -> {name[:40]}")
-      entry_str = (
-          f'#EXTINF:-1 tvg-logo="{logo}" group-title="VOD", {name}\n'
-      )
-      if referrer:
-        entry_str += f"#EXTVLCOPT:http-referrer={referrer}\n"
-      entry_str += url
-      return entry_str
+      return {
+          "name": name,
+          "logo": logo,
+          "url": url,
+          "raw_url": raw_item["url"],
+          "referrer": referrer,
+      }
     else:
-      print(f"[DEAD - HTTP {res.status_code}] -> Skipping: {name[:40]}")
+      print(f"[DEAD - HTTP {res.status_code}] -> Removed: {name[:40]}")
       return None
   except Exception:
-    print(f"[DEAD - Timeout/Error] -> Skipping: {name[:40]}")
+    print(f"[DEAD - Timeout/Error] -> Removed: {name[:40]}")
     return None
 
 
@@ -113,7 +111,7 @@ def generate_playlist():
   while i < total:
     current = lines[i]
 
-    # #EXTINF ফরম্যাটে থাকলে
+    # #EXTINF ফরম্যাট
     if current.startswith("#EXTINF:"):
       logo_match = re.search(r'tvg-logo="([^"]*)"', current)
       logo = logo_match.group(1) if logo_match else ""
@@ -141,7 +139,7 @@ def generate_playlist():
             {"name": name, "logo": logo, "url": url, "referrer": ref}
         )
 
-    # সাধারণ ৩ লাইনের ফরম্যাটে থাকলে (Name -> Logo -> URL)
+    # ৩/৪ লাইনের সাধারণ ফরম্যাট (Title -> Image -> URL -> Referrer)
     elif (
         i + 2 < total
         and (
@@ -174,40 +172,60 @@ def generate_playlist():
     else:
       i += 1
 
-  print(f"[*] Found {len(parsed_items)} movies to check.")
-  print("[*] Validating links & filtering dead links...")
+  print(f"[*] Total movies in {INPUT_FILE}: {len(parsed_items)}")
+  print("[*] Validating links & purging dead entries...")
 
-  active_entries = []
-  # মাল্টি-থ্রেডিং দিয়ে দ্রুত চেক
+  active_movies = []
   with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
     futures = [
-        executor.submit(check_and_format_entry, item, active_subdomain)
+        executor.submit(check_single_movie, item, active_subdomain)
         for item in parsed_items
     ]
     for f in futures:
       result = f.result()
       if result:
-        active_entries.append(result)
+        active_movies.append(result)
 
+  dead_count = len(parsed_items) - len(active_movies)
+
+  # ১. movies.txt ওভাররাইট করা (ডেড লিঙ্ক ছাড়া শুধু সচলগুলো রাখা)
+  with open(INPUT_FILE, "w", encoding="utf-8") as f:
+    for m in active_movies:
+      f.write(f"{m['name']}\n")
+      f.write(f"{m['logo']}\n")
+      f.write(f"{m['raw_url']}\n")
+      if m.get("referrer"):
+        f.write(f"http-referrer={m['referrer']}\n")
+      f.write("\n")
+
+  # ২. playlist.m3u তৈরি করা (group-title="VOD" সহ)
   current_time_str = get_current_time()
-
   with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     f.write("# ==========================================\n")
-    f.write("# Playlist Name    : Farabi VOD Collection (Verified)\n")
+    f.write("# Playlist Name    : Farabi VOD Collection\n")
     f.write(f"# Developer        : {DEVELOPER_NAME}\n")
     f.write(f"# Last Updated     : {current_time_str}\n")
     f.write(f"# Active Subdomain : {active_subdomain}\n")
-    f.write(f"# Total Active VOD : {len(active_entries)}\n")
-    f.write(f"# Dead Removed     : {len(parsed_items) - len(active_entries)}\n")
+    f.write(f"# Total Active VOD : {len(active_movies)}\n")
+    f.write(f"# Dead Purged      : {dead_count}\n")
     f.write("# ==========================================\n\n")
 
-    for entry in active_entries:
-      f.write(f"{entry}\n\n")
+    for m in active_movies:
+      entry_str = (
+          f'#EXTINF:-1 tvg-logo="{m["logo"]}" group-title="VOD",'
+          f' {m["name"]}\n'
+      )
+      if m.get("referrer"):
+        entry_str += f"#EXTVLCOPT:http-referrer={m['referrer']}\n"
+      entry_str += f"{m['url']}\n\n"
+      f.write(entry_str)
 
-  print(
-      f"\n[✓] Done! Saved {len(active_entries)} live movies to {OUTPUT_FILE}."
-  )
+  print("\n" + "=" * 40)
+  print(f"[✓] Active Movies Kept : {len(active_movies)}")
+  print(f"[✗] Dead Movies Purged : {dead_count}")
+  print(f"[✓] Updated: {INPUT_FILE} and {OUTPUT_FILE}")
+  print("=" * 40)
 
 
 if __name__ == "__main__":
