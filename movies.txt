@@ -17,11 +17,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://krtyh.b-cdn.net/upl
 https://krtyh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Filing.for.Love.S01.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
-Mousetrap (2026) S01 Dual 720p E01
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg
-https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).S01.Dual.720p.mkv
-http-referrer=https://fibwatch.art/
-
 Toxic (2026) Hindi V2 HDTC 1080P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2026/08/Toxic.jpg
 https://drtghn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.1080P.mkv
@@ -156,11 +151,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dhamaal.4.2026.Hindi.720p.mkv
 http-referrer=https://fibwatch.art/
 
-The Traitors S02E10 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/The.Traitors.S02.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]The.Traitors.S02E10.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 The Gentlemen (2026) S02 Dual 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/The.Gentlemen.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]The.Gentlemen.(2026).S02.Dual.480P.mkv
@@ -224,11 +214,6 @@ http-referrer=https://fibwatch.art/
 Silo S03E10 English 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/07/silo.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Silo.S03E10.English.720P.mkv
-http-referrer=https://fibwatch.art/
-
-Cousins and Kalyanams S01E57-60 Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/05/Cousins.and.Kalyanams.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Cousins.and.Kalyanams.S01E57-60.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
 Bigg Boss S01E06 Bengali 720p
@@ -329,11 +314,6 @@ http-referrer=https://fibwatch.art/
 Reacher (2026) S04E06 Dual 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Reacher.2026.S04.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Reacher.(2026).S04E06.Dual.720p.mkv
-http-referrer=https://fibwatch.art/
-
-Lovesick S01 Dual 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Lovesick.S01.Hindi.Dubbed.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Lovesick.S01.Dual.1080p.mkv
 http-referrer=https://fibwatch.art/
 
 Korean Kanakaraju 2026 Dual 1080p
@@ -551,11 +531,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]The.Gentlemen.(2026).S02.Dual.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Unmadham (2026) Dual 480P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Unmadham.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Unmadham.(2026).Dual.480P.mkv
-http-referrer=https://fibwatch.art/
-
 Gandhari 2026 Dual 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Gandhari.(2026).Hindi.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Gandhari.2026.Dual.720p.mkv
@@ -634,11 +609,6 @@ http-referrer=https://fibwatch.art/
 Coyote vs Acme 2026 English 1080P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Coyote.vs.Acme.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Coyote.vs.Acme.2026.English.1080P.mkv
-http-referrer=https://fibwatch.art/
-
-Thukra Ke Mera Pyaar S02E46-50 Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/06/Thukra.Ke.Mera.Pyaar.S02.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Thukra.Ke.Mera.Pyaar.S02E46-50.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
 Puratawn (2025) Bengali 1080P
@@ -761,11 +731,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Reacher.(2026).S04E06.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
-My Bias My Boss S01E10 Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/My-Bias-My-Boss-2026-S01.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]My.Bias.My.Boss.S01E10.Dual.720p.mkv
-http-referrer=https://fibwatch.art/
-
 Just Play Dead (2026) 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Just.Play.Dead.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Just.Play.Dead.(2026).720P.mkv
@@ -794,11 +759,6 @@ http-referrer=https://fibwatch.art/
 Star Wars The Mandalorian and Grogu (2026) Dual 480p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/05/Star.Wars.The.Mandalorian.and.Grogu.(2026).jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Star.Wars.The.Mandalorian.and.Grogu.(2026).Dual.480p.mkv
-http-referrer=https://fibwatch.art/
-
-Reacher (2026) S04E06 Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Reacher.2026.S04.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Reacher.(2026).S04E06.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
 Lovesick S01 Dual 1080p
