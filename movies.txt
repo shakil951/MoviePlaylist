@@ -356,11 +356,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dhamaal.4.2026.Hindi.480p.mkv
 http-referrer=https://fibwatch.art/
 
-Bigg Boss S01E01 Bengali 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bigg.Boss.S01E01.Bengali.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 The Walking Dead Dead City (2026) S03E01-05 English 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/The.Walking.Dead.Dead.City.S03.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.Walking.Dead.Dead.City.(2026).S03E01-05.English.720P.mkv
@@ -626,11 +621,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.480P.mkv
 http-referrer=https://fibwatch.art/
 
-Padatik (2024) 720P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
-http-referrer=https://fibwatch.art/
-
 Bigg Boss S01E01 Bengali 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bigg.Boss.S01E01.Bengali.1080p.mkv
@@ -654,11 +644,6 @@ http-referrer=https://fibwatch.art/
 Resort S01E97-100 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/03/Resort.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Resort.S01E97-100.720P.mkv
-http-referrer=https://fibwatch.art/
-
-Padatik (2024) 720P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 http-referrer=https://fibwatch.art/
 
 Babita Singh Reporting (2026) Hindi 1080P
@@ -734,11 +719,6 @@ http-referrer=https://fibwatch.art/
 Alpha (2026) Hindi 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Alpha.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.480P.mkv
-http-referrer=https://fibwatch.art/
-
-Padatik (2024) 720P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 http-referrer=https://fibwatch.art/
 
 Babita Singh Reporting (2026) Hindi 1080P
@@ -776,11 +756,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.720P.mkv
 http-referrer=https://fibwatch.art/
 
-Padatik (2024) 720P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
-http-referrer=https://fibwatch.art/
-
 Alpha (2026) Hindi 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Alpha.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.480P.mkv
@@ -804,11 +779,6 @@ http-referrer=https://fibwatch.art/
 Babita Singh Reporting (2026) Hindi 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Babita.Singh.Reporting.(2026).Hindi.720P.mkv
-http-referrer=https://fibwatch.art/
-
-Padatik (2024) 720P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 http-referrer=https://fibwatch.art/
 
 Toxic (2026) Hindi HDTC V2 1080P
@@ -846,11 +816,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Padatik (2024) 720P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
-http-referrer=https://fibwatch.art/
-
 Babita Singh Reporting (2026) Hindi 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Babita.Singh.Reporting.(2026).Hindi.480P.mkv
@@ -874,11 +839,6 @@ http-referrer=https://fibwatch.art/
 The Whisper Man 2026 Dual 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/the-whisper-man-hindi-dubbed.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.Whisper.Man.2026.Dual.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Padatik (2024) 720P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 http-referrer=https://fibwatch.art/
 
 Babita Singh Reporting (2026) Hindi 1080P

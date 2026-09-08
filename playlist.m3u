@@ -2,10 +2,10 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 09-Sep-2026 02:29:29 AM (+06)
+# Last Updated     : 09-Sep-2026 05:45:56 AM (+06)
 # Active Subdomain : tghjn
-# Total Active VOD : 198
-# Dead Purged      : 0
+# Total Active VOD : 190
+# Dead Purged      : 8
 # ==========================================
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
@@ -294,10 +294,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Korean.Kanakaraju
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dhamaal.4.2026.Hindi.480p.mkv
 
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg" group-title="VOD", Bigg Boss S01E01 Bengali 1080p
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bigg.Boss.S01E01.Bengali.1080p.mkv
-
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/The.Walking.Dead.Dead.City.S03.jpg" group-title="VOD", The Walking Dead Dead City (2026) S03E01-05 English 720P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.Walking.Dead.Dead.City.(2026).S03E01-05.English.720P.mkv
@@ -510,10 +506,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Babita.Singh.Repo
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.480P.mkv
 
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg" group-title="VOD", Padatik (2024) 720P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
-
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg" group-title="VOD", Bigg Boss S01E01 Bengali 1080p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bigg.Boss.S01E01.Bengali.1080p.mkv
@@ -533,10 +525,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.Whisper.Man.2
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/03/Resort.jpg" group-title="VOD", Resort S01E97-100 720P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Resort.S01E97-100.720P.mkv
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg" group-title="VOD", Padatik (2024) 720P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg" group-title="VOD", Babita Singh Reporting (2026) Hindi 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
@@ -597,10 +585,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.Whisper.Man.2
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Alpha.jpg" group-title="VOD", Alpha (2026) Hindi 480P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.480P.mkv
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg" group-title="VOD", Padatik (2024) 720P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg" group-title="VOD", Babita Singh Reporting (2026) Hindi 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
@@ -630,10 +614,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.University.of
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.720P.mkv
 
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg" group-title="VOD", Padatik (2024) 720P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
-
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Alpha.jpg" group-title="VOD", Alpha (2026) Hindi 480P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.480P.mkv
@@ -653,10 +633,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hind
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg" group-title="VOD", Babita Singh Reporting (2026) Hindi 720P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Babita.Singh.Reporting.(2026).Hindi.720P.mkv
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg" group-title="VOD", Padatik (2024) 720P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Toxic.jpg" group-title="VOD", Toxic (2026) Hindi HDTC V2 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
@@ -686,10 +662,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Mousetrap.(2026).
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Alpha.(2026).Hindi.1080P.mkv
 
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg" group-title="VOD", Padatik (2024) 720P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
-
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg" group-title="VOD", Babita Singh Reporting (2026) Hindi 480P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Babita.Singh.Reporting.(2026).Hindi.480P.mkv
@@ -709,10 +681,6 @@ https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.University.of
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/the-whisper-man-hindi-dubbed.jpg" group-title="VOD", The Whisper Man 2026 Dual 1080p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.Whisper.Man.2026.Dual.1080p.mkv
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Padatik.jpg" group-title="VOD", Padatik (2024) 720P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Padatik.(2024).720P.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg" group-title="VOD", Babita Singh Reporting (2026) Hindi 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
