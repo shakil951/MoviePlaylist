@@ -71,11 +71,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]DC.(2026).Dual.Hindi.Line.720p.mkv
 http-referrer=https://fibwatch.art/
 
-Black Box (2026) Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Black-Box-2026-Hindi-Dubbed.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Black.Box.(2026).Dual.720p.mkv
-http-referrer=https://fibwatch.art/
-
 Korean Kanakaraju 2026 Dual 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Korean.Kanakaraju.(2026).Hindi.Dubbed.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Korean.Kanakaraju.2026.Dual.1080p.mkv
@@ -301,11 +296,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Gandhari.2026.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
-Black Box (2026) Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Black-Box-2026-Hindi-Dubbed.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Black.Box.(2026).Dual.720p.mkv
-http-referrer=https://fibwatch.art/
-
 Fall 2 Deadpoint (2026) English CAMRip 1080P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Fall.2.Deadpoint.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Fall.2.Deadpoint.(2026).English.CAMRip.1080P.mkv
@@ -399,11 +389,6 @@ http-referrer=https://fibwatch.art/
 Unmadham (2026) Dual 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Unmadham.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Unmadham.(2026).Dual.480P.mkv
-http-referrer=https://fibwatch.art/
-
-Tomake Holo Na Payoa (2026) 480P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Tomake.Holo.Na.Payoa.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Tomake.Holo.Na.Payoa.(2026).480P.mkv
 http-referrer=https://fibwatch.art/
 
 Gandhari 2026 Dual 480p
@@ -841,11 +826,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.1080P.HQ.mkv
 http-referrer=https://fibwatch.art/
 
-Motor City (2026) English 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Motor.City.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Motor.City.(2026).English.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 Resort S01E97-100 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/03/Resort.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Resort.S01E97-100.720P.mkv
@@ -874,11 +854,6 @@ http-referrer=https://fibwatch.art/
 Babita Singh Reporting (2026) Hindi 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Babita.Singh.Reporting.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Babita.Singh.Reporting.(2026).Hindi.480P.mkv
-http-referrer=https://fibwatch.art/
-
-Motor City (2026) English 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Motor.City.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Motor.City.(2026).English.1080P.mkv
 http-referrer=https://fibwatch.art/
 
 Toxic (2026) Hindi HDTC V2 720P
@@ -944,11 +919,6 @@ http-referrer=https://fibwatch.art/
 Toxic (2026) Hindi HDTC V2 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Toxic.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.480P.mkv
-http-referrer=https://fibwatch.art/
-
-Motor City (2026) English 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Motor.City.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Motor.City.(2026).English.1080P.mkv
 http-referrer=https://fibwatch.art/
 
 Evil Dead Burn (2026) Dual 720P
