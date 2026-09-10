@@ -1386,11 +1386,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E01.Hindi.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-Sultan Salahuddin Ayyubi S01E27 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Sultan.Salahuddin.Ayyubi.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Sultan.Salahuddin.Ayyubi.S01E27.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 Sinners (2025) Dual Hindi HQ 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2025/05/sinners.2025.English.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Sinners.(2025).Dual.Hindi.HQ.720p.mkv
@@ -3269,11 +3264,6 @@ http-referrer=https://fibwatch.art/
 Srirastu Subhamastu (2016) Dual 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Srirastu.Subhamastu.(2016).Hindi.Dubbed.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Srirastu.Subhamastu.(2016).Dual.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Jagat (2026) Bengali Dubbed 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Jagat.(2026).Bengali.Dubbed.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Jagat.(2026).Bengali.Dubbed.1080p.mkv
 http-referrer=https://fibwatch.art/
 
 Mousetrap (2026) S01 Dual 480p

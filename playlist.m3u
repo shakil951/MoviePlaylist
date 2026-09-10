@@ -2,10 +2,10 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 10-Sep-2026 04:06:17 AM (+06)
+# Last Updated     : 10-Sep-2026 08:07:48 AM (+06)
 # Active Subdomain : pghjn
-# Total Active VOD : 851
-# Dead Purged      : 0
+# Total Active VOD : 849
+# Dead Purged      : 2
 # ==========================================
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://drtghn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
@@ -1117,10 +1117,6 @@ https://pghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Khatron.Ke.Khilad
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg" group-title="VOD", Bigg Boss S20E01 Hindi 1080p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://pghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E01.Hindi.1080p.mkv
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Sultan.Salahuddin.Ayyubi.jpg" group-title="VOD", Sultan Salahuddin Ayyubi S01E27 1080P
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://pghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Sultan.Salahuddin.Ayyubi.S01E27.1080P.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2025/05/sinners.2025.English.jpg" group-title="VOD", Sinners (2025) Dual Hindi HQ 720p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
@@ -2625,10 +2621,6 @@ https://pghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E03.
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Srirastu.Subhamastu.(2016).Hindi.Dubbed.jpg" group-title="VOD", Srirastu Subhamastu (2016) Dual 1080p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://pghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Srirastu.Subhamastu.(2016).Dual.1080p.mkv
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Jagat.(2026).Bengali.Dubbed.jpg" group-title="VOD", Jagat (2026) Bengali Dubbed 1080p
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://pghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Jagat.(2026).Bengali.Dubbed.1080p.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Mousetrap.(2026).S01.jpg" group-title="VOD", Mousetrap (2026) S01 Dual 480p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
