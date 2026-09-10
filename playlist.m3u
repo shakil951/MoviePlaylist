@@ -2,10 +2,10 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 10-Sep-2026 04:01:55 PM (+06)
+# Last Updated     : 10-Sep-2026 07:57:17 PM (+06)
 # Active Subdomain : otyhjn
-# Total Active VOD : 848
-# Dead Purged      : 0
+# Total Active VOD : 847
+# Dead Purged      : 1
 # ==========================================
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://otyhjn.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
@@ -2325,10 +2325,6 @@ https://otyhjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Normal.(2026).Du
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://otyhjn.b-cdn.net/upload/photos/2026/09/Gandhari.(2026).Hindi.jpg" group-title="VOD", Gandhari 2026 Dual 480p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://otyhjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Gandhari.2026.Dual.480p.mkv
-
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://otyhjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg" group-title="VOD", Bigg Boss S01E04 Bengali 1080p
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://otyhjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E04.Bengali.1080p.mkv
 
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://otyhjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg" group-title="VOD", Bigg Boss S01E02 Bengali 1080p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/

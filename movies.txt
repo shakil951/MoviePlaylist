@@ -2896,11 +2896,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Gandhari.2026.Dual.480p.mkv
 http-referrer=https://fibwatch.art/
 
-Bigg Boss S01E04 Bengali 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E04.Bengali.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Bigg Boss S01E02 Bengali 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bigg.Boss.S01E02.Bengali.1080p.mkv
