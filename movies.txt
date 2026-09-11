@@ -41,11 +41,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/05/[Fibwatch.Com]Bonolota.Express.(2026).Bengali.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Rockstar 2026 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/07/Rockstar.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/07/[Fibwatch.Com]Rockstar.2026.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Coyote vs Acme 2026 English 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/09/Coyote.vs.Acme.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Coyote.vs.Acme.2026.English.720P.mkv
@@ -551,11 +546,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.Whisper.Man.2026.Dual.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-The University of Chankharpul 2026 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/The.University.of.Chankharpul.jpg
-https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.University.of.Chankharpul.2026.720p.mkv
-http-referrer=https://fibwatch.art/
-
 Toxic (2026) Hindi HDTC V2 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/upload/photos/2026/08/Toxic.jpg
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.720P.mkv
@@ -711,11 +701,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://bertyg.b-cdn.net/up
 https://bertyg.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Evil.Dead.Burn.(2026).Dual.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-My Bias My Boss S01E11 Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/My-Bias-My-Boss-2026-S01.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]My.Bias.My.Boss.S01E11.Dual.720p.mkv
-http-referrer=https://fibwatch.art/
-
 Bigg Boss S01E10 Bengali 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E10.Bengali.1080p.mkv
@@ -741,11 +726,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Sultan.Salahuddin.Ayyubi.S01E28.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Ananta Bhalobasha S01E21 Bangla Dubbed 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Ananta.Bhalobasha.S01.Bangla.Dubbed.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Ananta.Bhalobasha.S01E21.Bangla.Dubbed.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Our Universe S01E01-06 Dual 1080p new
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Our.Universe.(2026).S01.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Our.Universe.S01E01-06.Dual.1080p.new.mkv
@@ -761,19 +741,9 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Mayday.(2026).English.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Bigg Boss S20E01 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E01.Hindi.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Khatron Ke Khiladi (2026) S15E12 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Khatron.Ke.Khiladi.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Khatron.Ke.Khiladi.(2026).S15E12.720P.mkv
-http-referrer=https://fibwatch.art/
-
-Bigg Boss S20E02 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E02.Hindi.1080p.mkv
 http-referrer=https://fibwatch.art/
 
 Bigg Boss S01E09 Bengali 1080p
@@ -794,11 +764,6 @@ http-referrer=https://fibwatch.art/
 Cocaine 2024 Dual 480p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Cocaine.(2024).Hindi.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Cocaine.2024.Dual.480p.mkv
-http-referrer=https://fibwatch.art/
-
-Dark Chocolate (2016) Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Dark.Chocolate.(2016).Hindi..jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dark.Chocolate.(2016).Hindi.1080p.mkv
 http-referrer=https://fibwatch.art/
 
 Mirzapur The Movie (2026) Hindi HQ HDTC 1080p
@@ -926,16 +891,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Mayday.(2026).English.720P.mkv
 http-referrer=https://fibwatch.art/
 
-Indias Got Latent S02E07 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/06/Indias.Got.Latent.jpeg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Indias.Got.Latent.S02E07.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Bigg Boss S20E01 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E01.Hindi.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Bigg Boss S01E07 Bengali 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E07.Bengali.1080p.mkv
@@ -946,24 +901,9 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E08.Bengali.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-Bigg Boss S20E02 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E02.Hindi.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Ananta Bhalobasha S01E21 Bangla Dubbed 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Ananta.Bhalobasha.S01.Bangla.Dubbed.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Ananta.Bhalobasha.S01E21.Bangla.Dubbed.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Moana (2026) English 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Moana-2026.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Moana.(2026).English.720p.mkv
-http-referrer=https://fibwatch.art/
-
-Indias Best Dancer S05E28 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/06/Indias.Best.Dancer.S05.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Indias.Best.Dancer.S05E28.1080P.mkv
 http-referrer=https://fibwatch.art/
 
 Khatron Ke Khiladi (2026) S15E12 720P
@@ -1026,11 +966,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Moana.(2026).English.720p.mkv
 http-referrer=https://fibwatch.art/
 
-Bigg Boss S20E02 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E02.Hindi.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Mayday (2026) English 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Mayday.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Mayday.(2026).English.720P.mkv
@@ -1076,16 +1011,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Crime.Patrol.(2026).S01E04.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Indias Best Dancer S05E28 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/06/Indias.Best.Dancer.S05.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Indias.Best.Dancer.S05E28.1080P.mkv
-http-referrer=https://fibwatch.art/
-
-Bigg Boss S20E01 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E01.Hindi.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Mirzapur The Movie (2026) Hindi HQ HDTC 480p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Mirzapur.The.Movie.(2026).Hindi.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Mirzapur.The.Movie.(2026).Hindi.HQ.HDTC.480p.mkv
@@ -1126,11 +1051,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Star.Wars.The.Mandalorian.and.Grogu.(2026).Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
-Khatron Ke Khiladi (2026) S15E11 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Khatron.Ke.Khiladi.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Khatron.Ke.Khiladi.(2026).S15E11.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 Dark Chocolate (2016) Hindi 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Dark.Chocolate.(2016).Hindi..jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dark.Chocolate.(2016).Hindi.720p.mkv
@@ -1139,16 +1059,6 @@ http-referrer=https://fibwatch.art/
 Bigg Boss S01E07 Bengali 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E07.Bengali.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Indias Got Latent S02E07 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/06/Indias.Got.Latent.jpeg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Indias.Got.Latent.S02E07.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Bigg Boss S20E01 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E01.Hindi.1080p.mkv
 http-referrer=https://fibwatch.art/
 
 Lanterns S01E04 Dual 720p
@@ -1256,11 +1166,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E08.Bengali.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-Bigg Boss S20E01 Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Bigg Boss.S20.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S20E01.Hindi.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Dark Chocolate (2016) Hindi 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Dark.Chocolate.(2016).Hindi..jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dark.Chocolate.(2016).Hindi.720p.mkv
@@ -1269,11 +1174,6 @@ http-referrer=https://fibwatch.art/
 Bigg Boss S01E07 Bengali 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Bigg.Boss.(2026).S01.Bengali.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bigg.Boss.S01E07.Bengali.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Jeevan Bheema Yojana (2026) Hindi HDTC 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Jeevan.Bheema.Yojana.(2026).Hindi.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Jeevan.Bheema.Yojana.(2026).Hindi.HDTC.720p.mkv
 http-referrer=https://fibwatch.art/
 
 Dadagiri Unlimited S11E19 720P
@@ -1316,19 +1216,9 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Coyote.vs.Acme.2026.English.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Indias Got Latent S02E07 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/06/Indias.Got.Latent.jpeg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Indias.Got.Latent.S02E07.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Dadagiri Unlimited S11E19 480P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/07/Dadagiri.Unlimited.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dadagiri.Unlimited.S11E19.480P.mkv
-http-referrer=https://fibwatch.art/
-
-Dark Chocolate (2016) Hindi 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Dark.Chocolate.(2016).Hindi..jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Dark.Chocolate.(2016).Hindi.1080p.mkv
 http-referrer=https://fibwatch.art/
 
 Mayday (2026) English 720P
@@ -1411,11 +1301,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Cocaine.2024.Dual.480p.mkv
 http-referrer=https://fibwatch.art/
 
-Khatron Ke Khiladi (2026) S15E11 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Khatron.Ke.Khiladi.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Khatron.Ke.Khiladi.(2026).S15E11.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 Mayday (2026) English 1080P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Mayday.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Mayday.(2026).English.1080P.mkv
@@ -1439,11 +1324,6 @@ http-referrer=https://fibwatch.art/
 Crime Patrol (2026) S01E01-02 1080P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Crime.Patrol.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Crime.Patrol.(2026).S01E01-02.1080P.mkv
-http-referrer=https://fibwatch.art/
-
-Khatron Ke Khiladi (2026) S15E11 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Khatron.Ke.Khiladi.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Khatron.Ke.Khiladi.(2026).S15E11.1080P.mkv
 http-referrer=https://fibwatch.art/
 
 Mayday (2026) English 720P
@@ -2336,11 +2216,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.1080P.HQ.mkv
 http-referrer=https://fibwatch.art/
 
-The University of Chankharpul 2026 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/The.University.of.Chankharpul.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.University.of.Chankharpul.2026.720p.mkv
-http-referrer=https://fibwatch.art/
-
 Toxic (2026) Hindi HDTC V2 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Toxic.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Toxic.(2026).Hindi.HDTC.V2.720P.mkv
@@ -2526,11 +2401,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Kue.Bole.Biplobi.Kue.Bole.Dakat.2026.Bangla.HDTC.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-Faisha Gesi 2026 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Faisha.Gesi.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Faisha.Gesi.2026.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 The University of Chankharpul 2026 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/The.University.of.Chankharpul.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]The.University.of.Chankharpul.2026.1080p.mkv
@@ -2546,11 +2416,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/05/[Fibwatch.Com]Bonolota.Express.(2026).Bengali.1080P.mkv
 http-referrer=https://fibwatch.art/
 
-Rockstar 2026 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/07/Rockstar.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/07/[Fibwatch.Com]Rockstar.2026.1080p.mkv
-http-referrer=https://fibwatch.art/
-
 Prince (2026) Bengali 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/05/Prince.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/05/[Fibwatch.Com]Prince.(2026).Bengali.1080p.mkv
@@ -2564,10 +2429,5 @@ http-referrer=https://fibwatch.art/
 Alal Dulal (2026) Bangla 1080p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/07/Alal.Dulal.2026.Bangla.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/07/[Fibwatch.Com]Alal.Dulal.(2026).Bangla.1080p.mkv
-http-referrer=https://fibwatch.art/
-
-Idhayam Murali (2026) Bengali Dubbed 1080p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/08/Idhayam.Murali.(2026).Bangla.Dubbed.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Idhayam.Murali.(2026).Bengali.Dubbed.1080p.mkv
 http-referrer=https://fibwatch.art/
 
