@@ -210,9 +210,10 @@ def generate_playlist():
         f.write(f"# Dead Purged      : {dead_count}\n")
         f.write("# ==========================================\n\n")
 
+        # ১. আপনার নিজের মুভিগুলোতে VOD;My Collection যুক্ত করা হচ্ছে
         for m in active_movies:
             entry_str = (
-                f'#EXTINF:-1 tvg-logo="{m["logo"]}" group-title="VOD",'
+                f'#EXTINF:-1 tvg-logo="{m["logo"]}" group-title="VOD;My Collection",'
                 f' {m["name"]}\n'
             )
             if m.get("referrer"):
@@ -220,7 +221,7 @@ def generate_playlist():
             entry_str += f"{m['url']}\n\n"
             f.write(entry_str)
 
-    # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার নতুন ফুল-প্রুফ কোড ===
+    # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার নতুন ডুয়াল-টাইটেল কোড ===
     external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
     print(f"[*] Fetching external playlist: {external_url}")
     
@@ -234,20 +235,30 @@ def generate_playlist():
                 line = line.strip()
                 lower_line = line.lower()
                 
-                # শুধু কাজের লাইনগুলো ফিল্টার করা হচ্ছে
                 if line.startswith("#EXTINF") or line.startswith("#EXTVLCOPT") or lower_line.startswith("http"):
                     
                     if line.startswith("#EXTINF"):
-                        # ১. আগের যেকোনো group-title মুছে ফেলা
+                        
+                        # (ক) আসল ক্যাটাগরি খুঁজে বের করা
+                        original_category = "Others" # ডিফল্ট ক্যাটাগরি
+                        match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', line)
+                        if match_quotes:
+                            original_category = match_quotes.group(2).strip()
+                        else:
+                            match_no_quotes = re.search(r'(?i)\bgroup-title\s*=\s*([^\s,]+)', line)
+                            if match_no_quotes:
+                                original_category = match_no_quotes.group(1).strip()
+                        
+                        # (খ) আগের যেকোনো group-title মুছে ফেলা
                         line = re.sub(r'(?i)\bgroup-title\s*=\s*["\'][^"\']*["\']', '', line)
                         line = re.sub(r'(?i)\bgroup-title\s*=\s*[^\s,]+', '', line)
                         
-                        # ২. কমা (,) এর ঠিক আগে group-title="VOD" বসিয়ে দেওয়া (সবচেয়ে নিরাপদ উপায়)
+                        # (গ) নতুন ডুয়াল-টাইটেল বসানো: VOD;[আসল ক্যাটাগরি]
                         parts = line.split(',', 1)
                         if len(parts) == 2:
-                            line = f'{parts[0]} group-title="VOD",{parts[1]}'
+                            line = f'{parts[0]} group-title="VOD;{original_category}",{parts[1]}'
                         else:
-                            line = f'{line} group-title="VOD",'
+                            line = f'{line} group-title="VOD;{original_category}",'
                         
                     clean_lines.append(line)
             
@@ -259,7 +270,7 @@ def generate_playlist():
                 f.write("# ==========================================\n\n")
                 f.write(ext_content)
                 f.write("\n")
-            print("[✓] External playlist merged with VOD group successfully!")
+            print("[✓] External playlist merged with Dual Titles successfully!")
         else:
             print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
     except Exception as e:
