@@ -234,10 +234,17 @@ def generate_playlist():
     try:
         ext_res = requests.get(external_url, timeout=15)
         if ext_res.status_code == 200:
-            ext_content = ext_res.text
+            import re
             
-            # #EXTM3U হেডার মুছে ফেলা হচ্ছে
-            ext_content = ext_content.replace("#EXTM3U", "").strip()
+            # অহেতুক কমেন্ট মুছে শুধু কাজের লাইনগুলো (লিংক ও EXTINF) ফিল্টার করা হচ্ছে
+            clean_lines = []
+            for line in ext_res.text.splitlines():
+                line = line.strip()
+                # যদি লাইনটি #EXTINF, #EXTVLCOPT, অথবা http দিয়ে শুরু হয়, তবেই রাখব
+                if line.startswith("#EXTINF") or line.startswith("#EXTVLCOPT") or line.startswith("http"):
+                    clean_lines.append(line)
+            
+            ext_content = "\n".join(clean_lines)
             
             # বাইরের প্লেলিস্টের আগের যেকোনো group-title মুছে ফেলা হচ্ছে
             ext_content = re.sub(r'\bgroup-title="[^"]*"', '', ext_content)
