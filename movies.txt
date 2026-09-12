@@ -756,11 +756,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upl
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]DC.(2026).Dual.Hindi.Line.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-Coyote vs Acme 2026 English 1080P
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/09/Coyote.vs.Acme.jpg
-https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Coyote.vs.Acme.2026.English.1080P.mkv
-http-referrer=https://fibwatch.art/
-
 Silo S03E10 English 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tghjn.b-cdn.net/upload/photos/2026/07/silo.jpg
 https://tghjn.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Silo.S03E10.English.720P.mkv
