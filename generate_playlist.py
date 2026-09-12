@@ -34,7 +34,6 @@ def get_active_subdomain():
 
 
 def update_cdn_domain(text_block, active_subdomain):
-    # যদি টেক্সট ব্লক ফাঁকা থাকে
     if not text_block:
         return text_block
     return re.sub(
@@ -52,10 +51,8 @@ def get_current_time():
 
 
 def check_single_movie(raw_item, active_subdomain):
-    """লিংক সক্রিয় কি না টেস্ট করে অবজেক্ট রিটার্ন করে"""
     name = raw_item["name"]
     
-    # ভিডিও এবং ছবি (logo) উভয়ের লিংক আপডেট করা হচ্ছে
     updated_logo = update_cdn_domain(raw_item["logo"], active_subdomain)
     updated_url = update_cdn_domain(raw_item["url"], active_subdomain)
     referrer = raw_item.get("referrer")
@@ -76,10 +73,10 @@ def check_single_movie(raw_item, active_subdomain):
             print(f"[ACTIVE] -> {name[:40]}")
             return {
                 "name": name,
-                "logo": updated_logo,          # M3U ফাইলের জন্য আপডেট করা লোগো লিংক
-                "raw_logo": raw_item["logo"],  # movies.txt এর জন্য অরিজিনাল লোগো লিংক
-                "url": updated_url,            # M3U ফাইলের জন্য আপডেট করা ভিডিও লিংক
-                "raw_url": raw_item["url"],    # movies.txt এর জন্য অরিজিনাল ভিডিও লিংক
+                "logo": updated_logo,
+                "raw_logo": raw_item["logo"],
+                "url": updated_url,
+                "raw_url": raw_item["url"],
                 "referrer": referrer,
             }
         else:
@@ -117,7 +114,6 @@ def generate_playlist():
     while i < total:
         current = lines[i]
 
-        # #EXTINF ফরম্যাট
         if current.startswith("#EXTINF:"):
             logo_match = re.search(r'tvg-logo="([^"]*)"', current)
             logo = logo_match.group(1) if logo_match else ""
@@ -145,7 +141,6 @@ def generate_playlist():
                     {"name": name, "logo": logo, "url": url, "referrer": ref}
                 )
 
-        # ৩/৪ লাইনের সাধারণ ফরম্যাট (Title -> Image -> URL -> Referrer)
         elif (
             i + 2 < total
             and (
@@ -194,7 +189,6 @@ def generate_playlist():
 
     dead_count = len(parsed_items) - len(active_movies)
 
-    # ১. movies.txt ওভাররাইট করা (ডেড লিঙ্ক ছাড়া শুধু সচলগুলো রাখা)
     with open(INPUT_FILE, "w", encoding="utf-8") as f:
         for m in active_movies:
             f.write(f"{m['name']}\n")
@@ -204,7 +198,6 @@ def generate_playlist():
                 f.write(f"http-referrer={m['referrer']}\n")
             f.write("\n")
 
-    # ২. playlist.m3u তৈরি করা (group-title="VOD" সহ)
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
@@ -227,7 +220,7 @@ def generate_playlist():
             entry_str += f"{m['url']}\n\n"
             f.write(entry_str)
 
-    # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার স্মার্ট কোড ===
+    # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার নতুন ফুল-প্রুফ কোড ===
     external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
     print(f"[*] Fetching external playlist: {external_url}")
     
@@ -239,23 +232,27 @@ def generate_playlist():
             clean_lines = []
             for line in ext_res.text.splitlines():
                 line = line.strip()
+                lower_line = line.lower()
                 
                 # শুধু কাজের লাইনগুলো ফিল্টার করা হচ্ছে
-                if line.startswith("#EXTINF") or line.startswith("#EXTVLCOPT") or line.startswith("http"):
+                if line.startswith("#EXTINF") or line.startswith("#EXTVLCOPT") or lower_line.startswith("http"):
                     
                     if line.startswith("#EXTINF"):
-                        # ১. আগের যেকোনো group-title মুছে ফেলা (বড়/ছোট হাতের অক্ষর বা কোটেশন যাই থাকুক)
+                        # ১. আগের যেকোনো group-title মুছে ফেলা
                         line = re.sub(r'(?i)\bgroup-title\s*=\s*["\'][^"\']*["\']', '', line)
-                        line = re.sub(r'(?i)\bgroup-title\s*=\s*[^\s,]+', '', line) # কোটেশন ছাড়া থাকলে
+                        line = re.sub(r'(?i)\bgroup-title\s*=\s*[^\s,]+', '', line)
                         
-                        # ২. জোর করে ঠিক #EXTINF: -1 (বা অন্য যেকোনো ডিউরেশন) এর পরেই group-title="VOD" বসিয়ে দেওয়া
-                        line = re.sub(r'(?i)(#EXTINF:\s*[-0-9\.]+)', r'\1 group-title="VOD"', line, count=1)
+                        # ২. কমা (,) এর ঠিক আগে group-title="VOD" বসিয়ে দেওয়া (সবচেয়ে নিরাপদ উপায়)
+                        parts = line.split(',', 1)
+                        if len(parts) == 2:
+                            line = f'{parts[0]} group-title="VOD",{parts[1]}'
+                        else:
+                            line = f'{line} group-title="VOD",'
                         
                     clean_lines.append(line)
             
             ext_content = "\n".join(clean_lines)
             
-            # আপনার বর্তমান playlist.m3u ফাইলের শেষে এই নতুন কন্টেন্টগুলো যোগ করা হচ্ছে
             with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
                 f.write("\n\n# ==========================================\n")
                 f.write("#       EXTERNAL PLAYLIST (SM Movie Hub)      \n")
