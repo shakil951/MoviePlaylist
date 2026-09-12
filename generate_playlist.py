@@ -227,7 +227,7 @@ def generate_playlist():
             entry_str += f"{m['url']}\n\n"
             f.write(entry_str)
 
-    # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার কোড ===
+    # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার স্মার্ট কোড ===
     external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
     print(f"[*] Fetching external playlist: {external_url}")
     
@@ -236,21 +236,24 @@ def generate_playlist():
         if ext_res.status_code == 200:
             import re
             
-            # অহেতুক কমেন্ট মুছে শুধু কাজের লাইনগুলো (লিংক ও EXTINF) ফিল্টার করা হচ্ছে
             clean_lines = []
             for line in ext_res.text.splitlines():
                 line = line.strip()
-                # যদি লাইনটি #EXTINF, #EXTVLCOPT, অথবা http দিয়ে শুরু হয়, তবেই রাখব
+                
+                # শুধু কাজের লাইনগুলো ফিল্টার করা হচ্ছে
                 if line.startswith("#EXTINF") or line.startswith("#EXTVLCOPT") or line.startswith("http"):
+                    
+                    if line.startswith("#EXTINF"):
+                        # ১. আগের যেকোনো group-title মুছে ফেলা (বড়/ছোট হাতের অক্ষর বা কোটেশন যাই থাকুক)
+                        line = re.sub(r'(?i)\bgroup-title\s*=\s*["\'][^"\']*["\']', '', line)
+                        line = re.sub(r'(?i)\bgroup-title\s*=\s*[^\s,]+', '', line) # কোটেশন ছাড়া থাকলে
+                        
+                        # ২. জোর করে ঠিক #EXTINF: -1 (বা অন্য যেকোনো ডিউরেশন) এর পরেই group-title="VOD" বসিয়ে দেওয়া
+                        line = re.sub(r'(?i)(#EXTINF:\s*[-0-9\.]+)', r'\1 group-title="VOD"', line, count=1)
+                        
                     clean_lines.append(line)
             
             ext_content = "\n".join(clean_lines)
-            
-            # বাইরের প্লেলিস্টের আগের যেকোনো group-title মুছে ফেলা হচ্ছে
-            ext_content = re.sub(r'\bgroup-title="[^"]*"', '', ext_content)
-            
-            # সব মুভির লাইনে জোর করে group-title="VOD" বসিয়ে দেওয়া হচ্ছে
-            ext_content = re.sub(r'(#EXTINF:.*?),', r'\1 group-title="VOD",', ext_content)
             
             # আপনার বর্তমান playlist.m3u ফাইলের শেষে এই নতুন কন্টেন্টগুলো যোগ করা হচ্ছে
             with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
