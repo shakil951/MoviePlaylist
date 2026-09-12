@@ -198,8 +198,8 @@ def generate_playlist():
     with open(INPUT_FILE, "w", encoding="utf-8") as f:
         for m in active_movies:
             f.write(f"{m['name']}\n")
-            f.write(f"{m['raw_logo']}\n")  # এখানে অরিজিনাল লোগোর লিংক বসবে
-            f.write(f"{m['raw_url']}\n")   # এখানে অরিজিনাল ভিডিওর লিংক বসবে
+            f.write(f"{m['raw_logo']}\n")
+            f.write(f"{m['raw_url']}\n")
             if m.get("referrer"):
                 f.write(f"http-referrer={m['referrer']}\n")
             f.write("\n")
@@ -218,7 +218,6 @@ def generate_playlist():
         f.write("# ==========================================\n\n")
 
         for m in active_movies:
-            # এখানে আপডেট করা লোগো ও ভিডিওর লিংক (m['logo'] ও m['url']) বসবে
             entry_str = (
                 f'#EXTINF:-1 tvg-logo="{m["logo"]}" group-title="VOD",'
                 f' {m["name"]}\n'
@@ -227,6 +226,37 @@ def generate_playlist():
                 entry_str += f"#EXTVLCOPT:http-referrer={m['referrer']}\n"
             entry_str += f"{m['url']}\n\n"
             f.write(entry_str)
+
+    # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার কোড ===
+    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
+    print(f"[*] Fetching external playlist: {external_url}")
+    
+    try:
+        ext_res = requests.get(external_url, timeout=15)
+        if ext_res.status_code == 200:
+            ext_content = ext_res.text
+            
+            # #EXTM3U হেডার মুছে ফেলা হচ্ছে
+            ext_content = ext_content.replace("#EXTM3U", "").strip()
+            
+            # বাইরের প্লেলিস্টের আগের যেকোনো group-title মুছে ফেলা হচ্ছে
+            ext_content = re.sub(r'\bgroup-title="[^"]*"', '', ext_content)
+            
+            # সব মুভির লাইনে জোর করে group-title="VOD" বসিয়ে দেওয়া হচ্ছে
+            ext_content = re.sub(r'(#EXTINF:.*?),', r'\1 group-title="VOD",', ext_content)
+            
+            # আপনার বর্তমান playlist.m3u ফাইলের শেষে এই নতুন কন্টেন্টগুলো যোগ করা হচ্ছে
+            with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
+                f.write("\n\n# ==========================================\n")
+                f.write("#       EXTERNAL PLAYLIST (SM Movie Hub)      \n")
+                f.write("# ==========================================\n\n")
+                f.write(ext_content)
+                f.write("\n")
+            print("[✓] External playlist merged with VOD group successfully!")
+        else:
+            print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
+    except Exception as e:
+        print(f"[!] Error fetching external playlist: {e}")
 
     print("\n" + "=" * 40)
     print(f"[✓] Active Movies Kept : {len(active_movies)}")
