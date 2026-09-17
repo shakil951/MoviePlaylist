@@ -233,7 +233,7 @@ def generate_playlist():
             f.write(entry_str)
 
     # === ৩. এক্সটার্নাল প্লেলিস্ট যুক্ত করার ডুয়াল-টাইটেল কোড ===
-    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Ott_Bnagla.m3u"
+    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
     print(f"[*] Fetching external playlist: {external_url}")
     
     try:
