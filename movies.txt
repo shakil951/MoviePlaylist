@@ -89,7 +89,3 @@ https://odfgbv.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]The.Ordinary.Jac
 #EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://odfgbv.b-cdn.net/upload/photos/2026/09/Ballygunge.Court.(2007).Bengali.jpg" group-title="Latest Movie", Ballygunge Court (2007) Bengali 1080p
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
 https://odfgbv.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Ballygunge.Court.(2007).Bengali.1080p.mkv
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://odfgbv.b-cdn.net/upload/photos/2026/08/Part.Timers.S01.Hindi.jpg" group-title="Latest Movie", Part Timers S01E17-20 Hindi 1080p
-#EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://odfgbv.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Part.Timers.S01E17-20.Hindi.1080p.mkv
-#EXTINF:-1 tvg-logo="https://image.sm-iptv-monirul-islam.workers.dev/?url=https://odfgbv.b-cdn.net/upload/photos/2026/09/Mahanayak.Uttam.Kumar.(2018).Bengali.jpg" group-title="Latest Movie", Mahanayak Uttam Kumar (2018) Bengali 1080p
