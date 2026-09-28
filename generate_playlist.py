@@ -50,6 +50,27 @@ def get_current_time():
     return now.strftime("%d-%b-%Y %I:%M:%S %p (%Z)")
 
 
+def get_resolution_score(name):
+    """Movie name theke resolution score ber kore (4K > 1080p > 720p > 480p)"""
+    name_lower = name.lower()
+    if "4k" in name_lower or "2160p" in name_lower:
+        return 4
+    elif "1080p" in name_lower or "fhd" in name_lower:
+        return 3
+    elif "720p" in name_lower or "hd" in name_lower:
+        return 2
+    elif "480p" in name_lower or "360p" in name_lower:
+        return 1
+    return 0
+
+
+def get_base_movie_name(name):
+    """Resolution tags bad diye base movie name toiri kore deduplication- er jonno"""
+    cleaned = re.sub(r'(?i)\b(4k|2160p|1080p|720p|480p|360p|fhd|hd|sd|web-dl|bluray|rip|hdrip|hdts)\b', '', name)
+    cleaned = re.sub(r'\s+', ' ', cleaned).strip().lower()
+    return cleaned
+
+
 def check_single_movie(raw_item, active_subdomain):
     name = raw_item["name"]
     
@@ -78,7 +99,9 @@ def check_single_movie(raw_item, active_subdomain):
                 "url": updated_url,
                 "raw_url": raw_item.get("raw_url", raw_item["url"]),
                 "referrer": referrer,
-                "category": raw_item.get("category", "My Collection")
+                "category": raw_item.get("category", "My Collection"),
+                "res_score": get_resolution_score(name),
+                "base_name": get_base_movie_name(name)
             }
         else:
             print(f"[DEAD - HTTP {res.status_code}] -> Removed: {name[:40]}")
@@ -89,7 +112,6 @@ def check_single_movie(raw_item, active_subdomain):
 
 
 def parse_m3u_text(text_content):
-    """যেকোনো মথ্রিইউ (M3U) টেক্সট পার্স করে আইটেমের লিস্ট তৈরি করে"""
     lines = [line.strip() for line in text_content.splitlines() if line.strip()]
     parsed_items = []
     i = 0
@@ -101,7 +123,6 @@ def parse_m3u_text(text_content):
             logo_match = re.search(r'tvg-logo="([^"]*)"', current)
             logo = logo_match.group(1) if logo_match else ""
             
-            # ক্যাটাগরি বা গ্রুপ বের করা
             category = "Others"
             match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
             if match_quotes:
@@ -154,7 +175,6 @@ def generate_playlist():
             continue
         lines.append(s)
 
-    # ১. লোকাল movies.txt পার্স করা
     local_parsed_items = []
     i = 0
     total = len(lines)
@@ -189,7 +209,6 @@ def generate_playlist():
         else:
             i += 1
 
-    # লোকাল মুভির ক্যাটাগরি সেট করা (| পাইপ চেক করে)
     processed_local_items = []
     for item in local_parsed_items:
         raw_name = item["name"]
@@ -213,8 +232,7 @@ def generate_playlist():
 
     print(f"[*] Total local items in {INPUT_FILE}: {len(processed_local_items)}")
 
-    # ২. এক্সটার্নাল প্লেলিস্ট ফেচ ও পার্স করা
-    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
+    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/sm_movie2.m3u"
     print(f"[*] Fetching external playlist: {external_url}")
     
     external_parsed_items = []
@@ -228,12 +246,10 @@ def generate_playlist():
     except Exception as e:
         print(f"[!] Error fetching external playlist: {e}")
 
-    # সব আইটেম (লোকাল + এক্সটার্নাল) একত্রে ভ্যালিডেশনের জন্য প্রস্তুত করা
     all_items_to_check = processed_local_items + external_parsed_items
-    print(f"[*] Total items to validate (Live/Dead check): {len(all_items_to_check)}")
+    print(f"[*] Total items to validate: {len(all_items_to_check)}")
 
-    # ৩. সব লিংক একসাথে কনকারেন্টলি টেস্ট করা
-    active_movies = []
+    active_movies_raw = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         futures = [
             executor.submit(check_single_movie, item, active_subdomain)
@@ -242,14 +258,25 @@ def generate_playlist():
         for f in futures:
             result = f.result()
             if result:
-                active_movies.append(result)
+                active_movies_raw.append(result)
 
-    dead_count = len(all_items_to_check) - len(active_movies)
+    # === SMART RESOLUTION DEDUPLICATION (সবচেয়ে ভালো রেজুলেশনটি রেখে বাকিগুলো বাদ দেওয়া) ===
+    movie_dict = {}
+    for m in active_movies_raw:
+        b_name = m["base_name"]
+        score = m["res_score"]
+        
+        # যদি মুভিটি আগে না থাকে অথবা আগেরটির চেয়ে বর্তমানটির রেজুলেশন স্কোর বেশি হয়
+        if b_name not in movie_dict or score > movie_dict[b_name]["res_score"]:
+            movie_dict[b_name] = m
+            
+    active_movies = list(movie_dict.values())
+    dedup_removed = len(active_movies_raw) - len(active_movies)
+    dead_count = len(all_items_to_check) - len(active_movies_raw)
 
-    # ৪. movies.txt ফাইলটি শুধুমাত্র সচল লোকাল মুভিগুলো দিয়ে আপডেট করা
     with open(INPUT_FILE, "w", encoding="utf-8") as f:
         for m in active_movies:
-            if m.get("raw_url"): # শুধু লোকাল মুভিগুলোই movies.txt এ সেভ হবে
+            if m.get("raw_url"):
                 f.write(f"{m['name']}\n")
                 f.write(f"{m['raw_logo']}\n")
                 f.write(f"{m['raw_url']}\n")
@@ -257,7 +284,6 @@ def generate_playlist():
                     f.write(f"http-referrer={m['referrer']}\n")
                 f.write("\n")
 
-    # ৫. ফাইনাল playlist.m3u ফাইল তৈরি করা (ডুয়াল টাইটেল VOD;Category সহ)
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
@@ -267,6 +293,7 @@ def generate_playlist():
         f.write(f"# Last Updated     : {current_time_str}\n")
         f.write(f"# Active Subdomain : {active_subdomain}\n")
         f.write(f"# Total Active VOD : {len(active_movies)}\n")
+        f.write(f"# Low-Res Purged   : {dedup_removed}\n")
         f.write(f"# Dead Purged      : {dead_count}\n")
         f.write("# ==========================================\n\n")
 
@@ -282,8 +309,9 @@ def generate_playlist():
             f.write(entry_str)
 
     print("\n" + "=" * 40)
-    print(f"[✓] Total Active Movies Kept : {len(active_movies)}")
-    print(f"[✗] Total Dead Movies Purged : {dead_count}")
+    print(f"[✓] Final Unique Movies Kept : {len(active_movies)}")
+    print(f"[🔄] Lower-Res Dupes Removed  : {dedup_removed}")
+    print(f"[✗] Dead Links Purged        : {dead_count}")
     print(f"[✓] Updated: {INPUT_FILE} and {OUTPUT_FILE}")
     print("=" * 40)
 
