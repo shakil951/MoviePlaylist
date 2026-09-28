@@ -232,7 +232,7 @@ def generate_playlist():
 
     print(f"[*] Total local items in {INPUT_FILE}: {len(processed_local_items)}")
 
-    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/sm_movie2.m3u"
+    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
     print(f"[*] Fetching external playlist: {external_url}")
     
     external_parsed_items = []
