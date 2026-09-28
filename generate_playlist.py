@@ -226,67 +226,72 @@ def generate_playlist():
             "url": item["url"],
             "raw_url": item["url"],
             "referrer": item["referrer"],
-            "category": cat
+            "category": cat,
+            "res_score": get_resolution_score(clean_name),
+            "base_name": get_base_movie_name(clean_name)
         })
 
-    print(f"[*] Validating local items from {INPUT_FILE}...")
-    active_local_movies = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
-        futures = [executor.submit(check_single_movie, item, active_subdomain) for item in processed_local_items]
-        for f in futures:
-            result = f.result()
-            if result:
-                active_local_movies.append(result)
-
-    # ম্যানুয়াল বা অটো চেকের জন্য এনভায়রনমেন্ট ভ্যারিয়েবল রিড করা
+    # Manual run kina check korchi
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
-    external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
-    print(f"[*] Fetching external playlist: {external_url}")
     
     external_movies = []
-    try:
-        ext_res = requests.get(external_url, timeout=15)
-        if ext_res.status_code == 200:
-            parsed_ext = parse_external_m3u(ext_res.text, active_subdomain)
-            
-            if run_full_check:
-                print("[*] Manual full check enabled! Validating external links...")
+    if run_full_check:
+        external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
+        print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
+        try:
+            ext_res = requests.get(external_url, timeout=15)
+            if ext_res.status_code == 200:
+                parsed_ext = parse_external_m3u(ext_res.text, active_subdomain)
                 with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
                     futures = [executor.submit(check_single_movie, item, active_subdomain) for item in parsed_ext]
                     for f in futures:
                         res = f.result()
                         if res:
+                            # Format name with category for local saving
+                            res["name"] = f"{res['name']} | {res['category']}"
                             external_movies.append(res)
             else:
-                print("[*] Auto mode: Skipping external dead link check for speed.")
-                external_movies = parsed_ext
-        else:
-            print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
-    except Exception as e:
-        print(f"[!] Error fetching external playlist: {e}")
+                print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
+        except Exception as e:
+            print(f"[!] Error fetching external playlist: {e}")
 
-    all_movies = active_local_movies + external_movies
-    
+    # Combine local items + newly fetched manual external items for validation/processing
+    all_items_to_check = processed_local_items + external_movies
+
+    print(f"[*] Validating items...")
+    active_movies_raw = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+        futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_items_to_check]
+        for f in futures:
+            result = f.result()
+            if result:
+                active_movies_raw.append(result)
+
+    # Smart Resolution Deduplication
     movie_dict = {}
-    for m in all_movies:
+    for m in active_movies_raw:
         b_name = m["base_name"]
         score = m["res_score"]
         if b_name not in movie_dict or score > movie_dict[b_name]["res_score"]:
             movie_dict[b_name] = m
             
     final_movies = list(movie_dict.values())
-    dedup_removed = len(all_movies) - len(final_movies)
+    dedup_removed = len(active_movies_raw) - len(final_movies)
 
+    # Permanent save to movies.txt (so active external links are now part of local movies.txt!)
     with open(INPUT_FILE, "w", encoding="utf-8") as f:
-        for m in active_local_movies:
-            if m.get("raw_url"):
-                f.write(f"{m['name']}\n")
-                f.write(f"{m['raw_logo']}\n")
-                f.write(f"{m['raw_url']}\n")
-                if m.get("referrer"):
-                    f.write(f"http-referrer={m['referrer']}\n")
-                f.write("\n")
+        for m in final_movies:
+            name_to_save = m['name']
+            if "|" not in name_to_save and m.get("category"):
+                name_to_save = f"{m['name']} | {m['category']}"
+            f.write(f"{name_to_save}\n")
+            f.write(f"{m['raw_logo']}\n")
+            f.write(f"{m['raw_url']}\n")
+            if m.get("referrer"):
+                f.write(f"http-referrer={m['referrer']}\n")
+            f.write("\n")
 
+    # Final playlist.m3u generation
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
@@ -300,7 +305,7 @@ def generate_playlist():
         f.write("# ==========================================\n\n")
 
         for m in final_movies:
-            category = m.get("category", "Others")
+            category = m.get("category", "My Collection")
             entry_str = (
                 f'#EXTINF:-1 tvg-logo="{m["logo"]}" group-title="VOD;{category}",'
                 f' {m["name"]}\n'
