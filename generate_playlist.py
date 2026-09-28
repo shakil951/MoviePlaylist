@@ -219,11 +219,14 @@ def generate_playlist():
             clean_name = raw_name.strip()
             cat = "My Collection"
         
+        updated_logo = update_cdn_domain(item["logo"], active_subdomain)
+        updated_url = update_cdn_domain(item["url"], active_subdomain)
+
         processed_local_items.append({
             "name": clean_name,
-            "logo": item["logo"],
+            "logo": updated_logo,
             "raw_logo": item["logo"],
-            "url": item["url"],
+            "url": updated_url,
             "raw_url": item["url"],
             "referrer": item["referrer"],
             "category": cat,
@@ -231,7 +234,6 @@ def generate_playlist():
             "base_name": get_base_movie_name(clean_name)
         })
 
-    # Manual run kina check korchi
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
     
     external_movies = []
@@ -247,7 +249,6 @@ def generate_playlist():
                     for f in futures:
                         res = f.result()
                         if res:
-                            # Format name with category for local saving
                             res["name"] = f"{res['name']} | {res['category']}"
                             external_movies.append(res)
             else:
@@ -255,43 +256,44 @@ def generate_playlist():
         except Exception as e:
             print(f"[!] Error fetching external playlist: {e}")
 
-    # Combine local items + newly fetched manual external items for validation/processing
-    all_items_to_check = processed_local_items + external_movies
+    if run_full_check:
+        all_items_to_check = processed_local_items + external_movies
+        print(f"[*] Manual mode: Validating all items...")
+        active_movies_raw = []
+        with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+            futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_items_to_check]
+            for f in futures:
+                result = f.result()
+                if result:
+                    active_movies_raw.append(result)
+        final_active_items = active_movies_raw
+    else:
+        print("[*] Auto mode: Skipping HTTP checks for lightning speed.")
+        final_active_items = processed_local_items
 
-    print(f"[*] Validating items...")
-    active_movies_raw = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
-        futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_items_to_check]
-        for f in futures:
-            result = f.result()
-            if result:
-                active_movies_raw.append(result)
-
-    # Smart Resolution Deduplication
     movie_dict = {}
-    for m in active_movies_raw:
+    for m in final_active_items:
         b_name = m["base_name"]
         score = m["res_score"]
         if b_name not in movie_dict or score > movie_dict[b_name]["res_score"]:
             movie_dict[b_name] = m
             
     final_movies = list(movie_dict.values())
-    dedup_removed = len(active_movies_raw) - len(final_movies)
+    dedup_removed = len(final_active_items) - len(final_movies)
 
-    # Permanent save to movies.txt (so active external links are now part of local movies.txt!)
-    with open(INPUT_FILE, "w", encoding="utf-8") as f:
-        for m in final_movies:
-            name_to_save = m['name']
-            if "|" not in name_to_save and m.get("category"):
-                name_to_save = f"{m['name']} | {m['category']}"
-            f.write(f"{name_to_save}\n")
-            f.write(f"{m['raw_logo']}\n")
-            f.write(f"{m['raw_url']}\n")
-            if m.get("referrer"):
-                f.write(f"http-referrer={m['referrer']}\n")
-            f.write("\n")
+    if run_full_check:
+        with open(INPUT_FILE, "w", encoding="utf-8") as f:
+            for m in final_movies:
+                name_to_save = m['name']
+                if "|" not in name_to_save and m.get("category"):
+                    name_to_save = f"{m['name']} | {m['category']}"
+                f.write(f"{name_to_save}\n")
+                f.write(f"{m['raw_logo']}\n")
+                f.write(f"{m['raw_url']}\n")
+                if m.get("referrer"):
+                    f.write(f"http-referrer={m['referrer']}\n")
+                f.write("\n")
 
-    # Final playlist.m3u generation
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
@@ -318,7 +320,7 @@ def generate_playlist():
     print("\n" + "=" * 40)
     print(f"[✓] Final Unique Playlist Count : {len(final_movies)}")
     print(f"[🔄] Lower-Res Dupes Removed     : {dedup_removed}")
-    print(f"[✓] Updated: {INPUT_FILE} and {OUTPUT_FILE}")
+    print(f"[✓] Updated: {OUTPUT_FILE}")
     print("=" * 40)
 
 
