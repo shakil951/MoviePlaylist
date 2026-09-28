@@ -1,8 +1,10 @@
+name: Update VOD Playlist
+
 on:
   push:
     branches: [ "main" ]
   schedule:
-    - cron: '0 */2 * * *' # Proti 6 ghonta por por auto run hobe (No external dead check)
+    - cron: '0 */2 * * *' # প্রতি ২ ঘণ্টা পর পর অটো রান হবে
   workflow_dispatch:
     inputs:
       check_external:
@@ -15,7 +17,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -28,7 +31,11 @@ jobs:
       - name: Run Playlist Generator
         env:
           CHECK_EXTERNAL_CHECK: ${{ github.event.inputs.check_external }}
-        run: python your_script_name.py
+        run: python playlist_generator.py
 
-      - name: Commit and push if changed
-        # ... (apnar baki git commit er code gulo ekhane thakbe)
+      - name: Commit and push if playlist changed
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "action@github.com"
+          git add playlist.m3u movies.txt
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update playlist [skip ci]" && git push)
