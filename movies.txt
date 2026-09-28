@@ -1202,11 +1202,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/u
 https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Mahanayak.Uttam.Kumar.(2018).Bengali.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-The Ordinary Jackpot S01E06 Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/upload/photos/2026/09/The.Ordinary.Jackpot.(2026).S01.jpg
-https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]The.Ordinary.Jackpot.S01E06.Dual.720p.mkv
-http-referrer=https://fibwatch.art/
-
 The Love Hypothesis (2026) Dual 480p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/upload/photos/2026/09/The-Love-Hypothesis.jpg
 https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]The.Love.Hypothesis.(2026).Dual.480p.mkv
@@ -4052,11 +4047,6 @@ https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/u
 https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Reacher.(2026).S04E07.Dual.1080p.mkv
 http-referrer=https://fibwatch.art/
 
-MobLand S01 Dual 720p N
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/upload/photos/2025/05/mobLand.jpg
-https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]MobLand.S01.Dual.720p.N.mkv
-http-referrer=https://fibwatch.art/
-
 Indias Got Latent S02E07 720p
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/upload/photos/2026/06/Indias.Got.Latent.jpeg
 https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Indias.Got.Latent.S02E07.720p.mkv
@@ -5005,11 +4995,6 @@ http-referrer=https://fibwatch.art/
 Silo S03E10 English 720P
 https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/upload/photos/2026/07/silo.jpg
 https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Silo.S03E10.English.720P.mkv
-http-referrer=https://fibwatch.art/
-
-GDN 2026 Dual 720p
-https://image.sm-iptv-monirul-islam.workers.dev/?url=https://tdfvbmh.b-cdn.net/upload/photos/2026/08/G.D.N.(2026).Hindi.Dubbed.jpg
-https://tdfvbmh.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]GDN.2026.Dual.720p.mkv
 http-referrer=https://fibwatch.art/
 
 Mirzapur The Movie (2026) Hindi HQ HDTC 480p
