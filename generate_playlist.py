@@ -86,9 +86,13 @@ def check_single_movie(raw_item, active_subdomain):
 
     try:
         res = requests.get(
-            updated_url, headers=req_headers, stream=True, timeout=6, allow_redirects=True
+            updated_url, headers=req_headers, stream=True, timeout=15, allow_redirects=True
         )
-        if res.status_code in [200, 206, 302]:
+        
+        # Added redirect status codes and 416 (Range Not Satisfiable)
+        valid_codes = [200, 206, 301, 302, 307, 308, 416]
+
+        if res.status_code in valid_codes:
             print(f"[ACTIVE] -> {name[:40]}")
             return {
                 "name": name,
@@ -104,8 +108,8 @@ def check_single_movie(raw_item, active_subdomain):
         else:
             print(f"[DEAD - HTTP {res.status_code}] -> Removed: {name[:40]}")
             return None
-    except Exception:
-        print(f"[DEAD - Timeout/Error] -> Removed: {name[:40]}")
+    except Exception as e:
+        print(f"[DEAD - {type(e).__name__}] -> Removed: {name[:40]}")
         return None
 
 
