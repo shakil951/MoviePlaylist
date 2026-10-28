@@ -11,6 +11,9 @@ OUTPUT_FILE = "playlist.m3u"
 DEVELOPER_NAME = "FARABI"
 BASE_CHECK_URL = "https://fibwatch.art/"
 
+# আপনার নতুন ইমেজ প্রক্সি ওয়ার্কার লিংক
+IMAGE_PROXY_BASE = "https://image-proxy.usergamil15.workers.dev/?url="
+
 DEFAULT_HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,"
@@ -18,6 +21,16 @@ DEFAULT_HEADERS = {
     ),
     "Referer": "https://fibwatch.art/",
 }
+
+def get_proxied_logo(logo_url):
+    """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
+    if not logo_url:
+        return ""
+    # যদি আগের কোনো ওয়ার্কার প্রক্সি লিংক থাকে, সেটি বাদ দিয়ে আসল লিংকটা বের করবে
+    if "?url=" in logo_url:
+        logo_url = logo_url.split("?url=")[-1]
+    
+    return f"{IMAGE_PROXY_BASE}{logo_url}"
 
 
 def get_active_subdomain():
@@ -89,7 +102,6 @@ def check_single_movie(raw_item, active_subdomain):
             updated_url, headers=req_headers, stream=True, timeout=15, allow_redirects=True
         )
         
-        # Added redirect status codes and 416 (Range Not Satisfiable)
         valid_codes = [200, 206, 301, 302, 307, 308, 416]
 
         if res.status_code in valid_codes:
@@ -312,8 +324,12 @@ def generate_playlist():
 
         for m in final_movies:
             category = m.get("category", "My Collection")
+            
+            # এখানে ওয়ার্কার প্রক্সি ফাংশনটি কল করা হয়েছে
+            final_logo = get_proxied_logo(m["logo"])
+            
             entry_str = (
-                f'#EXTINF:-1 tvg-logo="{m["logo"]}" group-title="VOD;{category}",'
+                f'#EXTINF:-1 tvg-logo="{final_logo}" group-title="VOD;{category}",'
                 f' {m["name"]}\n'
             )
             if m.get("referrer"):
