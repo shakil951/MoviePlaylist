@@ -251,7 +251,7 @@ def generate_playlist():
     
     external_movies = []
     
-    # ১. প্রথম প্লেলিস্ট লিংকটি আগের নিয়মেই থাকবে (CHECK_EXTERNAL_CHECK true হলে তবেই ফেচ এবং লাইভ চেক হবে)
+    # ১. প্রথম প্লেলিস্ট লিংকটি আগের নিয়মেই চেক হয়ে আসবে (Manual mode)
     if run_full_check:
         external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
         print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
@@ -271,20 +271,63 @@ def generate_playlist():
         except Exception as e:
             print(f"[!] Error fetching external playlist: {e}")
 
-    # ২. বাকি নতুন দুটি প্লেলিস্ট লিংক (কোনো চেক ছাড়াই সরাসরি যুক্ত হবে)
+    # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়াই সরাসরি যুক্ত হবে, লোগো অপরিবর্তিত থাকবে কিন্তু সঠিক গ্রুপ/ক্যাটাগরি পাবে)
     direct_external_urls = [
+        "https://raw.githubusercontent.com/Babuperumana/movies_m3u/refs/heads/main/playlist.m3u",
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
     ]
 
     for d_url in direct_external_urls:
-        print(f"[*] Fetching direct external playlist (No Check): {d_url}")
+        print(f"[*] Fetching direct external playlist (No Check, Original Logos): {d_url}")
         try:
             d_res = requests.get(d_url, timeout=15)
             if d_res.status_code == 200:
-                parsed_d = parse_external_m3u(d_res.text, active_subdomain)
-                for item in parsed_d:
-                    item["name"] = f"{item['name']} | {item['category']}"
-                    external_movies.append(item)
+                lines = [line.strip() for line in d_res.text.splitlines() if line.strip()]
+                idx = 0
+                total_lines = len(lines)
+                while idx < total_lines:
+                    current = lines[idx]
+                    if current.startswith("#EXTINF:"):
+                        logo_match = re.search(r'tvg-logo="([^"]*)"', current)
+                        logo = logo_match.group(1) if logo_match else ""
+                        
+                        category = "Others"
+                        match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
+                        if match_quotes:
+                            category = match_quotes.group(2).strip()
+                        else:
+                            match_no_quotes = re.search(r'(?i)\bgroup-title\s*=\s*([^\s,]+)', current)
+                            if match_no_quotes:
+                                category = match_no_quotes.group(1).strip()
+
+                        name = current.split(",")[-1].strip()
+
+                        idx += 1
+                        ref = None
+                        url = None
+                        while idx < total_lines and not lines[idx].startswith("#EXTINF:"):
+                            if "http-referrer=" in lines[idx]:
+                                ref = lines[idx].replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
+                            elif lines[idx].startswith("http://") or lines[idx].startswith("https://"):
+                                url = lines[idx]
+                                idx += 1
+                                break
+                            idx += 1
+
+                        if url:
+                            external_movies.append({
+                                "name": f"{name} | {category}",
+                                "logo": logo,
+                                "raw_logo": logo,
+                                "url": url,
+                                "raw_url": url,
+                                "referrer": ref,
+                                "category": category,
+                                "res_score": get_resolution_score(name),
+                                "base_name": get_base_movie_name(name)
+                            })
+                    else:
+                        idx += 1
             else:
                 print(f"[!] Failed to fetch direct playlist. HTTP {d_res.status_code}")
         except Exception as e:
