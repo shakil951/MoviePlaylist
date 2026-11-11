@@ -11,7 +11,7 @@ OUTPUT_FILE = "playlist.m3u"
 DEVELOPER_NAME = "FARABI"
 BASE_CHECK_URL = "https://fibwatch.art/"
 
-# আপনার নতুন ইমেজ প্রক্সি ওয়ার্কার লিংক
+# আপনার নতুন ইমেজ প্রক্সি ওয়ার্কার লিংক
 IMAGE_PROXY_BASE = "https://image-proxy.usergamil15.workers.dev/?url="
 
 DEFAULT_HEADERS = {
@@ -23,13 +23,11 @@ DEFAULT_HEADERS = {
 }
 
 def get_proxied_logo(logo_url):
-    """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
+    """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
     if not logo_url:
         return ""
-    # যদি আগের কোনো ওয়ার্কার প্রক্সি লিংক থাকে, সেটি বাদ দিয়ে আসল লিংকটা বের করবে
     if "?url=" in logo_url:
         logo_url = logo_url.split("?url=")[-1]
-    
     return f"{IMAGE_PROXY_BASE}{logo_url}"
 
 
@@ -101,7 +99,6 @@ def check_single_movie(raw_item, active_subdomain):
         res = requests.get(
             updated_url, headers=req_headers, stream=True, timeout=15, allow_redirects=True
         )
-        
         valid_codes = [200, 206, 301, 302, 307, 308, 416]
 
         if res.status_code in valid_codes:
@@ -253,6 +250,8 @@ def generate_playlist():
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
     
     external_movies = []
+    
+    # ১. প্রথম প্লেলিস্ট লিংকটি আগের নিয়মেই থাকবে (CHECK_EXTERNAL_CHECK true হলে তবেই ফেচ এবং লাইভ চেক হবে)
     if run_full_check:
         external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
         print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
@@ -272,6 +271,26 @@ def generate_playlist():
         except Exception as e:
             print(f"[!] Error fetching external playlist: {e}")
 
+    # ২. বাকি নতুন দুটি প্লেলিস্ট লিংক (কোনো চেক ছাড়াই সরাসরি যুক্ত হবে)
+    direct_external_urls = [
+        "https://raw.githubusercontent.com/Babuperumana/movies_m3u/refs/heads/main/playlist.m3u",
+        "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
+    ]
+
+    for d_url in direct_external_urls:
+        print(f"[*] Fetching direct external playlist (No Check): {d_url}")
+        try:
+            d_res = requests.get(d_url, timeout=15)
+            if d_res.status_code == 200:
+                parsed_d = parse_external_m3u(d_res.text, active_subdomain)
+                for item in parsed_d:
+                    item["name"] = f"{item['name']} | {item['category']}"
+                    external_movies.append(item)
+            else:
+                print(f"[!] Failed to fetch direct playlist. HTTP {d_res.status_code}")
+        except Exception as e:
+            print(f"[!] Error fetching direct playlist: {e}")
+
     if run_full_check:
         all_items_to_check = processed_local_items + external_movies
         print(f"[*] Manual mode: Validating all items...")
@@ -285,7 +304,7 @@ def generate_playlist():
         final_active_items = active_movies_raw
     else:
         print("[*] Auto mode: Skipping HTTP checks for lightning speed.")
-        final_active_items = processed_local_items
+        final_active_items = processed_local_items + external_movies
 
     movie_dict = {}
     for m in final_active_items:
@@ -324,8 +343,6 @@ def generate_playlist():
 
         for m in final_movies:
             category = m.get("category", "My Collection")
-            
-            # এখানে ওয়ার্কার প্রক্সি ফাংশনটি কল করা হয়েছে
             final_logo = get_proxied_logo(m["logo"])
             
             entry_str = (
