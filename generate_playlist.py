@@ -111,6 +111,7 @@ def check_single_movie(raw_item, active_subdomain):
                 "raw_url": raw_item.get("raw_url", raw_item.get("url", "")),
                 "referrer": referrer,
                 "category": raw_item.get("category", "My Collection"),
+                "use_proxy": raw_item.get("use_proxy", True), # প্রথমটার জন্য প্রক্সি সক্রিয় থাকবে
                 "res_score": get_resolution_score(name),
                 "base_name": get_base_movie_name(name)
             }
@@ -168,6 +169,7 @@ def parse_external_m3u(text_content, active_subdomain):
                     "raw_url": url,
                     "referrer": ref,
                     "category": category,
+                    "use_proxy": True,
                     "res_score": get_resolution_score(name),
                     "base_name": get_base_movie_name(name)
                 })
@@ -243,6 +245,7 @@ def generate_playlist():
             "raw_url": item["url"],
             "referrer": item["referrer"],
             "category": cat,
+            "use_proxy": True,
             "res_score": get_resolution_score(clean_name),
             "base_name": get_base_movie_name(clean_name)
         })
@@ -251,7 +254,7 @@ def generate_playlist():
     
     external_movies = []
     
-    # ১. প্রথম প্লেলিস্ট লিংকটি আগের নিয়মেই চেক হয়ে আসবে (Manual mode)
+    # ১. প্রথম প্লেলিস্ট লিংকটি আগের নিয়মেই চেক হয়ে আসবে এবং প্রক্সি ব্যবহার করবে
     if run_full_check:
         external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
         print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
@@ -271,7 +274,7 @@ def generate_playlist():
         except Exception as e:
             print(f"[!] Error fetching external playlist: {e}")
 
-    # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়াই সরাসরি যুক্ত হবে, লোগো অপরিবর্তিত থাকবে কিন্তু সঠিক গ্রুপ/ক্যাটাগরি পাবে)
+    # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়া সরাসরি যুক্ত হবে, লোগো অপরিবর্তিত থাকবে অর্থাৎ প্রক্সি বসবে না)
     direct_external_urls = [
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
     ]
@@ -322,6 +325,7 @@ def generate_playlist():
                                 "raw_url": url,
                                 "referrer": ref,
                                 "category": category,
+                                "use_proxy": False, # নতুন দুটির জন্য প্রক্সি বসবে না
                                 "res_score": get_resolution_score(name),
                                 "base_name": get_base_movie_name(name)
                             })
@@ -384,7 +388,12 @@ def generate_playlist():
 
         for m in final_movies:
             category = m.get("category", "My Collection")
-            final_logo = get_proxied_logo(m["logo"])
+            
+            # ফ্ল্যাগ চেক করে প্রথমটির জন্য প্রক্সি বসবে, বাকি দুটির জন্য সরাসরি অরিজিনাল লোগো থাকবে
+            if m.get("use_proxy", True):
+                final_logo = get_proxied_logo(m["logo"])
+            else:
+                final_logo = m["logo"]
             
             entry_str = (
                 f'#EXTINF:-1 tvg-logo="{final_logo}" group-title="VOD;{category}",'
