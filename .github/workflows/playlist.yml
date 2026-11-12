@@ -9,7 +9,7 @@ on:
     inputs:
       check_external:
         description: 'Check external dead links? (True/False)'
-        required: true
+        required: false
         type: boolean
         default: false
 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Run Playlist Generator
         env:
-          CHECK_EXTERNAL_CHECK: ${{ github.event.inputs.check_external }}
+          CHECK_EXTERNAL_CHECK: ${{ github.event.inputs.check_external || 'false' }}
         run: python generate_playlist.py
 
       - name: Commit and push if playlist changed
