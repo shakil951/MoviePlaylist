@@ -283,7 +283,6 @@ def generate_playlist():
 
     # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়া সরাসরি, অরিজিনাল লোগো ও সঠিক গ্রুপসহ)
     direct_external_urls = [
-        "https://raw.githubusercontent.com/Babuperumana/movies_m3u/refs/heads/main/playlist.m3u",
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
     ]
 
