@@ -2,10 +2,10 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 12-Nov-2026 09:34:10 PM (+06)
+# Last Updated     : 12-Nov-2026 10:00:48 PM (+06)
 # Active Subdomain : ywerf
-# Total Unique VOD : 17157
-# Dupes Removed    : 10317
+# Total Unique VOD : 17160
+# Dupes Removed    : 10319
 # ==========================================
 
 #EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://ywerf.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E121-128 BongoBD WEB-DL 1080P
@@ -52518,6 +52518,15 @@ https://dl.ctgfun.com/disk2/South%20Indian%20Movies/Naan%20%5B2012%5D%20Tamil%20
 
 #EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://ctgmovies.com/imgcache/4f/4f71f4561f8f8ecf914f140dc28e54061dbf852a.webp" group-title="VOD;Movies", Magadheera
 https://dl.ctgfun.com/disk2/South%20Indian%20Movies/Magadheera(2013)Hindi%20720P%20DTHRip%20x264%20Team%20DDH~RG%20Exclusive/Magadheera%282013%29Hindi%20720P%20DTHRip%20x264%20Team%20DDH~RG%20Exclusive.mp4
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://dl.ctgfun.com/disk3/Asian%20Movies/Alive.2020.KOREAN.1080p.WEBRip.x264%20%5BDDN%5D/Alive.2020.KOREAN.1080p.WEBRip.x264%20%5BDDN%5D.mp4" group-title="VOD;My Collection", https://ctgmovies.com/imgcache/fe/fee3af344bb354336f28c6eda401a1c0c208e8f8.webp
+https://ctgmovies.com/imgcache/19/19ef659956c4e8a35e4f659626010b4f873969e4.webp
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://ctgmovies.com/imgcache/5d/5dd121c99e7c3b6285ab85ae7e611f9ea025473f.webp" group-title="VOD;My Collection", https://dl.ctgfun.com/disk3/Asian%20Movies/FriendButMarried/FriendButMarried.2018.INDONESIAN.1080p.WEBRip.x264%20%5BDDN%5D/FriendButMarried.2018.INDONESIAN.1080p.WEBRip.x264%20%5BDDN%5D.mp4
+https://dl.ctgfun.com/disk3/Asian%20Movies/FriendButMarried/FriendButMarried.2.2020.INDONESIAN.1080p.WEBRip.x264%20%5BDDN%5D/FriendButMarried.2.2020.INDONESIAN.1080p.WEBRip.x264%20%5BDDN%5D.mp4
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://media.ctgfun.com/disk3/Hindi%20Movies/2019/Yaaram.2019.1080p.DON.WEB-DL.Vorbis.2.0.x264%20%5BDDN%5D/Yaaram.2019.1080p.DON.WEB-DL.Vorbis.2.0.x264%20%5BDDN%5D.mkv" group-title="VOD;My Collection", https://ctgmovies.com/imgcache/61/61bb47c761b862ade1862a8f4f3a31600b58d315.webp
+https://ctgmovies.com/imgcache/55/550a710e0d0e82ff02597ac2a34abe0a06c651f3.webp
 
 #EXTINF:-1 tvg-logo="https://ctgmovies.com/imgcache/1e/1e85cf19f2d18159c02f60ff3daf31e261298c58.webp" group-title="VOD;Movies", BTS THE COMEBACK LIVE | ARIRANG | Movies
 https://media.ctgfun.com/disk6/Asian%20Movies/BTS.The.Comeback.Live.Arirang.2026.1080p.WEBRip.x264%20%5BDDN%5D/BTS.The.Comeback.Live.Arirang.2026.1080p.WEBRip.x264%20%5BDDN%5D.mp4
