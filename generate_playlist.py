@@ -10,8 +10,9 @@ INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
 DEVELOPER_NAME = "FARABI"
 BASE_CHECK_URL = "https://fibwatch.art/"
+FALLBACK_SUBDOMAIN = "ywerf"
 
-# আপনার নতুন ইমেজ প্রক্সি ওয়ার্কার লিংক
+# ইমেজ প্রক্সি ওয়ার্কার লিংক
 IMAGE_PROXY_BASE = "https://image-proxy.usergamil15.workers.dev/?url="
 
 DEFAULT_HEADERS = {
@@ -22,7 +23,7 @@ DEFAULT_HEADERS = {
     "Referer": "https://fibwatch.art/",
 }
 
-# কানেকশন দ্রুত করার জন্য গ্লোবাল সেশন ব্যবহার
+# কানেকশন দ্রুত করার জন্য গ্লোবাল সেশন
 session = requests.Session()
 adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100)
 session.mount('http://', adapter)
@@ -38,32 +39,73 @@ def get_proxied_logo(logo_url):
     return f"{IMAGE_PROXY_BASE}{logo_url}"
 
 
-def get_active_subdomain():
-    headers = {"User-Agent": DEFAULT_HEADERS["User-Agent"]}
-    try:
-        response = session.get(BASE_CHECK_URL, headers=headers, timeout=10)
-        print(f"[*] Base URL Status Code: {response.status_code}")
-        
-        # হাইফেন (-) এবং বড়-ছোট হাতের অক্ষর সাপোর্ট করার জন্য রেজেক্স
-        match = re.search(r'https?://([a-zA-Z0-9\-]+)\.b-cdn\.net', response.text, re.IGNORECASE)
-        if match:
-            subdomain = match.group(1)
-            print(f"[*] Live CDN Subdomain Found: {subdomain}")
-            return subdomain
-        else:
-            print("[!] Warning: Subdomain pattern not found in response text!")
-    except Exception as e:
-        print(f"[!] CDN check warning: {e}")
+def get_active_subdomain(sample_bcdn_url=None):
+    """ওয়েবসাইট থেকে নিখুঁতভাবে লাইভ b-cdn.net সাবডোমেইন খুঁজে বের করবে"""
+    headers = {
+        "User-Agent": DEFAULT_HEADERS["User-Agent"],
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+    }
     
-    # সাইট থেকে ডিরেক্ট না পেলে বর্তমান লাইভ সাবডোমেন ফলব্যাক হিসেবে কাজ করবে
-    return "ywerf"
+    # সম্ভাব্য যেসব পেজে CDN লিংক থাকতে পারে
+    urls_to_probe = [
+        BASE_CHECK_URL,
+        f"{BASE_CHECK_URL}movies",
+        f"{BASE_CHECK_URL}latest",
+    ]
+
+    # সাধারণ এবং JSON/JS escaped (যেমন https:\/\/abc.b-cdn.net) উভয় প্যাটার্ন ধরার রেজেক্স
+    cdn_pattern = re.compile(r'(?:https?:)?(?:\\/|/){2}([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
+
+    for probe_url in urls_to_probe:
+        try:
+            response = session.get(probe_url, headers=headers, timeout=10, allow_redirects=True)
+            print(f"[*] Probing {probe_url} -> Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                matches = cdn_pattern.findall(response.text)
+                # 'vz-' বা ভ্যালিড সাবডোমেইন ফিল্টার করা
+                valid_subs = [m for m in matches if m.lower() not in ["www", "cdn", "static"]]
+                if valid_subs:
+                    # সবচেয়ে বেশিবার আসা সাবডোমেইনটি বেছে নেওয়া (সবচেয়ে নির্ভরযোগ্য)
+                    best_subdomain = max(set(valid_subs), key=valid_subs.count)
+                    print(f"[✓] Live CDN Subdomain Detected: {best_subdomain}")
+                    return best_subdomain
+        except Exception as e:
+            print(f"[!] Probe warning for {probe_url}: {e}")
+
+    # যদি ওয়েবসাইট ব্লক থাকে বা সাবডোমেইন না পাওয়া যায়, তবে movies.txt এর স্যাম্পল লিংক টেস্ট করা
+    if sample_bcdn_url:
+        old_match = re.search(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', sample_bcdn_url, re.IGNORECASE)
+        if old_match:
+            existing_sub = old_match.group(1)
+            try:
+                test_res = session.get(
+                    sample_bcdn_url,
+                    headers={**DEFAULT_HEADERS, "Range": "bytes=0-512"},
+                    timeout=5,
+                    stream=True
+                )
+                test_res.close()
+                if test_res.status_code in [200, 206, 301, 302]:
+                    print(f"[✓] Existing Subdomain Still Active: {existing_sub}")
+                    return existing_sub
+            except Exception:
+                pass
+
+    print(f"[!] Using Fallback Subdomain: {FALLBACK_SUBDOMAIN}")
+    return FALLBACK_SUBDOMAIN
 
 
 def update_cdn_domain(text_block, active_subdomain):
-    if not text_block:
+    """যেকোনো টেক্সট বা URL-এ থাকা পুরোনো b-cdn.net সাবডোমেইনকে নতুনটি দিয়ে রিপ্লেস করবে"""
+    if not text_block or not active_subdomain:
         return text_block
     return re.sub(
-        r"[a-zA-Z0-9\-]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block, flags=re.IGNORECASE
+        r"(?<=://)[a-zA-Z0-9\-]+(?=\.b-cdn\.net)",
+        active_subdomain,
+        text_block,
+        flags=re.IGNORECASE
     )
 
 
@@ -110,12 +152,11 @@ def check_single_movie(raw_item, active_subdomain):
     req_headers["Range"] = "bytes=0-1024"
 
     try:
-        # দ্রুত স্কিপ করার জন্য timeout ৫ সেকেন্ড করা হয়েছে
         res = session.get(
             updated_url, headers=req_headers, stream=True, timeout=5, allow_redirects=True
         )
         valid_codes = [200, 206, 301, 302, 307, 308, 416]
-        res.close()  # মেমোরি ও কানেকশন দ্রুত ফ্রি করার জন্য
+        res.close()
 
         if res.status_code in valid_codes:
             print(f"[ACTIVE] -> {name[:40]}")
@@ -139,7 +180,7 @@ def check_single_movie(raw_item, active_subdomain):
         return None
 
 
-def parse_external_m3u(text_content, active_subdomain, update_cdn=True, use_proxy=True):
+def parse_external_m3u(text_content, active_subdomain, use_proxy=True):
     lines = [line.strip() for line in text_content.splitlines() if line.strip()]
     parsed_items = []
     i = 0
@@ -150,8 +191,8 @@ def parse_external_m3u(text_content, active_subdomain, update_cdn=True, use_prox
         if current.startswith("#EXTINF:"):
             logo_match = re.search(r'tvg-logo="([^"]*)"', current)
             logo = logo_match.group(1) if logo_match else ""
-            if update_cdn:
-                logo = update_cdn_domain(logo, active_subdomain)
+            # সব এক্সটার্নাল প্লেলিস্টের লোগোতেও b-cdn.net থাকলে তা আপডেট হবে
+            logo = update_cdn_domain(logo, active_subdomain)
             
             category = "Others"
             match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
@@ -171,9 +212,7 @@ def parse_external_m3u(text_content, active_subdomain, update_cdn=True, use_prox
                 if "http-referrer=" in lines[i]:
                     ref = lines[i].replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
                 elif lines[i].startswith("http://") or lines[i].startswith("https://"):
-                    url = lines[i]
-                    if update_cdn:
-                        url = update_cdn_domain(url, active_subdomain)
+                    url = update_cdn_domain(lines[i], active_subdomain)
                     i += 1
                     break
                 i += 1
@@ -202,8 +241,13 @@ def generate_playlist():
         print(f"Error: {INPUT_FILE} not found!")
         return
 
-    active_subdomain = get_active_subdomain()
     raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
+
+    # movies.txt থেকে একটি স্যাম্পল b-cdn.net লিংক খুঁজে বের করা (ভ্যালিডেশনের জন্য)
+    sample_bcdn = next((line.strip() for line in raw_lines if ".b-cdn.net" in line and line.strip().startswith("http")), None)
+    
+    # পারফেক্ট সাবডোমেইন ডিটেকশন
+    active_subdomain = get_active_subdomain(sample_bcdn)
 
     lines = [
         line.strip() for line in raw_lines 
@@ -281,14 +325,14 @@ def generate_playlist():
         try:
             ext_res = session.get(external_url, timeout=15)
             if ext_res.status_code == 200:
-                parsed_ext = parse_external_m3u(ext_res.text, active_subdomain, update_cdn=True, use_proxy=True)
+                parsed_ext = parse_external_m3u(ext_res.text, active_subdomain, use_proxy=True)
                 external_movies.extend(parsed_ext)
             else:
                 print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
         except Exception as e:
             print(f"[!] Error fetching external playlist: {e}")
 
-    # ২. নতুন দুটি প্লেলিস্ট লিংক (অরিজিনাল লোগো ও সরাসরি গ্রুপসহ)
+    # ২. নতুন দুটি প্লেলিস্ট লিংক (CDN আপডেটসহ, কিন্তু ইমেজ প্রক্সি ছাড়া)
     direct_external_urls = [
         "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/ftp_movie.m3u",
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
@@ -299,14 +343,14 @@ def generate_playlist():
         try:
             d_res = session.get(d_url, timeout=15)
             if d_res.status_code == 200:
-                parsed_direct = parse_external_m3u(d_res.text, active_subdomain, update_cdn=False, use_proxy=False)
+                parsed_direct = parse_external_m3u(d_res.text, active_subdomain, use_proxy=False)
                 external_movies.extend(parsed_direct)
             else:
                 print(f"[!] Failed to fetch direct playlist. HTTP {d_res.status_code}")
         except Exception as e:
             print(f"[!] Error fetching direct playlist: {e}")
 
-    # ডেড লিংক ভ্যালিডেশন (একবারে সব আইটেম ১০০ থ্রেডে চেক হবে, ডাবল চেক হবে না)
+    # ডেড লিংক ভ্যালিডেশন (১০০ ফাস্ট ওয়ার্কার দিয়ে একবারেই চেক)
     if run_full_check:
         all_items_to_check = processed_local_items + external_movies
         print(f"[*] Validating {len(all_items_to_check)} items with 100 fast workers...")
@@ -360,6 +404,7 @@ def generate_playlist():
             f.write(entry_str)
 
     print("\n" + "=" * 40)
+    print(f"[✓] Active Subdomain Used       : {active_subdomain}")
     print(f"[✓] Final Unique Playlist Count : {len(final_movies)}")
     print(f"[🔄] Lower-Res Dupes Removed      : {dedup_removed}")
     print(f"[✓] Updated: {OUTPUT_FILE}")
