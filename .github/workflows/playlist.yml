@@ -3,8 +3,6 @@ name: Update VOD Playlist
 on:
   push:
     branches: [ "main" ]
-  schedule:
-    - cron: '0 */1 * * *'
   workflow_dispatch:
     inputs:
       check_external:
@@ -13,9 +11,17 @@ on:
         type: boolean
         default: false
 
+# একাধিক রিকোয়েস্ট ওভারল্যাপ ঠেকানোর জন্য Concurrency লক
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -38,4 +44,10 @@ jobs:
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
           git add playlist.m3u movies.txt
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update playlist [skip ci]" && git push)
+          if ! git diff --staged --quiet; then
+            git commit -m "Auto-update playlist [skip ci]"
+            git pull origin main --rebase
+            git push
+          else
+            echo "No changes to commit."
+          fi
