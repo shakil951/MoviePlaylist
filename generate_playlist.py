@@ -47,14 +47,12 @@ def get_active_subdomain(sample_bcdn_url=None):
         "Accept-Language": "en-US,en;q=0.5",
     }
     
-    # সম্ভাব্য যেসব পেজে CDN লিংক থাকতে পারে
     urls_to_probe = [
         BASE_CHECK_URL,
         f"{BASE_CHECK_URL}movies",
         f"{BASE_CHECK_URL}latest",
     ]
 
-    # সাধারণ এবং JSON/JS escaped (যেমন https:\/\/abc.b-cdn.net) উভয় প্যাটার্ন ধরার রেজেক্স
     cdn_pattern = re.compile(r'(?:https?:)?(?:\\/|/){2}([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
 
     for probe_url in urls_to_probe:
@@ -64,17 +62,14 @@ def get_active_subdomain(sample_bcdn_url=None):
             
             if response.status_code == 200:
                 matches = cdn_pattern.findall(response.text)
-                # 'vz-' বা ভ্যালিড সাবডোমেইন ফিল্টার করা
                 valid_subs = [m for m in matches if m.lower() not in ["www", "cdn", "static"]]
                 if valid_subs:
-                    # সবচেয়ে বেশিবার আসা সাবডোমেইনটি বেছে নেওয়া (সবচেয়ে নির্ভরযোগ্য)
                     best_subdomain = max(set(valid_subs), key=valid_subs.count)
                     print(f"[✓] Live CDN Subdomain Detected: {best_subdomain}")
                     return best_subdomain
         except Exception as e:
             print(f"[!] Probe warning for {probe_url}: {e}")
 
-    # যদি ওয়েবসাইট ব্লক থাকে বা সাবডোমেইন না পাওয়া যায়, তবে movies.txt এর স্যাম্পল লিংক টেস্ট করা
     if sample_bcdn_url:
         old_match = re.search(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', sample_bcdn_url, re.IGNORECASE)
         if old_match:
@@ -98,7 +93,7 @@ def get_active_subdomain(sample_bcdn_url=None):
 
 
 def update_cdn_domain(text_block, active_subdomain):
-    """যেকোনো টেক্সট বা URL-এ থাকা পুরোনো b-cdn.net সাবডোমেইনকে নতুনটি দিয়ে রিপ্লেস করবে"""
+    """শুধুমাত্র নির্দিষ্ট আইটেমের পুরোনো b-cdn.net সাবডোমেইনকে নতুনটি দিয়ে রিপ্লেস করবে"""
     if not text_block or not active_subdomain:
         return text_block
     return re.sub(
@@ -138,6 +133,7 @@ def get_base_movie_name(name):
 
 
 def check_single_movie(raw_item, active_subdomain):
+    """শুধুমাত্র লোকাল ও মেইন Fibwatch প্লেলিস্টের লিংক চেক করবে"""
     name = raw_item["name"]
     updated_logo = update_cdn_domain(raw_item.get("logo", ""), active_subdomain)
     updated_url = update_cdn_domain(raw_item.get("url", ""), active_subdomain)
@@ -163,12 +159,10 @@ def check_single_movie(raw_item, active_subdomain):
             return {
                 "name": name,
                 "logo": updated_logo,
-                "raw_logo": raw_item.get("raw_logo", raw_item.get("logo", "")),
                 "url": updated_url,
-                "raw_url": raw_item.get("raw_url", raw_item.get("url", "")),
                 "referrer": referrer,
                 "category": raw_item.get("category", "My Collection"),
-                "use_proxy": raw_item.get("use_proxy", True),
+                "use_proxy": True,
                 "res_score": get_resolution_score(name),
                 "base_name": get_base_movie_name(name)
             }
@@ -180,7 +174,8 @@ def check_single_movie(raw_item, active_subdomain):
         return None
 
 
-def parse_external_m3u(text_content, active_subdomain, use_proxy=True):
+def parse_m3u_content(text_content, active_subdomain=None, apply_fibwatch_logic=False):
+    """M3U পার্স করবে; apply_fibwatch_logic=True হলেই কেবল সাবডোমেইন ও প্রক্সি সেট হবে"""
     lines = [line.strip() for line in text_content.splitlines() if line.strip()]
     parsed_items = []
     i = 0
@@ -191,8 +186,8 @@ def parse_external_m3u(text_content, active_subdomain, use_proxy=True):
         if current.startswith("#EXTINF:"):
             logo_match = re.search(r'tvg-logo="([^"]*)"', current)
             logo = logo_match.group(1) if logo_match else ""
-            # সব এক্সটার্নাল প্লেলিস্টের লোগোতেও b-cdn.net থাকলে তা আপডেট হবে
-            logo = update_cdn_domain(logo, active_subdomain)
+            if apply_fibwatch_logic and active_subdomain:
+                logo = update_cdn_domain(logo, active_subdomain)
             
             category = "Others"
             match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
@@ -212,7 +207,9 @@ def parse_external_m3u(text_content, active_subdomain, use_proxy=True):
                 if "http-referrer=" in lines[i]:
                     ref = lines[i].replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
                 elif lines[i].startswith("http://") or lines[i].startswith("https://"):
-                    url = update_cdn_domain(lines[i], active_subdomain)
+                    url = lines[i]
+                    if apply_fibwatch_logic and active_subdomain:
+                        url = update_cdn_domain(url, active_subdomain)
                     i += 1
                     break
                 i += 1
@@ -221,12 +218,10 @@ def parse_external_m3u(text_content, active_subdomain, use_proxy=True):
                 parsed_items.append({
                     "name": f"{name} | {category}",
                     "logo": logo,
-                    "raw_logo": logo,
                     "url": url,
-                    "raw_url": url,
                     "referrer": ref,
                     "category": category,
-                    "use_proxy": use_proxy,
+                    "use_proxy": apply_fibwatch_logic,
                     "res_score": get_resolution_score(name),
                     "base_name": get_base_movie_name(name)
                 })
@@ -242,11 +237,9 @@ def generate_playlist():
         return
 
     raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
-
-    # movies.txt থেকে একটি স্যাম্পল b-cdn.net লিংক খুঁজে বের করা (ভ্যালিডেশনের জন্য)
     sample_bcdn = next((line.strip() for line in raw_lines if ".b-cdn.net" in line and line.strip().startswith("http")), None)
     
-    # পারফেক্ট সাবডোমেইন ডিটেকশন
+    # লাইভ সাবডোমেইন ডিটেকশন
     active_subdomain = get_active_subdomain(sample_bcdn)
 
     lines = [
@@ -288,7 +281,8 @@ def generate_playlist():
         else:
             i += 1
 
-    processed_local_items = []
+    # ১. লোকাল movies.txt আইটেম প্রসেস (সাবডোমেইন আপডেট + প্রক্সি সহ)
+    fibwatch_items_pool = []
     for item in local_parsed_items:
         raw_name = item["name"]
         if "|" in raw_name:
@@ -299,15 +293,10 @@ def generate_playlist():
             clean_name = raw_name.strip()
             cat = "My Collection"
         
-        updated_logo = update_cdn_domain(item["logo"], active_subdomain)
-        updated_url = update_cdn_domain(item["url"], active_subdomain)
-
-        processed_local_items.append({
+        fibwatch_items_pool.append({
             "name": clean_name,
-            "logo": updated_logo,
-            "raw_logo": item["logo"],
-            "url": updated_url,
-            "raw_url": item["url"],
+            "logo": update_cdn_domain(item["logo"], active_subdomain),
+            "url": update_cdn_domain(item["url"], active_subdomain),
             "referrer": item["referrer"],
             "category": cat,
             "use_proxy": True,
@@ -315,67 +304,67 @@ def generate_playlist():
             "base_name": get_base_movie_name(clean_name)
         })
 
-    run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
-    external_movies = []
-    
-    # ১. প্রথম প্লেলিস্ট লিংক (প্রক্সি ও CDN আপডেটসহ)
-    if run_full_check:
-        external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
-        print(f"[*] Fetching external playlist: {external_url}")
-        try:
-            ext_res = session.get(external_url, timeout=15)
-            if ext_res.status_code == 200:
-                parsed_ext = parse_external_m3u(ext_res.text, active_subdomain, use_proxy=True)
-                external_movies.extend(parsed_ext)
-            else:
-                print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
-        except Exception as e:
-            print(f"[!] Error fetching external playlist: {e}")
+    # ২. মেইন এক্সটার্নাল লিংক (All_movie.m3u) -> অটো ও ম্যানুয়াল উভয় মোডেই নতুন লিংক নিয়ে আসবে (সাবডোমেইন আপডেট ও প্রক্সি সহ)
+    main_external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
+    print(f"[*] Fetching main Fibwatch playlist: {main_external_url}")
+    try:
+        ext_res = session.get(main_external_url, timeout=15)
+        if ext_res.status_code == 200:
+            parsed_main_ext = parse_m3u_content(ext_res.text, active_subdomain, apply_fibwatch_logic=True)
+            fibwatch_items_pool.extend(parsed_main_ext)
+            print(f"[✓] Fetched {len(parsed_main_ext)} items from All_movie.m3u")
+        else:
+            print(f"[!] Failed to fetch main external playlist. HTTP {ext_res.status_code}")
+    except Exception as e:
+        print(f"[!] Error fetching main external playlist: {e}")
 
-    # ২. নতুন দুটি প্লেলিস্ট লিংক (CDN আপডেটসহ, কিন্তু ইমেজ প্রক্সি ছাড়া)
-    direct_external_urls = [
+    # ৩. ডেড লিংক চেকিং: শুধুমাত্র আপনি ম্যানুয়ালি অ্যাকশন দিলে (CHECK_EXTERNAL_CHECK=true) চলবে
+    run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
+    if run_full_check:
+        print(f"[*] Manual Check Mode: Validating {len(fibwatch_items_pool)} Fibwatch/Local items with 100 fast workers...")
+        validated_fibwatch_items = []
+        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+            futures = [executor.submit(check_single_movie, item, active_subdomain) for item in fibwatch_items_pool]
+            for f in concurrent.futures.as_completed(futures):
+                result = f.result()
+                if result:
+                    validated_fibwatch_items.append(result)
+    else:
+        print("[*] Auto Mode: Imported all new & existing links without HTTP dead-link check.")
+        validated_fibwatch_items = fibwatch_items_pool
+
+    # ৪. বাকি দুটি এক্সটার্নাল লিংক (কোনো চেকিং, সাবডোমেইন বা ইমেজ প্রক্সি ছাড়াই সরাসরি যুক্ত হবে)
+    direct_passthrough_urls = [
         "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/ftp_movie.m3u",
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
     ]
 
-    for d_url in direct_external_urls:
-        print(f"[*] Fetching direct external playlist: {d_url}")
+    passthrough_items = []
+    for d_url in direct_passthrough_urls:
+        print(f"[*] Fetching direct passthrough playlist: {d_url}")
         try:
             d_res = session.get(d_url, timeout=15)
             if d_res.status_code == 200:
-                parsed_direct = parse_external_m3u(d_res.text, active_subdomain, use_proxy=False)
-                external_movies.extend(parsed_direct)
+                parsed_direct = parse_m3u_content(d_res.text, active_subdomain=None, apply_fibwatch_logic=False)
+                passthrough_items.extend(parsed_direct)
             else:
-                print(f"[!] Failed to fetch direct playlist. HTTP {d_res.status_code}")
+                print(f"[!] Failed to fetch passthrough playlist. HTTP {d_res.status_code}")
         except Exception as e:
-            print(f"[!] Error fetching direct playlist: {e}")
+            print(f"[!] Error fetching passthrough playlist: {e}")
 
-    # ডেড লিংক ভ্যালিডেশন (১০০ ফাস্ট ওয়ার্কার দিয়ে একবারেই চেক)
-    if run_full_check:
-        all_items_to_check = processed_local_items + external_movies
-        print(f"[*] Validating {len(all_items_to_check)} items with 100 fast workers...")
-        active_movies_raw = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-            futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_items_to_check]
-            for f in concurrent.futures.as_completed(futures):
-                result = f.result()
-                if result:
-                    active_movies_raw.append(result)
-        final_active_items = active_movies_raw
-    else:
-        print("[*] Auto mode: Skipping HTTP checks for lightning speed.")
-        final_active_items = processed_local_items + external_movies
+    # সব আইটেম একত্র করা
+    all_final_candidates = validated_fibwatch_items + passthrough_items
 
     # ডুপ্লিকেট রিমুভ এবং সর্বোচ্চ রেজোলিউশন বাছাই
     movie_dict = {}
-    for m in final_active_items:
+    for m in all_final_candidates:
         b_name = m["base_name"]
         score = m["res_score"]
         if b_name not in movie_dict or score > movie_dict[b_name]["res_score"]:
             movie_dict[b_name] = m
             
     final_movies = list(movie_dict.values())
-    dedup_removed = len(final_active_items) - len(final_movies)
+    dedup_removed = len(all_final_candidates) - len(final_movies)
 
     # প্লেলিস্ট ফাইল রাইট করা
     current_time_str = get_current_time()
@@ -392,7 +381,7 @@ def generate_playlist():
 
         for m in final_movies:
             category = m.get("category", "My Collection")
-            final_logo = get_proxied_logo(m["logo"]) if m.get("use_proxy", True) else m["logo"]
+            final_logo = get_proxied_logo(m["logo"]) if m.get("use_proxy") else m["logo"]
             
             entry_str = (
                 f'#EXTINF:-1 tvg-logo="{final_logo}" group-title="VOD;{category}",'
