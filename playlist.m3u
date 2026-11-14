@@ -2,23 +2,23 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 14-Nov-2026 04:00:39 PM (+06)
-# Active Subdomain : hertf
+# Last Updated     : 14-Nov-2026 05:00:42 PM (+06)
+# Active Subdomain : ywerf
 # Total Unique VOD : 10131
 # Dupes Removed    : 196
 # ==========================================
 
-#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://hertf.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E121-128 BongoBD WEB-DL 1080P
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://ywerf.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E121-128 BongoBD WEB-DL 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://hertf.b-cdn.net/s3/upload/videos/2026/10/[Fibwatch.Com]Bachelor.Point.S05E121-128.1080p.mkv
+https://ywerf.b-cdn.net/s3/upload/videos/2026/10/[Fibwatch.Com]Bachelor.Point.S05E121-128.1080p.mkv
 
-#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://hertf.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E113-120 BongoBD WEB-DL 1080P
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://ywerf.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E113-120 BongoBD WEB-DL 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://hertf.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bachelor.Point.S05E113-120.1080p.mkv
+https://ywerf.b-cdn.net/s3/upload/videos/2026/09/[Fibwatch.Com]Bachelor.Point.S05E113-120.1080p.mkv
 
-#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://hertf.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://ywerf.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E105-112 BongoBD WEB-DL 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
-https://hertf.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv
+https://ywerf.b-cdn.net/s3/upload/videos/2026/08/[Fibwatch.Com]Bachelor.Point.S05E105-112.1080p.n.mkv
 
 #EXTINF:-1 tvg-logo="https://ctgmovies.com/imgcache/82/82202b83b0aa779409f73b4efae538ba3dcb5581.webp" group-title="VOD;Movies", Sacrifice | Movies
 https://ftp.ctgfun.com/English/Sacrifice%20(2026)%20Hindi%20English%201080p%20WEBRip%20x264%20ESub%20%5BDDN%5D/Sacrifice%20%282026%29%20Hindi%20English%201080p%20WEBRip%20x264%20ESub%20%5BDDN%5D.mp4
