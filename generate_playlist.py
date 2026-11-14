@@ -369,19 +369,6 @@ def generate_playlist():
     final_movies = list(movie_dict.values())
     dedup_removed = len(final_active_items) - len(final_movies)
 
-    # অটো এবং ম্যানুয়াল উভয় মোডেই movies.txt ফাইলটি আপডেট হবে
-    with open(INPUT_FILE, "w", encoding="utf-8") as f:
-        for m in final_movies:
-            name_to_save = m['name']
-            if "|" not in name_to_save and m.get("category"):
-                name_to_save = f"{m['name']} | {m['category']}"
-            f.write(f"{name_to_save}\n")
-            f.write(f"{m['raw_logo']}\n")
-            f.write(f"{m['raw_url']}\n")
-            if m.get("referrer"):
-                f.write(f"http-referrer={m['referrer']}\n")
-            f.write("\n")
-
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
