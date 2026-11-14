@@ -264,7 +264,7 @@ def generate_playlist():
     
     # ১. প্রথম প্লেলিস্ট লিংক (চেকসহ এবং প্রক্সি সহ)
     if run_full_check:
-        external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
+        external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
         print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
         try:
             ext_res = requests.get(external_url, timeout=15)
@@ -284,6 +284,7 @@ def generate_playlist():
 
     # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়া সরাসরি, অরিজিনাল লোগো ও সঠিক গ্রুপসহ)
     direct_external_urls = [
+        "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/ftp_movie.m3u"
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
     ]
 
