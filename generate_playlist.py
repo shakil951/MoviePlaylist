@@ -22,6 +22,13 @@ DEFAULT_HEADERS = {
     "Referer": "https://fibwatch.art/",
 }
 
+# কানেকশন দ্রুত করার জন্য গ্লোবাল সেশন ব্যবহার
+session = requests.Session()
+adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100)
+session.mount('http://', adapter)
+session.mount('https://', adapter)
+
+
 def get_proxied_logo(logo_url):
     """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
     if not logo_url:
@@ -34,10 +41,10 @@ def get_proxied_logo(logo_url):
 def get_active_subdomain():
     headers = {"User-Agent": DEFAULT_HEADERS["User-Agent"]}
     try:
-        response = requests.get(BASE_CHECK_URL, headers=headers, timeout=10)
+        response = session.get(BASE_CHECK_URL, headers=headers, timeout=10)
         print(f"[*] Base URL Status Code: {response.status_code}")
         
-        # হাইফেন (-) এবং বড়-ছোট হাতের অক্ষর সাপোর্ট করার জন্য রেজেক্স আপডেট করা হয়েছে
+        # হাইফেন (-) এবং বড়-ছোট হাতের অক্ষর সাপোর্ট করার জন্য রেজেক্স
         match = re.search(r'https?://([a-zA-Z0-9\-]+)\.b-cdn\.net', response.text, re.IGNORECASE)
         if match:
             subdomain = match.group(1)
@@ -55,7 +62,6 @@ def get_active_subdomain():
 def update_cdn_domain(text_block, active_subdomain):
     if not text_block:
         return text_block
-    # হাইফেন সহ যেকোনো সাবডোমেন নিখুঁতভাবে রিপ্লেস করার রেজেক্স
     return re.sub(
         r"[a-zA-Z0-9\-]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block, flags=re.IGNORECASE
     )
@@ -104,10 +110,12 @@ def check_single_movie(raw_item, active_subdomain):
     req_headers["Range"] = "bytes=0-1024"
 
     try:
-        res = requests.get(
-            updated_url, headers=req_headers, stream=True, timeout=15, allow_redirects=True
+        # দ্রুত স্কিপ করার জন্য timeout ৫ সেকেন্ড করা হয়েছে
+        res = session.get(
+            updated_url, headers=req_headers, stream=True, timeout=5, allow_redirects=True
         )
         valid_codes = [200, 206, 301, 302, 307, 308, 416]
+        res.close()  # মেমোরি ও কানেকশন দ্রুত ফ্রি করার জন্য
 
         if res.status_code in valid_codes:
             print(f"[ACTIVE] -> {name[:40]}")
@@ -126,12 +134,12 @@ def check_single_movie(raw_item, active_subdomain):
         else:
             print(f"[DEAD - HTTP {res.status_code}] -> Removed: {name[:40]}")
             return None
-    except Exception as e:
-        print(f"[DEAD - {type(e).__name__}] -> Removed: {name[:40]}")
+    except Exception:
+        print(f"[DEAD - Timeout/Err] -> Removed: {name[:40]}")
         return None
 
 
-def parse_external_m3u(text_content, active_subdomain):
+def parse_external_m3u(text_content, active_subdomain, update_cdn=True, use_proxy=True):
     lines = [line.strip() for line in text_content.splitlines() if line.strip()]
     parsed_items = []
     i = 0
@@ -142,7 +150,8 @@ def parse_external_m3u(text_content, active_subdomain):
         if current.startswith("#EXTINF:"):
             logo_match = re.search(r'tvg-logo="([^"]*)"', current)
             logo = logo_match.group(1) if logo_match else ""
-            logo = update_cdn_domain(logo, active_subdomain)
+            if update_cdn:
+                logo = update_cdn_domain(logo, active_subdomain)
             
             category = "Others"
             match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
@@ -163,21 +172,22 @@ def parse_external_m3u(text_content, active_subdomain):
                     ref = lines[i].replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
                 elif lines[i].startswith("http://") or lines[i].startswith("https://"):
                     url = lines[i]
-                    url = update_cdn_domain(url, active_subdomain)
+                    if update_cdn:
+                        url = update_cdn_domain(url, active_subdomain)
                     i += 1
                     break
                 i += 1
 
             if url:
                 parsed_items.append({
-                    "name": name,
+                    "name": f"{name} | {category}",
                     "logo": logo,
                     "raw_logo": logo,
                     "url": url,
                     "raw_url": url,
                     "referrer": ref,
                     "category": category,
-                    "use_proxy": True,
+                    "use_proxy": use_proxy,
                     "res_score": get_resolution_score(name),
                     "base_name": get_base_movie_name(name)
                 })
@@ -195,7 +205,10 @@ def generate_playlist():
     active_subdomain = get_active_subdomain()
     raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
 
-    lines = [line.strip() for line in raw_lines if line.strip() and not line.startswith("##") and not (line.startswith("#") and not line.startswith("#EXT"))]
+    lines = [
+        line.strip() for line in raw_lines 
+        if line.strip() and not line.startswith("##") and not (line.startswith("#") and not line.startswith("#EXT"))
+    ]
 
     local_parsed_items = []
     i = 0
@@ -259,99 +272,48 @@ def generate_playlist():
         })
 
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
-    
     external_movies = []
     
-    # ১. প্রথম প্লেলিস্ট লিংক (চেকসহ এবং প্রক্সি সহ)
+    # ১. প্রথম প্লেলিস্ট লিংক (প্রক্সি ও CDN আপডেটসহ)
     if run_full_check:
         external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
-        print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
+        print(f"[*] Fetching external playlist: {external_url}")
         try:
-            ext_res = requests.get(external_url, timeout=15)
+            ext_res = session.get(external_url, timeout=15)
             if ext_res.status_code == 200:
-                parsed_ext = parse_external_m3u(ext_res.text, active_subdomain)
-                with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
-                    futures = [executor.submit(check_single_movie, item, active_subdomain) for item in parsed_ext]
-                    for f in futures:
-                        res = f.result()
-                        if res:
-                            res["name"] = f"{res['name']} | {res['category']}"
-                            external_movies.append(res)
+                parsed_ext = parse_external_m3u(ext_res.text, active_subdomain, update_cdn=True, use_proxy=True)
+                external_movies.extend(parsed_ext)
             else:
                 print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
         except Exception as e:
             print(f"[!] Error fetching external playlist: {e}")
 
-    # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়া সরাসরি, অরিজিনাল লোগো ও সঠিক গ্রুপসহ)
+    # ২. নতুন দুটি প্লেলিস্ট লিংক (অরিজিনাল লোগো ও সরাসরি গ্রুপসহ)
     direct_external_urls = [
         "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/ftp_movie.m3u",
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
     ]
 
     for d_url in direct_external_urls:
-        print(f"[*] Fetching direct external playlist (No Check, Original Logos): {d_url}")
+        print(f"[*] Fetching direct external playlist: {d_url}")
         try:
-            d_res = requests.get(d_url, timeout=15)
+            d_res = session.get(d_url, timeout=15)
             if d_res.status_code == 200:
-                lines = [line.strip() for line in d_res.text.splitlines() if line.strip()]
-                idx = 0
-                total_lines = len(lines)
-                while idx < total_lines:
-                    current = lines[idx]
-                    if current.startswith("#EXTINF:"):
-                        logo_match = re.search(r'tvg-logo="([^"]*)"', current)
-                        logo = logo_match.group(1) if logo_match else ""
-                        
-                        category = "Others"
-                        match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
-                        if match_quotes:
-                            category = match_quotes.group(2).strip()
-                        else:
-                            match_no_quotes = re.search(r'(?i)\bgroup-title\s*=\s*([^\s,]+)', current)
-                            if match_no_quotes:
-                                category = match_no_quotes.group(1).strip()
-
-                        name = current.split(",")[-1].strip()
-
-                        idx += 1
-                        ref = None
-                        url = None
-                        while idx < total_lines and not lines[idx].startswith("#EXTINF:"):
-                            if "http-referrer=" in lines[idx]:
-                                ref = lines[idx].replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
-                            elif lines[idx].startswith("http://") or lines[idx].startswith("https://"):
-                                url = lines[idx]
-                                idx += 1
-                                break
-                            idx += 1
-
-                        if url:
-                            external_movies.append({
-                                "name": f"{name} | {category}",
-                                "logo": logo,
-                                "raw_logo": logo,
-                                "url": url,
-                                "raw_url": url,
-                                "referrer": ref,
-                                "category": category,
-                                "use_proxy": False,
-                                "res_score": get_resolution_score(name),
-                                "base_name": get_base_movie_name(name)
-                            })
-                    else:
-                        idx += 1
+                parsed_direct = parse_external_m3u(d_res.text, active_subdomain, update_cdn=False, use_proxy=False)
+                external_movies.extend(parsed_direct)
             else:
                 print(f"[!] Failed to fetch direct playlist. HTTP {d_res.status_code}")
         except Exception as e:
             print(f"[!] Error fetching direct playlist: {e}")
 
+    # ডেড লিংক ভ্যালিডেশন (একবারে সব আইটেম ১০০ থ্রেডে চেক হবে, ডাবল চেক হবে না)
     if run_full_check:
         all_items_to_check = processed_local_items + external_movies
-        print(f"[*] Manual mode: Validating all items...")
+        print(f"[*] Validating {len(all_items_to_check)} items with 100 fast workers...")
         active_movies_raw = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
             futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_items_to_check]
-            for f in futures:
+            for f in concurrent.futures.as_completed(futures):
                 result = f.result()
                 if result:
                     active_movies_raw.append(result)
@@ -360,6 +322,7 @@ def generate_playlist():
         print("[*] Auto mode: Skipping HTTP checks for lightning speed.")
         final_active_items = processed_local_items + external_movies
 
+    # ডুপ্লিকেট রিমুভ এবং সর্বোচ্চ রেজোলিউশন বাছাই
     movie_dict = {}
     for m in final_active_items:
         b_name = m["base_name"]
@@ -370,6 +333,7 @@ def generate_playlist():
     final_movies = list(movie_dict.values())
     dedup_removed = len(final_active_items) - len(final_movies)
 
+    # প্লেলিস্ট ফাইল রাইট করা
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
@@ -384,11 +348,7 @@ def generate_playlist():
 
         for m in final_movies:
             category = m.get("category", "My Collection")
-            
-            if m.get("use_proxy", True):
-                final_logo = get_proxied_logo(m["logo"])
-            else:
-                final_logo = m["logo"]
+            final_logo = get_proxied_logo(m["logo"]) if m.get("use_proxy", True) else m["logo"]
             
             entry_str = (
                 f'#EXTINF:-1 tvg-logo="{final_logo}" group-title="VOD;{category}",'
@@ -401,7 +361,7 @@ def generate_playlist():
 
     print("\n" + "=" * 40)
     print(f"[✓] Final Unique Playlist Count : {len(final_movies)}")
-    print(f"[🔄] Lower-Res Dupes Removed     : {dedup_removed}")
+    print(f"[🔄] Lower-Res Dupes Removed      : {dedup_removed}")
     print(f"[✓] Updated: {OUTPUT_FILE}")
     print("=" * 40)
 
