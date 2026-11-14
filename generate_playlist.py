@@ -37,8 +37,8 @@ def get_active_subdomain():
         response = requests.get(BASE_CHECK_URL, headers=headers, timeout=10)
         print(f"[*] Base URL Status Code: {response.status_code}")
         
-        # আরও ব্রড বা ফ্লেক্সিবল প্যাটার্ন যাতে লাইভ সাবডোমেন নিখুঁতভাবে ধরা পড়ে
-        match = re.search(r'https?://([a-z0-9]+)\.b-cdn\.net', response.text)
+        # হাইফেন (-) এবং বড়-ছোট হাতের অক্ষর সাপোর্ট করার জন্য রেজেক্স আপডেট করা হয়েছে
+        match = re.search(r'https?://([a-zA-Z0-9\-]+)\.b-cdn\.net', response.text, re.IGNORECASE)
         if match:
             subdomain = match.group(1)
             print(f"[*] Live CDN Subdomain Found: {subdomain}")
@@ -55,8 +55,9 @@ def get_active_subdomain():
 def update_cdn_domain(text_block, active_subdomain):
     if not text_block:
         return text_block
+    # হাইফেন সহ যেকোনো সাবডোমেন নিখুঁতভাবে রিপ্লেস করার রেজেক্স
     return re.sub(
-        r"[a-z0-9]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block
+        r"[a-zA-Z0-9\-]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block, flags=re.IGNORECASE
     )
 
 
@@ -281,7 +282,7 @@ def generate_playlist():
         except Exception as e:
             print(f"[!] Error fetching external playlist: {e}")
 
-    # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়া সরাসরি, অরিজিনাল লোগো ও সঠিক গ্রুপসহ)
+    # ২. নতুন দুটি প্লেলিস্ট লিংক (চেক ছাড়া সরাসরি, অরিজিনাল লোগো ও সঠিক গ্রুপসহ)
     direct_external_urls = [
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
     ]
@@ -368,7 +369,7 @@ def generate_playlist():
     final_movies = list(movie_dict.values())
     dedup_removed = len(final_active_items) - len(final_movies)
 
-    # অটো এবং ম্যানুয়াল উভয় মোডেই movies.txt ফাইলটি আপডেট হবে
+    # অটো এবং ম্যানুয়াল উভয় মোডেই movies.txt ফাইলটি আপডেট হবে
     with open(INPUT_FILE, "w", encoding="utf-8") as f:
         for m in final_movies:
             name_to_save = m['name']
