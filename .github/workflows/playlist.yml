@@ -3,6 +3,8 @@ name: Update VOD Playlist
 on:
   push:
     branches: [ "main" ]
+  schedule:
+    - cron: '0 */1 * * *' 
   workflow_dispatch:
     inputs:
       check_external:
@@ -17,7 +19,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+  ʊ runs-on: ubuntu-latest
     permissions:
       contents: write
 
@@ -46,7 +48,7 @@ jobs:
           git add -f playlist.m3u movies.txt
           git status
           if ! git diff --staged --quiet; then
-            git commit -m "Auto-update playlist [skip ci]"
+            git commit -m "Auto-update playlist via Cron/Manual [skip ci]"
             # নির্দিষ্ট ব্রাঞ্চে (main) পুশ করার সঠিক কমান্ড
             git push origin HEAD:main
           else
