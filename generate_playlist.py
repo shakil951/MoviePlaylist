@@ -12,6 +12,7 @@ OUTPUT_FILE = "playlist.m3u"
 DEVELOPER_NAME = "FARABI"
 BASE_CHECK_URL = "https://fibwatch.art/"
 FALLBACK_SUBDOMAIN = "ywerf"
+MAIN_EXTERNAL_URL = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
 
 # ইমেজ প্রক্সি ওয়ার্কার লিংক
 IMAGE_PROXY_BASE = "https://image-proxy.usergamil15.workers.dev/?url="
@@ -24,7 +25,6 @@ DEFAULT_HEADERS = {
     "Referer": "https://fibwatch.art/",
 }
 
-# কানেকশন দ্রুত করার জন্য এবং Cloudflare বাইপাস করার জন্য cloudscraper ব্যবহার
 session = cloudscraper.create_scraper(
     browser={
         'browser': 'chrome',
@@ -38,7 +38,6 @@ session.mount('https://', adapter)
 
 
 def get_proxied_logo(logo_url):
-    """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
     if not logo_url:
         return ""
     if "?url=" in logo_url:
@@ -47,72 +46,63 @@ def get_proxied_logo(logo_url):
 
 
 def get_active_subdomain(sample_bcdn_url=None):
-    """ওয়েবসাইট থেকে নিখুঁতভাবে লাইভ b-cdn.net সাবডোমেইন খুঁজে বের করবে"""
-    headers = {
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-    }
-    
+    """প্রথমে এক্সটার্নাল All_movie.m3u থেকে এবং পরে ওয়েবসাইট প্রোব করে লাইভ সাবডোমেইন বের করবে"""
+    cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
+
+    # ১. প্রথমে এক্সটার্নাল সোর্স থেকে নিখুঁত লাইভ সাবডোমেইন খোঁজার চেষ্টা করবে (সবচেয়ে নির্ভরযোগ্য)
+    print(f"[*] Fetching active subdomain from external source...")
+    try:
+        ext_res = session.get(MAIN_EXTERNAL_URL, timeout=15)
+        if ext_res.status_code == 200:
+            matches = cdn_pattern.findall(ext_res.text)
+            valid_subs = [m for m in matches if m.lower() not in ["www", "cdn", "static"]]
+            if valid_subs:
+                best_subdomain = max(set(valid_subs), key=valid_subs.count)
+                print(f"[✓] Live CDN Subdomain Detected from External Source: {best_subdomain}")
+                return best_subdomain
+    except Exception as e:
+        print(f"[!] Warning fetching external subdomain: {e}")
+
+    # ২. ওয়েবসাইট প্রোব করে খোঁজার চেষ্টা
     urls_to_probe = [
         BASE_CHECK_URL,
         f"{BASE_CHECK_URL}movies",
         f"{BASE_CHECK_URL}latest",
     ]
 
-    cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
-
     for probe_url in urls_to_probe:
         try:
-            response = session.get(probe_url, headers=headers, timeout=10, allow_redirects=True)
-            print(f"[*] Probing {probe_url} -> Status: {response.status_code}")
-            
+            response = session.get(probe_url, headers={"Accept": "text/html"}, timeout=10, allow_redirects=True)
             if response.status_code == 200:
                 matches = cdn_pattern.findall(response.text)
                 valid_subs = [m for m in matches if m.lower() not in ["www", "cdn", "static"]]
                 if valid_subs:
                     best_subdomain = max(set(valid_subs), key=valid_subs.count)
-                    print(f"[✓] Live CDN Subdomain Detected: {best_subdomain}")
+                    print(f"[✓] Live CDN Subdomain Detected from Web: {best_subdomain}")
                     return best_subdomain
-                else:
-                    print(f"[!] Status 200, কিন্তু কোনো সাবডোমেইন পাওয়া যায়নি! পেজের ভেতরের কিছু অংশ নিচে দেওয়া হলো:")
-                    print(response.text[:800])
-        except Exception as e:
-            print(f"[!] Probe warning for {probe_url}: {e}")
+        except Exception:
+            pass
 
     if sample_bcdn_url:
         old_match = re.search(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', sample_bcdn_url, re.IGNORECASE)
         if old_match:
-            existing_sub = old_match.group(1)
-            try:
-                test_res = session.get(
-                    sample_bcdn_url,
-                    headers={**DEFAULT_HEADERS, "Range": "bytes=0-512"},
-                    timeout=5,
-                    stream=True
-                )
-                test_res.close()
-                if test_res.status_code in [200, 206, 301, 302]:
-                    print(f"[✓] Existing Subdomain Still Active: {existing_sub}")
-                    return existing_sub
-            except Exception:
-                pass
+            return old_match.group(1)
 
     print(f"[!] Using Fallback Subdomain: {FALLBACK_SUBDOMAIN}")
     return FALLBACK_SUBDOMAIN
 
+
 def update_cdn_domain(text_block, active_subdomain):
-    """যেকোনো .b-cdn.net ডোমেইনকে (ywerf, mrtyg ইত্যাদি) সরাসরি নতুন সাবডোমেইন দিয়ে রিপ্লেস করবে"""
     if not text_block or not active_subdomain:
         return text_block
-    
-    # এটি ywerf, mrtyg বা যেকোনো নামকেই খুঁজে বের করে active_subdomain বসিয়ে দিবে
     return re.sub(
-        r"([a-zA-Z0-9\-]+)\.b-cdn\.net",
-        f"{active_subdomain}.b-cdn.net",
+        r"([a-zA-Z0-9\-]+)(\.b-cdn\.net)",
+        rf"{active_subdomain}\g<2>",
         text_block,
         flags=re.IGNORECASE
     )
-    
+
+
 def get_current_time():
     try:
         tz = zoneinfo.ZoneInfo("Asia/Dhaka")
@@ -141,50 +131,7 @@ def get_base_movie_name(name):
     return cleaned
 
 
-def check_single_movie(raw_item, active_subdomain):
-    """শুধুমাত্র লোকাল ও মেইন Fibwatch প্লেলিস্টের লিংক চেক করবে"""
-    name = raw_item["name"]
-    updated_logo = update_cdn_domain(raw_item.get("logo", ""), active_subdomain)
-    updated_url = update_cdn_domain(raw_item.get("url", ""), active_subdomain)
-    referrer = raw_item.get("referrer")
-
-    req_headers = DEFAULT_HEADERS.copy()
-    if referrer:
-        req_headers["Referer"] = referrer
-    elif "r2.dev" in updated_url:
-        req_headers.pop("Referer", None)
-
-    req_headers["Range"] = "bytes=0-1024"
-
-    try:
-        res = session.get(
-            updated_url, headers=req_headers, stream=True, timeout=5, allow_redirects=True
-        )
-        valid_codes = [200, 206, 301, 302, 307, 308, 416]
-        res.close()
-
-        if res.status_code in valid_codes:
-            print(f"[ACTIVE] -> {name[:40]}")
-            return {
-                "name": name,
-                "logo": updated_logo,
-                "url": updated_url,
-                "referrer": referrer,
-                "category": raw_item.get("category", "My Collection"),
-                "use_proxy": True,
-                "res_score": get_resolution_score(name),
-                "base_name": get_base_movie_name(name)
-            }
-        else:
-            print(f"[DEAD - HTTP {res.status_code}] -> Removed: {name[:40]}")
-            return None
-    except Exception:
-        print(f"[DEAD - Timeout/Err] -> Removed: {name[:40]}")
-        return None
-
-
 def parse_m3u_content(text_content, active_subdomain=None, apply_fibwatch_logic=False):
-    """M3U পার্স করবে; apply_fibwatch_logic=True হলেই কেবল সাবডোমেইন ও প্রক্সি সেট হবে"""
     lines = [line.strip() for line in text_content.splitlines() if line.strip()]
     parsed_items = []
     i = 0
@@ -248,7 +195,7 @@ def generate_playlist():
     raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
     sample_bcdn = next((line.strip() for line in raw_lines if ".b-cdn.net" in line and line.strip().startswith("http")), None)
     
-    # লাইভ সাবডোমেইন ডিটেকশন
+    # লাইভ সাবডোমেইন ডিটেকশন (এক্সটার্নাল সোর্স অগ্রাধিকার পাবে)
     active_subdomain = get_active_subdomain(sample_bcdn)
 
     lines = [
@@ -290,7 +237,6 @@ def generate_playlist():
         else:
             i += 1
 
-    # ১. লোকাল movies.txt আইটেম প্রসেস (সাবডোমেইন আপডেট + প্রক্সি সহ)
     fibwatch_items_pool = []
     for item in local_parsed_items:
         raw_name = item["name"]
@@ -313,11 +259,9 @@ def generate_playlist():
             "base_name": get_base_movie_name(clean_name)
         })
 
-    # ২. মেইন এক্সটার্নাল লিংক (All_movie.m3u)
-    main_external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
-    print(f"[*] Fetching main Fibwatch playlist: {main_external_url}")
+    print(f"[*] Fetching main Fibwatch playlist: {MAIN_EXTERNAL_URL}")
     try:
-        ext_res = session.get(main_external_url, timeout=15)
+        ext_res = session.get(MAIN_EXTERNAL_URL, timeout=15)
         if ext_res.status_code == 200:
             parsed_main_ext = parse_m3u_content(ext_res.text, active_subdomain, apply_fibwatch_logic=True)
             fibwatch_items_pool.extend(parsed_main_ext)
@@ -327,22 +271,8 @@ def generate_playlist():
     except Exception as e:
         print(f"[!] Error fetching main external playlist: {e}")
 
-    # ৩. ডেড লিংক চেকিং
-    run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
-    if run_full_check:
-        print(f"[*] Manual Check Mode: Validating {len(fibwatch_items_pool)} Fibwatch/Local items with 100 fast workers...")
-        validated_fibwatch_items = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
-            futures = [executor.submit(check_single_movie, item, active_subdomain) for item in fibwatch_items_pool]
-            for f in concurrent.futures.as_completed(futures):
-                result = f.result()
-                if result:
-                    validated_fibwatch_items.append(result)
-    else:
-        print("[*] Auto Mode: Imported all new & existing links without HTTP dead-link check.")
-        validated_fibwatch_items = fibwatch_items_pool
+    validated_fibwatch_items = fibwatch_items_pool
 
-    # ৪. বাকি দুটি এক্সটার্নাল লিংক
     direct_passthrough_urls = [
         "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/ftp_movie.m3u",
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
@@ -361,10 +291,8 @@ def generate_playlist():
         except Exception as e:
             print(f"[!] Error fetching passthrough playlist: {e}")
 
-    # সব আইটেম একত্র করা
     all_final_candidates = validated_fibwatch_items + passthrough_items
 
-    # ডুপ্লিকেট রিমুভ এবং সর্বোচ্চ রেজোলিউশন বাছাই
     movie_dict = {}
     for m in all_final_candidates:
         b_name = m["base_name"]
@@ -375,7 +303,6 @@ def generate_playlist():
     final_movies = list(movie_dict.values())
     dedup_removed = len(all_final_candidates) - len(final_movies)
 
-    # প্লেলিস্ট ফাইল রাইট করা
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
