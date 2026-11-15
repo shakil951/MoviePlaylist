@@ -33,7 +33,7 @@ jobs:
 
       # এখানে cloudscraper যুক্ত করা হয়েছে
       - name: Install dependencies
-        run: pip install requests cloudscraper
+        run: pip install -r requirements.txt
 
       - name: Run Playlist Generator
         env:
