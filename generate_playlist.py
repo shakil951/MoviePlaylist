@@ -11,7 +11,10 @@ OUTPUT_FILE = "playlist.m3u"
 DEVELOPER_NAME = "FARABI"
 BASE_CHECK_URL = "https://fibwatch.art/"
 
-# আপনার নতুন ইমেজ প্রক্সি ওয়ার্কার লিংক
+# সঠিক এক্সটার্নাল প্লেলিস্ট লিংক
+EXTERNAL_PLAYLIST_URL = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
+
+# আপনার নতুন ইমেজ প্রক্সি ওয়ার্কার লিংক
 IMAGE_PROXY_BASE = "https://image-proxy.usergamil15.workers.dev/?url="
 
 DEFAULT_HEADERS = {
@@ -23,13 +26,11 @@ DEFAULT_HEADERS = {
 }
 
 def get_proxied_logo(logo_url):
-    """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
+    """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
     if not logo_url:
         return ""
-    # যদি আগের কোনো ওয়ার্কার প্রক্সি লিংক থাকে, সেটি বাদ দিয়ে আসল লিংকটা বের করবে
     if "?url=" in logo_url:
         logo_url = logo_url.split("?url=")[-1]
-    
     return f"{IMAGE_PROXY_BASE}{logo_url}"
 
 
@@ -101,7 +102,6 @@ def check_single_movie(raw_item, active_subdomain):
         res = requests.get(
             updated_url, headers=req_headers, stream=True, timeout=15, allow_redirects=True
         )
-        
         valid_codes = [200, 206, 301, 302, 307, 308, 416]
 
         if res.status_code in valid_codes:
@@ -250,42 +250,39 @@ def generate_playlist():
             "base_name": get_base_movie_name(clean_name)
         })
 
+    # All_movie.m3u থেকে লিংক ফেচ করার অংশ
+    external_movies = []
+    print(f"[*] Fetching external playlist: {EXTERNAL_PLAYLIST_URL}")
+    try:
+        ext_res = requests.get(EXTERNAL_PLAYLIST_URL, timeout=15)
+        if ext_res.status_code == 200:
+            parsed_ext = parse_external_m3u(ext_res.text, active_subdomain)
+            for item in parsed_ext:
+                item["name"] = f"{item['name']} | {item['category']}"
+                external_movies.append(item)
+            print(f"[✓] Fetched {len(external_movies)} items from All_movie.m3u.")
+        else:
+            print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
+    except Exception as e:
+        print(f"[!] Error fetching external playlist: {e}")
+
+    all_candidates = processed_local_items + external_movies
+
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
     
-    external_movies = []
     if run_full_check:
-        external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
-        print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
-        try:
-            ext_res = requests.get(external_url, timeout=15)
-            if ext_res.status_code == 200:
-                parsed_ext = parse_external_m3u(ext_res.text, active_subdomain)
-                with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
-                    futures = [executor.submit(check_single_movie, item, active_subdomain) for item in parsed_ext]
-                    for f in futures:
-                        res = f.result()
-                        if res:
-                            res["name"] = f"{res['name']} | {res['category']}"
-                            external_movies.append(res)
-            else:
-                print(f"[!] Failed to fetch external playlist. HTTP {ext_res.status_code}")
-        except Exception as e:
-            print(f"[!] Error fetching external playlist: {e}")
-
-    if run_full_check:
-        all_items_to_check = processed_local_items + external_movies
-        print(f"[*] Manual mode: Validating all items...")
+        print(f"[*] Manual mode: Validating all items with HTTP check...")
         active_movies_raw = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
-            futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_items_to_check]
+            futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_candidates]
             for f in futures:
                 result = f.result()
                 if result:
                     active_movies_raw.append(result)
         final_active_items = active_movies_raw
     else:
-        print("[*] Auto mode: Skipping HTTP checks for lightning speed.")
-        final_active_items = processed_local_items
+        print("[*] Auto mode: Skipping HTTP checks for speed, using all fetched items.")
+        final_active_items = all_candidates
 
     movie_dict = {}
     for m in final_active_items:
@@ -296,19 +293,6 @@ def generate_playlist():
             
     final_movies = list(movie_dict.values())
     dedup_removed = len(final_active_items) - len(final_movies)
-
-    if run_full_check:
-        with open(INPUT_FILE, "w", encoding="utf-8") as f:
-            for m in final_movies:
-                name_to_save = m['name']
-                if "|" not in name_to_save and m.get("category"):
-                    name_to_save = f"{m['name']} | {m['category']}"
-                f.write(f"{name_to_save}\n")
-                f.write(f"{m['raw_logo']}\n")
-                f.write(f"{m['raw_url']}\n")
-                if m.get("referrer"):
-                    f.write(f"http-referrer={m['referrer']}\n")
-                f.write("\n")
 
     current_time_str = get_current_time()
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
@@ -324,8 +308,6 @@ def generate_playlist():
 
         for m in final_movies:
             category = m.get("category", "My Collection")
-            
-            # এখানে ওয়ার্কার প্রক্সি ফাংশনটি কল করা হয়েছে
             final_logo = get_proxied_logo(m["logo"])
             
             entry_str = (
@@ -339,7 +321,7 @@ def generate_playlist():
 
     print("\n" + "=" * 40)
     print(f"[✓] Final Unique Playlist Count : {len(final_movies)}")
-    print(f"[🔄] Lower-Res Dupes Removed     : {dedup_removed}")
+    print(f"[🔄] Lower-Res Dupes Removed      : {dedup_removed}")
     print(f"[✓] Updated: {OUTPUT_FILE}")
     print("=" * 40)
 
