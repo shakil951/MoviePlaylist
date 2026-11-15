@@ -254,7 +254,7 @@ def generate_playlist():
     
     external_movies = []
     if run_full_check:
-        external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/Movie_Combined.m3u"
+        external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
         print(f"[*] Manual mode: Fetching and validating external playlist: {external_url}")
         try:
             ext_res = requests.get(external_url, timeout=15)
