@@ -5,6 +5,7 @@ import re
 import zoneinfo
 import requests
 import os
+import cloudscraper
 
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
@@ -35,13 +36,14 @@ def get_proxied_logo(logo_url):
 
 
 def get_active_subdomain():
+    scraper = cloudscraper.create_scraper()
     headers = {
         "User-Agent": DEFAULT_HEADERS["User-Agent"],
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.5",
     }
     try:
-        response = requests.get(BASE_CHECK_URL, headers=headers, timeout=15)
+        response = scraper.get(BASE_CHECK_URL, headers=headers, timeout=15)
         print(f"[*] CDN Check Status Code: {response.status_code}")
         
         match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
