@@ -46,24 +46,11 @@ def get_proxied_logo(logo_url):
 
 
 def get_active_subdomain(sample_bcdn_url=None):
-    """প্রথমে এক্সটার্নাল All_movie.m3u থেকে এবং পরে ওয়েবসাইট প্রোব করে লাইভ সাবডোমেইন বের করবে"""
+    """ওয়েবসাইট ও এক্সটার্নাল সোর্স থেকে সাবডোমেইনগুলো সংগ্রহ করে যেটি রিয়েললি লাইভ (working) সেটি টেস্ট করে বের করবে"""
     cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
+    found_subs = set()
 
-    # ১. প্রথমে এক্সটার্নাল সোর্স থেকে নিখুঁত লাইভ সাবডোমেইন খোঁজার চেষ্টা করবে (সবচেয়ে নির্ভরযোগ্য)
-    print(f"[*] Fetching active subdomain from external source...")
-    try:
-        ext_res = session.get(MAIN_EXTERNAL_URL, timeout=15)
-        if ext_res.status_code == 200:
-            matches = cdn_pattern.findall(ext_res.text)
-            valid_subs = [m for m in matches if m.lower() not in ["www", "cdn", "static"]]
-            if valid_subs:
-                best_subdomain = max(set(valid_subs), key=valid_subs.count)
-                print(f"[✓] Live CDN Subdomain Detected from External Source: {best_subdomain}")
-                return best_subdomain
-    except Exception as e:
-        print(f"[!] Warning fetching external subdomain: {e}")
-
-    # ২. ওয়েবসাইট প্রোব করে খোঁজার চেষ্টা
+    # ১. ওয়েবসাইট থেকে সাবডোমেইন সংগ্রহ করা
     urls_to_probe = [
         BASE_CHECK_URL,
         f"{BASE_CHECK_URL}movies",
@@ -75,18 +62,49 @@ def get_active_subdomain(sample_bcdn_url=None):
             response = session.get(probe_url, headers={"Accept": "text/html"}, timeout=10, allow_redirects=True)
             if response.status_code == 200:
                 matches = cdn_pattern.findall(response.text)
-                valid_subs = [m for m in matches if m.lower() not in ["www", "cdn", "static"]]
-                if valid_subs:
-                    best_subdomain = max(set(valid_subs), key=valid_subs.count)
-                    print(f"[✓] Live CDN Subdomain Detected from Web: {best_subdomain}")
-                    return best_subdomain
+                for m in matches:
+                    sub = m.lower()
+                    if sub not in ["www", "cdn", "static"]:
+                        found_subs.add(m)
         except Exception:
             pass
+
+    # ২. এক্সটার্নাল সোর্স থেকেও সাবডোমেইন যোগ করা
+    try:
+        ext_res = session.get(MAIN_EXTERNAL_URL, timeout=10)
+        if ext_res.status_code == 200:
+            matches = cdn_pattern.findall(ext_res.text)
+            for m in matches:
+                sub = m.lower()
+                if sub not in ["www", "cdn", "static"]:
+                    found_subs.add(m)
+    except Exception:
+        pass
 
     if sample_bcdn_url:
         old_match = re.search(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', sample_bcdn_url, re.IGNORECASE)
         if old_match:
-            return old_match.group(1)
+            found_subs.add(old_match.group(1))
+
+    print(f"[*] Found candidate subdomains to test: {list(found_subs)}")
+
+    # ৩. প্রতিটি সাবডোমেইন লাইভ টেস্ট করে দেখা কোনটি কাজ করছে
+    for sub in found_subs:
+        test_url = f"https://{sub}.b-cdn.net/"
+        try:
+            test_res = session.head(test_url, timeout=3, allow_redirects=True)
+            if test_res.status_code in [200, 206, 301, 302, 307, 308, 403, 416]:
+                print(f"[✓] Tested & Verified Active Subdomain: {sub}")
+                return sub
+        except Exception:
+            try:
+                test_res = session.get(test_url, headers={"Range": "bytes=0-100"}, timeout=3)
+                test_res.close()
+                if test_res.status_code in [200, 206, 301, 302, 403, 416]:
+                    print(f"[✓] Tested & Verified Active Subdomain: {sub}")
+                    return sub
+            except Exception:
+                pass
 
     print(f"[!] Using Fallback Subdomain: {FALLBACK_SUBDOMAIN}")
     return FALLBACK_SUBDOMAIN
@@ -195,7 +213,7 @@ def generate_playlist():
     raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
     sample_bcdn = next((line.strip() for line in raw_lines if ".b-cdn.net" in line and line.strip().startswith("http")), None)
     
-    # লাইভ সাবডোমেইন ডিটেকশন (এক্সটার্নাল সোর্স অগ্রাধিকার পাবে)
+    # টেস্টিং করে নিখুঁত লাইভ সাবডোমেইন ডিটেকশন
     active_subdomain = get_active_subdomain(sample_bcdn)
 
     lines = [
