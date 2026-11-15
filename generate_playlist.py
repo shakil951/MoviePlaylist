@@ -59,7 +59,7 @@ def get_active_subdomain(sample_bcdn_url=None):
         f"{BASE_CHECK_URL}latest",
     ]
 
-    # নতুন আপডেট করা Regex প্যাটার্ন
+    # আপডেট করা Regex প্যাটার্ন
     cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
 
     for probe_url in urls_to_probe:
@@ -74,6 +74,10 @@ def get_active_subdomain(sample_bcdn_url=None):
                     best_subdomain = max(set(valid_subs), key=valid_subs.count)
                     print(f"[✓] Live CDN Subdomain Detected: {best_subdomain}")
                     return best_subdomain
+                else:
+                    # ডায়াগনস্টিক অংশ: সাবডোমেইন না পেলে HTML কোড প্রিন্ট করবে
+                    print(f"[!] Status 200, কিন্তু কোনো সাবডোমেইন পাওয়া যায়নি! পেজের ভেতরের কিছু অংশ নিচে দেওয়া হলো:")
+                    print(response.text[:800])
         except Exception as e:
             print(f"[!] Probe warning for {probe_url}: {e}")
 
@@ -104,7 +108,7 @@ def update_cdn_domain(text_block, active_subdomain):
     if not text_block or not active_subdomain:
         return text_block
     
-    # নতুন আপডেট করা Regex রিপ্লেসমেন্ট (যেকোনো ফরমেটের লিংকের জন্য কাজ করবে)
+    # নতুন আপডেট করা Regex রিপ্লেসমেন্ট 
     return re.sub(
         r"([a-zA-Z0-9\-]+)(\.b-cdn\.net)",
         rf"{active_subdomain}\2",
@@ -327,7 +331,7 @@ def generate_playlist():
     except Exception as e:
         print(f"[!] Error fetching main external playlist: {e}")
 
-    # ৩. ডেড লিংক চেকিং: শুধুমাত্র আপনি ম্যানুয়ালি অ্যাকশন দিলে (CHECK_EXTERNAL_CHECK=true) চলবে
+    # ৩. ডেড লিংক চেকিং
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
     if run_full_check:
         print(f"[*] Manual Check Mode: Validating {len(fibwatch_items_pool)} Fibwatch/Local items with 100 fast workers...")
