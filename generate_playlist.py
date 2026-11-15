@@ -5,6 +5,7 @@ import re
 import zoneinfo
 import requests
 import os
+import cloudscraper  # নতুন যুক্ত করা হয়েছে
 
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
@@ -23,8 +24,14 @@ DEFAULT_HEADERS = {
     "Referer": "https://fibwatch.art/",
 }
 
-# কানেকশন দ্রুত করার জন্য গ্লোবাল সেশন
-session = requests.Session()
+# কানেকশন দ্রুত করার জন্য এবং Cloudflare বাইপাস করার জন্য cloudscraper ব্যবহার
+session = cloudscraper.create_scraper(
+    browser={
+        'browser': 'chrome',
+        'platform': 'windows',
+        'mobile': False
+    }
+)
 adapter = requests.adapters.HTTPAdapter(pool_connections=100, pool_maxsize=100)
 session.mount('http://', adapter)
 session.mount('https://', adapter)
@@ -40,9 +47,8 @@ def get_proxied_logo(logo_url):
 
 
 def get_active_subdomain(sample_bcdn_url=None):
-    """ওয়েবসাইট থেকে নিখুঁতভাবে লাইভ b-cdn.net সাবডোমেইন খুঁজে বের করবে"""
+    """ওয়েবসাইট থেকে নিখুঁতভাবে লাইভ b-cdn.net সাবডোমেইন খুঁজে বের করবে"""
     headers = {
-        "User-Agent": DEFAULT_HEADERS["User-Agent"],
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.5",
     }
@@ -53,7 +59,8 @@ def get_active_subdomain(sample_bcdn_url=None):
         f"{BASE_CHECK_URL}latest",
     ]
 
-    cdn_pattern = re.compile(r'(?:https?:)?(?:\\/|/){2}([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
+    # নতুন আপডেট করা Regex প্যাটার্ন
+    cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
 
     for probe_url in urls_to_probe:
         try:
@@ -93,12 +100,14 @@ def get_active_subdomain(sample_bcdn_url=None):
 
 
 def update_cdn_domain(text_block, active_subdomain):
-    """শুধুমাত্র নির্দিষ্ট আইটেমের পুরোনো b-cdn.net সাবডোমেইনকে নতুনটি দিয়ে রিপ্লেস করবে"""
+    """শুধুমাত্র নির্দিষ্ট আইটেমের পুরোনো b-cdn.net সাবডোমেইনকে নতুনটি দিয়ে রিপ্লেস করবে"""
     if not text_block or not active_subdomain:
         return text_block
+    
+    # নতুন আপডেট করা Regex রিপ্লেসমেন্ট (যেকোনো ফরমেটের লিংকের জন্য কাজ করবে)
     return re.sub(
-        r"(?<=://)[a-zA-Z0-9\-]+(?=\.b-cdn\.net)",
-        active_subdomain,
+        r"([a-zA-Z0-9\-]+)(\.b-cdn\.net)",
+        rf"{active_subdomain}\2",
         text_block,
         flags=re.IGNORECASE
     )
@@ -304,7 +313,7 @@ def generate_playlist():
             "base_name": get_base_movie_name(clean_name)
         })
 
-    # ২. মেইন এক্সটার্নাল লিংক (All_movie.m3u) -> অটো ও ম্যানুয়াল উভয় মোডেই নতুন লিংক নিয়ে আসবে (সাবডোমেইন আপডেট ও প্রক্সি সহ)
+    # ২. মেইন এক্সটার্নাল লিংক (All_movie.m3u)
     main_external_url = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
     print(f"[*] Fetching main Fibwatch playlist: {main_external_url}")
     try:
@@ -318,7 +327,7 @@ def generate_playlist():
     except Exception as e:
         print(f"[!] Error fetching main external playlist: {e}")
 
-    # ৩. ডেড লিংক চেকিং: শুধুমাত্র আপনি ম্যানুয়ালি অ্যাকশন দিলে (CHECK_EXTERNAL_CHECK=true) চলবে
+    # ৩. ডেড লিংক চেকিং: শুধুমাত্র আপনি ম্যানুয়ালি অ্যাকশন দিলে (CHECK_EXTERNAL_CHECK=true) চলবে
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
     if run_full_check:
         print(f"[*] Manual Check Mode: Validating {len(fibwatch_items_pool)} Fibwatch/Local items with 100 fast workers...")
@@ -333,7 +342,7 @@ def generate_playlist():
         print("[*] Auto Mode: Imported all new & existing links without HTTP dead-link check.")
         validated_fibwatch_items = fibwatch_items_pool
 
-    # ৪. বাকি দুটি এক্সটার্নাল লিংক (কোনো চেকিং, সাবডোমেইন বা ইমেজ প্রক্সি ছাড়াই সরাসরি যুক্ত হবে)
+    # ৪. বাকি দুটি এক্সটার্নাল লিংক
     direct_passthrough_urls = [
         "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/ftp_movie.m3u",
         "https://raw.githubusercontent.com/MRM3UK/New-try/refs/heads/main/Metflix_Playlist_1792332597030.m3u"
