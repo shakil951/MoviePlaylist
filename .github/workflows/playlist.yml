@@ -38,7 +38,7 @@ jobs:
           CHECK_EXTERNAL_CHECK: ${{ github.event.inputs.check_external || 'false' }}
         run: python generate_playlist.py
 
-     - name: Commit and push if playlist changed
+      - name: Commit and push if playlist changed
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
