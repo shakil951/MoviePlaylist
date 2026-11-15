@@ -64,7 +64,7 @@ def update_cdn_domain(text_block, active_subdomain):
     if not text_block:
         return text_block
     return re.sub(
-        r"[a-z0-9]+\.b-cdn\.net", f"{active_subdomain}.b-cdn.net", text_block
+        r"https://[a-z0-9]+\.b-cdn\.net", f"https://{active_subdomain}.b-cdn.net", text_block
     )
 
 
