@@ -45,12 +45,30 @@ def get_proxied_logo(logo_url):
     return f"{IMAGE_PROXY_BASE}{logo_url}"
 
 
-def get_active_subdomain(sample_bcdn_url=None):
-    """ওয়েবসাইট ও এক্সটার্নাল সোর্স থেকে সাবডোমেইনগুলো সংগ্রহ করে যেটি রিয়েললি লাইভ (working) সেটি টেস্ট করে বের করবে"""
-    cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
-    found_subs = set()
+def verify_and_test_subdomain(subdomain):
+    """সাবডোমেইনটি সত্যি কাজ করছে কিনা এবং এটি কোনো HTML এরর পেজ রিটার্ন করছে কিনা তা নিখুঁতভাবে যাচাই করবে"""
+    test_url = f"https://{subdomain}.b-cdn.net/"
+    try:
+        res = session.get(test_url, headers={**DEFAULT_HEADERS, "Range": "bytes=0-256"}, timeout=4, allow_redirects=True)
+        content_type = res.headers.get("Content-Type", "").lower()
+        res.close()
+        
+        # যদি এটি ক্লাউডফ্লেয়ার বা ওয়েবসাইটের HTML এরর পেজ (text/html) হয়, তবে সেটি ভুয়া সাবডোমেইন
+        if "text/html" in content_type:
+            return False
+            
+        if res.status_code in [200, 206, 301, 302, 307, 308, 416]:
+            return True
+    except Exception:
+        pass
+    return False
 
-    # ১. ওয়েবসাইট থেকে সাবডোমেইন সংগ্রহ করা
+
+def get_active_subdomain(sample_bcdn_url=None):
+    """সরাসরি মূল ওয়েবসাইটকে প্রধান প্রাধান্য দিয়ে আসল লাইভ সাবডোমেইন খুঁজে বের করবে"""
+    cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
+    
+    # ১. সবার আগে সরাসরি মূল ওয়েবসাইট (fibwatch.art) প্রোব করে আসল সাবডোমেইন খোঁজার চেষ্টা করবে
     urls_to_probe = [
         BASE_CHECK_URL,
         f"{BASE_CHECK_URL}movies",
@@ -65,18 +83,20 @@ def get_active_subdomain(sample_bcdn_url=None):
                 for m in matches:
                     sub = m.lower()
                     if sub not in ["www", "cdn", "static"]:
-                        found_subs.add(m)
+                        print(f"[*] Testing web-probed subdomain: {sub}")
+                        if verify_and_test_subdomain(sub):
+                            print(f"[✓] Verified Live Subdomain from Web: {sub}")
+                            return sub
         except Exception:
             pass
 
-    # ২. এক্সটার্নাল সোর্স থেকেও সাবডোমেইন যোগ করা
+    # ২. যদি ওয়েবসাইট থেকে সরাসরি না পাওয়া যায়, তবে এক্সটার্নাল সোর্স বা অন্যান্য ক্যান্ডিডেট টেস্ট করবে
+    found_subs = set()
     try:
         ext_res = session.get(MAIN_EXTERNAL_URL, timeout=10)
         if ext_res.status_code == 200:
-            matches = cdn_pattern.findall(ext_res.text)
-            for m in matches:
-                sub = m.lower()
-                if sub not in ["www", "cdn", "static"]:
+            for m in cdn_pattern.findall(ext_res.text):
+                if m.lower() not in ["www", "cdn", "static"]:
                     found_subs.add(m)
     except Exception:
         pass
@@ -86,25 +106,11 @@ def get_active_subdomain(sample_bcdn_url=None):
         if old_match:
             found_subs.add(old_match.group(1))
 
-    print(f"[*] Found candidate subdomains to test: {list(found_subs)}")
-
-    # ৩. প্রতিটি সাবডোমেইন লাইভ টেস্ট করে দেখা কোনটি কাজ করছে
+    print(f"[*] Testing fallback candidate subdomains: {list(found_subs)}")
     for sub in found_subs:
-        test_url = f"https://{sub}.b-cdn.net/"
-        try:
-            test_res = session.head(test_url, timeout=3, allow_redirects=True)
-            if test_res.status_code in [200, 206, 301, 302, 307, 308, 403, 416]:
-                print(f"[✓] Tested & Verified Active Subdomain: {sub}")
-                return sub
-        except Exception:
-            try:
-                test_res = session.get(test_url, headers={"Range": "bytes=0-100"}, timeout=3)
-                test_res.close()
-                if test_res.status_code in [200, 206, 301, 302, 403, 416]:
-                    print(f"[✓] Tested & Verified Active Subdomain: {sub}")
-                    return sub
-            except Exception:
-                pass
+        if verify_and_test_subdomain(sub):
+            print(f"[✓] Verified Live Subdomain from Pool: {sub}")
+            return sub
 
     print(f"[!] Using Fallback Subdomain: {FALLBACK_SUBDOMAIN}")
     return FALLBACK_SUBDOMAIN
@@ -213,7 +219,7 @@ def generate_playlist():
     raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
     sample_bcdn = next((line.strip() for line in raw_lines if ".b-cdn.net" in line and line.strip().startswith("http")), None)
     
-    # টেস্টিং করে নিখুঁত লাইভ সাবডোমেইন ডিটেকশন
+    # আসল লাইভ সাবডোমেইন ডিটেকশন
     active_subdomain = get_active_subdomain(sample_bcdn)
 
     lines = [
