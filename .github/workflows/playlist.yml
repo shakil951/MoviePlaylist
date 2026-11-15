@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   schedule:
-    - cron: '0 * * * *' # প্রতি ১ ঘণ্টা পর পর অটোমেটিক রান হবে
+   # - cron: '0 * * * *' # প্রতি ১ ঘণ্টা পর পর অটোমেটিক রান হবে
   workflow_dispatch:
     inputs:
       check_external:
