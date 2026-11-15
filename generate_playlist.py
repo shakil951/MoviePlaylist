@@ -102,18 +102,18 @@ def get_active_subdomain(sample_bcdn_url=None):
 
 
 def update_cdn_domain(text_block, active_subdomain):
-    """শুধুমাত্র নির্দিষ্ট আইটেমের পুরোনো b-cdn.net সাবডোমেইনকে নতুনটি দিয়ে রিপ্লেস করবে"""
+    """যেকোনো .b-cdn.net ডোমেইনকে সরাসরি নতুন সাবডোমেইন দিয়ে রিপ্লেস করবে"""
     if not text_block or not active_subdomain:
         return text_block
     
-    # \g<2> ব্যবহার করে সেফটি ফিক্স, যাতে সাবডোমেইনের নামে সংখ্যা থাকলেও এরর না হয়
+    # এটি সরাসরি "http://যেকোনো-নাম.b-cdn.net" বা "https://যেকোনো-নাম.b-cdn.net" 
+    # কে নতুন সাবডোমেইন দিয়ে পরিবর্তন করে দিবে। 
     return re.sub(
-        r"([a-zA-Z0-9\-]+)(\.b-cdn\.net)",
-        rf"{active_subdomain}\g<2>",
+        r"https?://[a-zA-Z0-9\-]+\.b-cdn\.net",
+        f"https://{active_subdomain}.b-cdn.net",
         text_block,
         flags=re.IGNORECASE
     )
-
 
 def get_current_time():
     try:
