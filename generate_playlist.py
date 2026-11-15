@@ -59,7 +59,6 @@ def get_active_subdomain(sample_bcdn_url=None):
         f"{BASE_CHECK_URL}latest",
     ]
 
-    # আপডেট করা Regex প্যাটার্ন
     cdn_pattern = re.compile(r'([a-zA-Z0-9\-]+)\.b-cdn\.net', re.IGNORECASE)
 
     for probe_url in urls_to_probe:
@@ -75,7 +74,6 @@ def get_active_subdomain(sample_bcdn_url=None):
                     print(f"[✓] Live CDN Subdomain Detected: {best_subdomain}")
                     return best_subdomain
                 else:
-                    # ডায়াগনস্টিক অংশ: সাবডোমেইন না পেলে HTML কোড প্রিন্ট করবে
                     print(f"[!] Status 200, কিন্তু কোনো সাবডোমেইন পাওয়া যায়নি! পেজের ভেতরের কিছু অংশ নিচে দেওয়া হলো:")
                     print(response.text[:800])
         except Exception as e:
@@ -108,10 +106,10 @@ def update_cdn_domain(text_block, active_subdomain):
     if not text_block or not active_subdomain:
         return text_block
     
-    # নতুন আপডেট করা Regex রিপ্লেসমেন্ট 
+    # \g<2> ব্যবহার করে সেফটি ফিক্স, যাতে সাবডোমেইনের নামে সংখ্যা থাকলেও এরর না হয়
     return re.sub(
         r"([a-zA-Z0-9\-]+)(\.b-cdn\.net)",
-        rf"{active_subdomain}\2",
+        rf"{active_subdomain}\g<2>",
         text_block,
         flags=re.IGNORECASE
     )
