@@ -31,8 +31,9 @@ jobs:
         with:
           python-version: '3.10'
 
+      # এখানে cloudscraper যুক্ত করা হয়েছে
       - name: Install dependencies
-        run: pip install requests
+        run: pip install requests cloudscraper
 
       - name: Run Playlist Generator
         env:
