@@ -100,21 +100,19 @@ def get_active_subdomain(sample_bcdn_url=None):
     print(f"[!] Using Fallback Subdomain: {FALLBACK_SUBDOMAIN}")
     return FALLBACK_SUBDOMAIN
 
-
 def update_cdn_domain(text_block, active_subdomain):
-    """যেকোনো .b-cdn.net ডোমেইনকে সরাসরি নতুন সাবডোমেইন দিয়ে রিপ্লেস করবে"""
+    """যেকোনো .b-cdn.net ডোমেইনকে (ywerf, mrtyg ইত্যাদি) সরাসরি নতুন সাবডোমেইন দিয়ে রিপ্লেস করবে"""
     if not text_block or not active_subdomain:
         return text_block
     
-    # এটি সরাসরি "http://যেকোনো-নাম.b-cdn.net" বা "https://যেকোনো-নাম.b-cdn.net" 
-    # কে নতুন সাবডোমেইন দিয়ে পরিবর্তন করে দিবে। 
+    # এটি ywerf, mrtyg বা যেকোনো নামকেই খুঁজে বের করে active_subdomain বসিয়ে দিবে
     return re.sub(
-        r"https?://[a-zA-Z0-9\-]+\.b-cdn\.net",
-        f"https://{active_subdomain}.b-cdn.net",
+        r"([a-zA-Z0-9\-]+)\.b-cdn\.net",
+        f"{active_subdomain}.b-cdn.net",
         text_block,
         flags=re.IGNORECASE
     )
-
+    
 def get_current_time():
     try:
         tz = zoneinfo.ZoneInfo("Asia/Dhaka")
