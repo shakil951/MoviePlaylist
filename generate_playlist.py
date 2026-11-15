@@ -5,7 +5,7 @@ import re
 import zoneinfo
 import requests
 import os
-import cloudscraper  # নতুন যুক্ত করা হয়েছে
+import cloudscraper
 
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
