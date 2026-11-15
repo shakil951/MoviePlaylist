@@ -35,16 +35,26 @@ def get_proxied_logo(logo_url):
 
 
 def get_active_subdomain():
-    headers = {"User-Agent": DEFAULT_HEADERS["User-Agent"]}
+    headers = {
+        "User-Agent": DEFAULT_HEADERS["User-Agent"],
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+    }
     try:
-        response = requests.get(BASE_CHECK_URL, headers=headers, timeout=10)
+        response = requests.get(BASE_CHECK_URL, headers=headers, timeout=15)
+        print(f"[*] CDN Check Status Code: {response.status_code}")
+        
         match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
         if match:
             subdomain = match.group(1)
             print(f"[*] Live CDN Subdomain: {subdomain}")
             return subdomain
+        else:
+            print(f"[!] Warning: Subdomain regex not found in response. Preview: {response.text[:150]}...")
     except Exception as e:
-        print(f"[!] CDN check warning: {e}")
+        print(f"[!] CDN check exception: {e}")
+    
+    print("[!] Falling back to default subdomain: krtyh")
     return "krtyh"
 
 
@@ -321,7 +331,7 @@ def generate_playlist():
 
     print("\n" + "=" * 40)
     print(f"[✓] Final Unique Playlist Count : {len(final_movies)}")
-    print(f"[🔄] Lower-Res Dupes Removed      : {dedup_removed}")
+    print(f"[🔄] Lower-Res Dupes Removed     : {dedup_removed}")
     print(f"[✓] Updated: {OUTPUT_FILE}")
     print("=" * 40)
 
