@@ -2,11 +2,23 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 16-Nov-2026 06:00:49 PM (+06)
+# Last Updated     : 16-Nov-2026 06:26:13 PM (+06)
 # Active Subdomain : bertg
-# Total Unique VOD : 21242
+# Total Unique VOD : 21245
 # Dupes Removed    : 11742
 # ==========================================
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://bertg.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E129-134 BongoBD WEB-DL 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://bertg.b-cdn.net/s3/upload/videos/2026/11/[Fibwatch.Com]Bachelor.Point.S05E129-134.1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://bertg.b-cdn.net/upload/photos/2026/11/avengers-endgame-encore-hindi-dubbed.jpg" group-title="VOD;My Collection", Avengers: Endgame Encore (2026) Dual Audio [Hindi-English] iMAX WEB-DL 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://bertg.b-cdn.net/s3/upload/videos/2026/11/[Fibwatch.Com]Avengers.Endgame.Encore.(2026).Dual.1080p.mkv
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://bertg.b-cdn.net/upload/photos/2026/11/Jailer.2.(2026).Hindi.Dubbed.jpg" group-title="VOD;My Collection", Jailer 2 (2026) Daul Audio [Hindi ORG-Tamil] Amazon WEB-DL 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://bertg.b-cdn.net/s3/upload/videos/2026/11/[Fibwatch.Com]Jailer.2.(2026).Dual.1080p.mkv
 
 #EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://bertg.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E121-128 BongoBD WEB-DL 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
