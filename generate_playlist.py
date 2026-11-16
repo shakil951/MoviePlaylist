@@ -11,6 +11,8 @@ INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
 DEVELOPER_NAME = "FARABI"
 BASE_CHECK_URL = "https://fibwatch.art/"
+LAST_DOMAIN_FILE = "last_domain.txt"
+DEFAULT_FALLBACK_SUBDOMAIN = "krtyh"
 
 # সঠিক এক্সটার্নাল প্লেলিস্ট লিংক
 EXTERNAL_PLAYLIST_URL = "https://raw.githubusercontent.com/sm-monirulislam/SM-Movie-Hup-Auto-Update/refs/heads/main/All_movie.m3u"
@@ -42,6 +44,7 @@ def get_active_subdomain():
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.5",
     }
+    subdomain = None
     try:
         response = scraper.get(BASE_CHECK_URL, headers=headers, timeout=15)
         print(f"[*] CDN Check Status Code: {response.status_code}")
@@ -50,14 +53,30 @@ def get_active_subdomain():
         if match:
             subdomain = match.group(1)
             print(f"[*] Live CDN Subdomain: {subdomain}")
-            return subdomain
         else:
             print(f"[!] Warning: Subdomain regex not found in response. Preview: {response.text[:150]}...")
     except Exception as e:
         print(f"[!] CDN check exception: {e}")
     
-    print("[!] Falling back to default subdomain: krtyh")
-    return "krtyh"
+    # যদি নতুন সাবডোমেন সফলভাবে পাওয়া যায়, তবে তা ফাইলে সেভ করে রাখব
+    if subdomain:
+        try:
+            Path(LAST_DOMAIN_FILE).write_text(subdomain, encoding="utf-8")
+        except Exception as ex:
+            print(f"[!] Could not save last domain: {ex}")
+        return subdomain
+
+    # যদি স্ক্যাপ করতে ফেইল করে, তবে last_domain.txt ফাইল থেকে সর্বশেষ সফল ডোমেনটি পড়ার চেষ্টা করবে
+    last_domain_path = Path(LAST_DOMAIN_FILE)
+    if last_domain_path.exists():
+        saved_domain = last_domain_path.read_text(encoding="utf-8").strip()
+        if saved_domain:
+            print(f"[*] Using last working saved subdomain from file: {saved_domain}")
+            return saved_domain
+
+    # ফাইলও না থাকলে একদম আল্টিমেট ফলব্যাক
+    print(f"[!] Falling back to default subdomain: {DEFAULT_FALLBACK_SUBDOMAIN}")
+    return DEFAULT_FALLBACK_SUBDOMAIN
 
 
 def update_cdn_domain(text_block, active_subdomain):
