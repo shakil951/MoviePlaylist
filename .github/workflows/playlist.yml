@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   
-  # ক্রন জব বন্ধ রাখতে চাইলে নিচের লাইনগুলোর সামনে # দিয়ে রাখবেন
+  # ক্রন জব চালু করতে চাইলে সামনের # উঠিয়ে দিতে পারেন
   # schedule:
   #   - cron: '0 * * * *'
 
@@ -43,16 +43,17 @@ jobs:
           CHECK_EXTERNAL_CHECK: ${{ github.event.inputs.check_external || 'false' }}
         run: python generate_playlist.py
 
-      - name: Commit and push if playlist changed
+      - name: Commit and push if playlist or domain changed
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
-          # -f ব্যবহার করে জোরপূর্বক ফাইল অ্যাড করা হচ্ছে
-          git add -f playlist.m3u movies.txt
+          
+          # এখানে last_domain.txt ফাইলটি অ্যাড করা হয়েছে যাতে ব্যাকআপ ডোমেনটি গিটহাবে সেভ থাকে
+          git add -f playlist.m3u movies.txt last_domain.txt
+          
           git status
           if ! git diff --staged --quiet; then
-            git commit -m "Auto-update playlist via Cron/Manual [skip ci]"
-            # নির্দিষ্ট ব্রাঞ্চে (main) পুশ করার সঠিক কমান্ড
+            git commit -m "Auto-update playlist & last_domain via workflow [skip ci]"
             git push origin HEAD:main
           else
             echo "No changes to commit."
