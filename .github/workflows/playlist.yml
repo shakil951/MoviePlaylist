@@ -3,11 +3,6 @@ name: Update VOD Playlist
 on:
   push:
     branches: [ "main" ]
-
-  # Cron job বন্ধ রাখা হয়েছে; শুধু manual (workflow_dispatch) বা push দিয়ে চলবে
-  # schedule:
-  #   - cron: '0 * * * *'
-
   workflow_dispatch:
     inputs:
       check_external:
@@ -51,9 +46,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
-
           git add -f playlist.m3u movies.txt last_domain.txt
-
           git status
           if ! git diff --staged --quiet; then
             git commit -m "Auto-update playlist & last_domain via workflow [skip ci]"
