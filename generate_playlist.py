@@ -28,6 +28,7 @@ DEFAULT_HEADERS = {
     "Referer": "https://fibwatch.art/",
 }
 
+
 def get_proxied_logo(logo_url):
     """লোগোর লিংকে ওয়ার্কার প্রক্সি অ্যাড করবে এবং ডাবল প্রক্সি ঠেকাবে"""
     if not logo_url:
@@ -37,7 +38,20 @@ def get_proxied_logo(logo_url):
     return f"{IMAGE_PROXY_BASE}{logo_url}"
 
 
+def save_last_domain(subdomain):
+    try:
+        Path(LAST_DOMAIN_FILE).write_text(subdomain, encoding="utf-8")
+    except Exception as ex:
+        print(f"[!] Could not save last domain: {ex}")
+
+
 def get_active_subdomain():
+    secret_sub = os.environ.get("LIVE_SUBDOMAIN", "").strip()
+    if secret_sub:
+        print(f"[*] Using LIVE_SUBDOMAIN from environment/secret: {secret_sub}")
+        save_last_domain(secret_sub)
+        return secret_sub
+
     scraper = cloudscraper.create_scraper()
     headers = {
         "User-Agent": DEFAULT_HEADERS["User-Agent"],
@@ -48,7 +62,7 @@ def get_active_subdomain():
     try:
         response = scraper.get(BASE_CHECK_URL, headers=headers, timeout=15)
         print(f"[*] CDN Check Status Code: {response.status_code}")
-        
+
         match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
         if match:
             subdomain = match.group(1)
@@ -57,16 +71,13 @@ def get_active_subdomain():
             print(f"[!] Warning: Subdomain regex not found in response. Preview: {response.text[:150]}...")
     except Exception as e:
         print(f"[!] CDN check exception: {e}")
-    
-    # যদি নতুন সাবডোমেন সফলভাবে পাওয়া যায়, তবে তা ফাইলে সেভ করে রাখব
+
+    # যদি নতুন সাবডোমেন সফলভাবে পাওয়া যায়, তবে তা ফাইলে সেভ করে রাখব
     if subdomain:
-        try:
-            Path(LAST_DOMAIN_FILE).write_text(subdomain, encoding="utf-8")
-        except Exception as ex:
-            print(f"[!] Could not save last domain: {ex}")
+        save_last_domain(subdomain)
         return subdomain
 
-    # যদি স্ক্যাপ করতে ফেইল করে, তবে last_domain.txt ফাইল থেকে সর্বশেষ সফল ডোমেনটি পড়ার চেষ্টা করবে
+    # যদি স্ক্যাপ করতে ফেইল করে, তবে last_domain.txt ফাইল থেকে সর্বশেষ সফল ডোমেনটি পড়ার চেষ্টা করবে
     last_domain_path = Path(LAST_DOMAIN_FILE)
     if last_domain_path.exists():
         saved_domain = last_domain_path.read_text(encoding="utf-8").strip()
@@ -168,7 +179,7 @@ def parse_external_m3u(text_content, active_subdomain):
             logo_match = re.search(r'tvg-logo="([^"]*)"', current)
             logo = logo_match.group(1) if logo_match else ""
             logo = update_cdn_domain(logo, active_subdomain)
-            
+
             category = "Others"
             match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
             if match_quotes:
@@ -265,7 +276,7 @@ def generate_playlist():
         else:
             clean_name = raw_name.strip()
             cat = "My Collection"
-        
+
         updated_logo = update_cdn_domain(item["logo"], active_subdomain)
         updated_url = update_cdn_domain(item["url"], active_subdomain)
 
@@ -300,7 +311,7 @@ def generate_playlist():
     all_candidates = processed_local_items + external_movies
 
     run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
-    
+
     if run_full_check:
         print(f"[*] Manual mode: Validating all items with HTTP check...")
         active_movies_raw = []
@@ -321,7 +332,7 @@ def generate_playlist():
         score = m["res_score"]
         if b_name not in movie_dict or score > movie_dict[b_name]["res_score"]:
             movie_dict[b_name] = m
-            
+
     final_movies = list(movie_dict.values())
     dedup_removed = len(final_active_items) - len(final_movies)
 
@@ -340,7 +351,7 @@ def generate_playlist():
         for m in final_movies:
             category = m.get("category", "My Collection")
             final_logo = get_proxied_logo(m["logo"])
-            
+
             entry_str = (
                 f'#EXTINF:-1 tvg-logo="{final_logo}" group-title="VOD;{category}",'
                 f' {m["name"]}\n'
