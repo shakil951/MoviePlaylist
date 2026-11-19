@@ -1,11 +1,11 @@
 import concurrent.futures
 from datetime import datetime
+import os
 from pathlib import Path
 import re
 import zoneinfo
-import requests
-import os
 import cloudscraper
+import requests
 
 INPUT_FILE = "movies.txt"
 OUTPUT_FILE = "playlist.m3u"
@@ -52,27 +52,61 @@ def get_active_subdomain():
         save_last_domain(secret_sub)
         return secret_sub
 
-    scraper = cloudscraper.create_scraper()
-    headers = {
-        "User-Agent": DEFAULT_HEADERS["User-Agent"],
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-    }
     subdomain = None
+
+    # ১ম চেষ্টা: Playwright Headless Browser দিয়ে লাইভ সাবডোমেইন আনা
     try:
-        response = scraper.get(BASE_CHECK_URL, headers=headers, timeout=15)
-        print(f"[*] CDN Check Status Code: {response.status_code}")
+        from playwright.sync_api import sync_playwright
 
-        match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
-        if match:
-            subdomain = match.group(1)
-            print(f"[*] Live CDN Subdomain: {subdomain}")
-        else:
-            print(f"[!] Warning: Subdomain regex not found in response. Preview: {response.text[:150]}...")
+        print("[*] Trying Playwright browser to fetch live subdomain...")
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+            context = browser.new_context(
+                user_agent=DEFAULT_HEADERS["User-Agent"]
+            )
+            page = context.new_page()
+            page.goto(BASE_CHECK_URL, wait_until="domcontentloaded", timeout=25000)
+            # Cloudflare JS challenge শেষ হওয়ার জন্য সামান্য অপেক্ষা
+            page.wait_for_timeout(7000)
+            html = page.content()
+            browser.close()
+
+            match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", html)
+            if match:
+                subdomain = match.group(1)
+                print(f"[*] Live CDN Subdomain (Playwright): {subdomain}")
+            else:
+                print("[!] Playwright loaded page, but subdomain regex not found.")
     except Exception as e:
-        print(f"[!] CDN check exception: {e}")
+        print(f"[!] Playwright check exception: {e}")
 
-    # যদি নতুন সাবডোমেন সফলভাবে পাওয়া যায়, তবে তা ফাইলে সেভ করে রাখব
+    # ২য় চেষ্টা: Playwright না পেলে cloudscraper দিয়ে চেষ্টা
+    if not subdomain:
+        scraper = cloudscraper.create_scraper()
+        headers = {
+            "User-Agent": DEFAULT_HEADERS["User-Agent"],
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+        }
+        try:
+            response = scraper.get(BASE_CHECK_URL, headers=headers, timeout=15)
+            print(f"[*] CDN Check Status Code (cloudscraper): {response.status_code}")
+
+            match = re.search(r"https://([a-z0-9]+)\.b-cdn\.net", response.text)
+            if match:
+                subdomain = match.group(1)
+                print(f"[*] Live CDN Subdomain (cloudscraper): {subdomain}")
+            else:
+                print(
+                    f"[!] Warning: Subdomain regex not found in response. Preview: {response.text[:150]}..."
+                )
+        except Exception as e:
+            print(f"[!] Cloudscraper check exception: {e}")
+
+    # যদি নতুন সাবডোমেইন সফলভাবে পাওয়া যায়, তবে তা ফাইলে সেভ করে রাখব
     if subdomain:
         save_last_domain(subdomain)
         return subdomain
@@ -94,7 +128,9 @@ def update_cdn_domain(text_block, active_subdomain):
     if not text_block:
         return text_block
     return re.sub(
-        r"https://[a-z0-9]+\.b-cdn\.net", f"https://{active_subdomain}.b-cdn.net", text_block
+        r"https://[a-z0-9]+\.b-cdn\.net",
+        f"https://{active_subdomain}.b-cdn.net",
+        text_block,
     )
 
 
@@ -121,8 +157,12 @@ def get_resolution_score(name):
 
 
 def get_base_movie_name(name):
-    cleaned = re.sub(r'(?i)\b(4k|2160p|1080p|720p|480p|360p|fhd|hd|sd|web-dl|bluray|rip|hdrip|hdts)\b', '', name)
-    cleaned = re.sub(r'\s+', ' ', cleaned).strip().lower()
+    cleaned = re.sub(
+        r"(?i)\b(4k|2160p|1080p|720p|480p|360p|fhd|hd|sd|web-dl|bluray|rip|hdrip|hdts)\b",
+        "",
+        name,
+    )
+    cleaned = re.sub(r"\s+", " ", cleaned).strip().lower()
     return cleaned
 
 
@@ -142,7 +182,11 @@ def check_single_movie(raw_item, active_subdomain):
 
     try:
         res = requests.get(
-            updated_url, headers=req_headers, stream=True, timeout=15, allow_redirects=True
+            updated_url,
+            headers=req_headers,
+            stream=True,
+            timeout=15,
+            allow_redirects=True,
         )
         valid_codes = [200, 206, 301, 302, 307, 308, 416]
 
@@ -157,7 +201,7 @@ def check_single_movie(raw_item, active_subdomain):
                 "referrer": referrer,
                 "category": raw_item.get("category", "My Collection"),
                 "res_score": get_resolution_score(name),
-                "base_name": get_base_movie_name(name)
+                "base_name": get_base_movie_name(name),
             }
         else:
             print(f"[DEAD - HTTP {res.status_code}] -> Removed: {name[:40]}")
@@ -181,11 +225,13 @@ def parse_external_m3u(text_content, active_subdomain):
             logo = update_cdn_domain(logo, active_subdomain)
 
             category = "Others"
-            match_quotes = re.search(r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current)
+            match_quotes = re.search(
+                r'(?i)\bgroup-title\s*=\s*(["\'])(.*?)\1', current
+            )
             if match_quotes:
                 category = match_quotes.group(2).strip()
             else:
-                match_no_quotes = re.search(r'(?i)\bgroup-title\s*=\s*([^\s,]+)', current)
+                match_no_quotes = re.search(r"(?i)\bgroup-title\s*=\s*([^\s,]+)", current)
                 if match_no_quotes:
                     category = match_no_quotes.group(1).strip()
 
@@ -196,7 +242,12 @@ def parse_external_m3u(text_content, active_subdomain):
             url = None
             while i < total and not lines[i].startswith("#EXTINF:"):
                 if "http-referrer=" in lines[i]:
-                    ref = lines[i].replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
+                    ref = (
+                        lines[i]
+                        .replace("#EXTVLCOPT:http-referrer=", "")
+                        .replace("http-referrer=", "")
+                        .strip()
+                    )
                 elif lines[i].startswith("http://") or lines[i].startswith("https://"):
                     url = lines[i]
                     url = update_cdn_domain(url, active_subdomain)
@@ -214,7 +265,7 @@ def parse_external_m3u(text_content, active_subdomain):
                     "referrer": ref,
                     "category": category,
                     "res_score": get_resolution_score(name),
-                    "base_name": get_base_movie_name(name)
+                    "base_name": get_base_movie_name(name),
                 })
         else:
             i += 1
@@ -230,7 +281,13 @@ def generate_playlist():
     active_subdomain = get_active_subdomain()
     raw_lines = txt_path.read_text(encoding="utf-8").splitlines()
 
-    lines = [line.strip() for line in raw_lines if line.strip() and not line.startswith("##") and not (line.startswith("#") and not line.startswith("#EXT"))]
+    lines = [
+        line.strip()
+        for line in raw_lines
+        if line.strip()
+        and not line.startswith("##")
+        and not (line.startswith("#") and not line.startswith("#EXT"))
+    ]
 
     local_parsed_items = []
     i = 0
@@ -245,24 +302,42 @@ def generate_playlist():
             ref, url = None, None
             while i < total and not lines[i].startswith("#EXTINF:"):
                 if "http-referrer=" in lines[i]:
-                    ref = lines[i].replace("#EXTVLCOPT:http-referrer=", "").replace("http-referrer=", "").strip()
+                    ref = (
+                        lines[i]
+                        .replace("#EXTVLCOPT:http-referrer=", "")
+                        .replace("http-referrer=", "")
+                        .strip()
+                    )
                 elif lines[i].startswith("http://") or lines[i].startswith("https://"):
                     url = lines[i]
                     i += 1
                     break
                 i += 1
             if url:
-                local_parsed_items.append({"name": name, "logo": logo, "url": url, "referrer": ref})
-        elif i + 2 < total and (lines[i + 1].startswith("http://") or lines[i + 1].startswith("https://")) and (lines[i + 2].startswith("http://") or lines[i + 2].startswith("https://")):
+                local_parsed_items.append(
+                    {"name": name, "logo": logo, "url": url, "referrer": ref}
+                )
+        elif (
+            i + 2 < total
+            and (lines[i + 1].startswith("http://") or lines[i + 1].startswith("https://"))
+            and (lines[i + 2].startswith("http://") or lines[i + 2].startswith("https://"))
+        ):
             name = lines[i]
             logo = lines[i + 1]
             url = lines[i + 2]
             i += 3
             ref = None
             if i < total and "http-referrer=" in lines[i]:
-                ref = lines[i].replace("http-referrer=", "").replace("#EXTVLCOPT:", "").strip()
+                ref = (
+                    lines[i]
+                    .replace("http-referrer=", "")
+                    .replace("#EXTVLCOPT:", "")
+                    .strip()
+                )
                 i += 1
-            local_parsed_items.append({"name": name, "logo": logo, "url": url, "referrer": ref})
+            local_parsed_items.append(
+                {"name": name, "logo": logo, "url": url, "referrer": ref}
+            )
         else:
             i += 1
 
@@ -289,7 +364,7 @@ def generate_playlist():
             "referrer": item["referrer"],
             "category": cat,
             "res_score": get_resolution_score(clean_name),
-            "base_name": get_base_movie_name(clean_name)
+            "base_name": get_base_movie_name(clean_name),
         })
 
     # All_movie.m3u থেকে লিংক ফেচ করার অংশ
@@ -310,13 +385,18 @@ def generate_playlist():
 
     all_candidates = processed_local_items + external_movies
 
-    run_full_check = os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
+    run_full_check = (
+        os.environ.get("CHECK_EXTERNAL_CHECK", "false").lower() == "true"
+    )
 
     if run_full_check:
-        print(f"[*] Manual mode: Validating all items with HTTP check...")
+        print("[*] Manual mode: Validating all items with HTTP check...")
         active_movies_raw = []
         with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
-            futures = [executor.submit(check_single_movie, item, active_subdomain) for item in all_candidates]
+            futures = [
+                executor.submit(check_single_movie, item, active_subdomain)
+                for item in all_candidates
+            ]
             for f in futures:
                 result = f.result()
                 if result:
