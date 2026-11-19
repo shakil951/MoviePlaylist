@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   
-  # ক্রন জব চালু করতে চাইলে সামনের # উঠিয়ে দিতে পারেন
+  # ক্রন জব চালু করতে চাইলে সামনের # উঠিয়ে দিতে পারেন
   # schedule:
   #   - cron: '0 * * * *'
 
@@ -41,16 +41,17 @@ jobs:
       - name: Run Playlist Generator
         env:
           CHECK_EXTERNAL_CHECK: ${{ github.event.inputs.check_external || 'false' }}
+          LIVE_SUBDOMAIN: ${{ secrets.LIVE_SUBDOMAIN }}
         run: python generate_playlist.py
 
       - name: Commit and push if playlist or domain changed
         run: |
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
-          
-          # এখানে last_domain.txt ফাইলটি অ্যাড করা হয়েছে যাতে ব্যাকআপ ডোমেনটি গিটহাবে সেভ থাকে
+
+          # এখানে last_domain.txt ফাইলটি অ্যাড করা হয়েছে যাতে ব্যাকআপ ডোমেনটি গিটহাবে সেভ থাকে
           git add -f playlist.m3u movies.txt last_domain.txt
-          
+
           git status
           if ! git diff --staged --quiet; then
             git commit -m "Auto-update playlist & last_domain via workflow [skip ci]"
