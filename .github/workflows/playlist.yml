@@ -3,11 +3,8 @@ name: Update VOD Playlist
 on:
   push:
     branches: [ "main" ]
-  
-  # ক্রন জব চালু করতে চাইলে সামনের # উঠিয়ে দিতে পারেন
-  # schedule:
-  #   - cron: '0 * * * *'
-
+  schedule:
+    - cron: '0 * * * *' # প্রতি ১ ঘণ্টা পর পর অটোমেটিক রান হবে
   workflow_dispatch:
     inputs:
       check_external:
@@ -36,7 +33,10 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install requests cloudscraper
+        run: |
+          pip install requests cloudscraper playwright
+          playwright install chromium
+          playwright install-deps chromium
 
       - name: Run Playlist Generator
         env:
@@ -49,7 +49,6 @@ jobs:
           git config --global user.name "GitHub Action Bot"
           git config --global user.email "action@github.com"
 
-          # এখানে last_domain.txt ফাইলটি অ্যাড করা হয়েছে যাতে ব্যাকআপ ডোমেনটি গিটহাবে সেভ থাকে
           git add -f playlist.m3u movies.txt last_domain.txt
 
           git status
