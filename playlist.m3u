@@ -2,11 +2,15 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 19-Nov-2026 06:30:09 PM (+06)
+# Last Updated     : 19-Nov-2026 06:54:55 PM (+06)
 # Active Subdomain : oertgh
-# Total Unique VOD : 21245
+# Total Unique VOD : 21246
 # Dupes Removed    : 11742
 # ==========================================
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://oertgh.b-cdn.net/upload/photos/2026/07/The-Odyssey-Hindi-Dubbed.jpg" group-title="VOD;My Collection", The Odyssey (2026) Daul Audio [Hindi ORG-English] Imax BluRay 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://oertgh.b-cdn.net/s3/upload/videos/2026/11/[Fibwatch.Com]The.Odyssey.(2026).Dual.1080p.mkv
 
 #EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://oertgh.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05E129-134 BongoBD WEB-DL 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
