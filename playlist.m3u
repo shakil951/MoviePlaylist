@@ -2,11 +2,15 @@
 # ==========================================
 # Playlist Name    : Farabi VOD Collection
 # Developer        : FARABI
-# Last Updated     : 27-Nov-2026 07:01:29 PM (+06)
+# Last Updated     : 27-Nov-2026 07:30:40 PM (+06)
 # Active Subdomain : tdfhbv
-# Total Unique VOD : 21248
+# Total Unique VOD : 21249
 # Dupes Removed    : 11742
 # ==========================================
+
+#EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://tdfhbv.b-cdn.net/upload/photos/2025/06/Bachelor.Point.S05.jpg" group-title="VOD;My Collection", Bachelor Point S05EP135-140 BongoBD WEB-DL 1080P
+#EXTVLCOPT:http-referrer=https://fibwatch.art/
+https://tdfhbv.b-cdn.net/s3/upload/videos/2026/11/[Fibwatch.Com]Bachelor.Point.S05E135-140.1080p.mkv
 
 #EXTINF:-1 tvg-logo="https://image-proxy.usergamil15.workers.dev/?url=https://tdfhbv.b-cdn.net/upload/photos/2025/09/Raghu.Dakat.(2025).Bengali.jpg" group-title="VOD;My Collection", Raghu Dakat (2025) Bengali WEB-DL 1080P
 #EXTVLCOPT:http-referrer=https://fibwatch.art/
